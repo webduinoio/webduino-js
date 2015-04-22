@@ -1,0 +1,27 @@
+<html>
+
+<head>
+  <script src="../dist/webduino-base.js"></script>
+  <script src="../src/module/Ultrasonic.js"></script>
+  <script>
+  var board, ultrasonic;
+
+  board = new webduino.WebArduino('device_id');
+
+  board.on(webduino.BoardEvent.READY, function() {
+    ultrasonic = new webduino.module.Ultrasonic(board, board.getDigitalPin(11), board.getDigitalPin(10));
+
+    ultrasonic.ping(function(d) {
+      distance.innerText = d + ' cm';
+    }, 1000);
+  });
+  </script>
+</head>
+
+<body>
+  <h2>Ultrasonic example</h2>
+  <p>Distance: </p>
+  <span id='distance'></span>
+</body>
+
+</html>

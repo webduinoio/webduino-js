@@ -1,0 +1,30 @@
+<html>
+
+<head>
+  <script src="../dist/webduino-base.js"></script>
+  <script src="../src/module/Buzzer.js"></script>
+  <script>
+  var board, buzzer,
+    Buzzer = webduino.module.Buzzer;
+
+  var notes = [
+      'E5', 'E5', 'REST', 'E5', 'REST', 'C5', 'E5', 'REST', 'G5'
+    ],
+    tempos = [
+      8, 8, 8, 8, 8, 8, 8, 8, 8
+    ];
+
+  board = new webduino.WebArduino('device_id');
+
+  board.on(webduino.BoardEvent.READY, function() {
+    buzzer = new Buzzer(board, board.getDigitalPin(11));
+    buzzer.play(notes, tempos);
+  });
+  </script>
+</head>
+
+<body>
+  <h1>Buzzer Example</h1>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<html>
+
+<head>
+  <script src="../dist/webduino-all.js"></script>
+  <script>
+  var board, servo;
+
+  board = new webduino.WebArduino('device_id');
+
+  board.on(webduino.BoardEvent.READY, function() {
+    servo = new webduino.module.Servo(board, board.getDigitalPin(11));
+    servo.angle = 90;
+  });
+  </script>
+</head>
+
+<body>
+  test
+</body>
+
+</html>
