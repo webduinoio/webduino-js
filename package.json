@@ -4,6 +4,9 @@
   "main": "index.js",
   "description": "The Webduino javascript core, for browser and node.js",
   "repository": "https://github.com/webduinoio/webduino-js.git",
+  "homepage": "http://webduino.io",
+  "keywords": ["arduino", "webduino"],
+  "license": "MIT",
   "scripts": {
     "clean": "./node_modules/.bin/gulp clean",
     "install": "./node_modules/.bin/gulp"

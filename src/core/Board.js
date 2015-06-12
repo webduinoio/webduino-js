@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2015 webduino.io
- * Copyright (c) 2011-2014 Jeff Hoefs <soundanalogous@gmail.com>
- */
-
 +(function (factory) {
   if (typeof exports === 'undefined') {
     factory(webduino || {});
