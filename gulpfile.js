@@ -9,7 +9,7 @@ function expectFiles(ary) {
 }
 
 var base = [
-    'bower_components/paho/src/mqttws31.js',
+    '../paho/src/mqttws31.js',
     'src/webduino.js',
     'src/core/EventEmitter.js',
     'src/core/util.js',
@@ -36,19 +36,14 @@ var base = [
   ];
 
 gulp.task('clean', shell.task([
-  'rm -rf bower_components dist docs'
+  'rm -rf dist docs'
 ]));
 
 gulp.task('docs', ['clean'], shell.task([
   './node_modules/.bin/yuidoc -c yuidoc.json ./src'
 ]));
 
-gulp.task('bower', ['clean'], shell.task([
-  './node_modules/.bin/bower cache clean',
-  './node_modules/.bin/bower install'
-]));
-
-gulp.task('dev', ['bower'], function () {
+gulp.task('dev', ['clean'], function () {
   expectFiles(base)
     .pipe(concat('webduino-base.js'))
     .pipe(gulp.dest('dist'));
@@ -57,7 +52,7 @@ gulp.task('dev', ['bower'], function () {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('prod', ['bower'], function () {
+gulp.task('prod', ['clean'], function () {
   expectFiles(base)
     .pipe(concat('webduino-base.min.js'))
     .pipe(uglify())
