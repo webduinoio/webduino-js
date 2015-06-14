@@ -127,7 +127,7 @@ module.exports = function (scope) {
     if (this._isReady) {
       this._client.end();
     }
-    this._client = null;
+    delete this._client;
   };
 
   MqttNodeTransport.RECONNECT_PERIOD = 5;

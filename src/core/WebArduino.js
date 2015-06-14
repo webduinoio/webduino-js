@@ -28,7 +28,7 @@
   function getDefaultOptions() {
     return {
       transport: 'mqtt',
-      server: WebArduino.DEFAULT_GATEWAY,
+      server: WebArduino.DEFAULT_SERVER,
       login: 'admin',
       password: 'password'
     };
@@ -88,7 +88,7 @@
     mockMessageEvent(this, msg);
   };
 
-  WebArduino.DEFAULT_GATEWAY = 'webduino.io';
+  WebArduino.DEFAULT_SERVER = 'webduino.io';
 
   function mockMessageEvent(board, message) {
     board._transport.emit(TransportEvent.MESSAGE, message);

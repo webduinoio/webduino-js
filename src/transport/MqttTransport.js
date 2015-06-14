@@ -156,7 +156,7 @@
     if (this._isReady) {
       this._client.disconnect();
     }
-    this._client = null;
+    delete this._client;
   };
 
   MqttTransport.RECONNECT_PERIOD = 5;

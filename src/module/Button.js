@@ -30,6 +30,9 @@
     this._buttonMode = buttonMode || Button.PULL_DOWN;
     this._sustainedPressInterval = sustainedPressInterval || 1000;
     this._debounceInterval = 8;
+    this._pressHandler = onPress.bind(this);
+    this._releaseHandler = onRelease.bind(this);
+    this._sustainedPressHandler = onSustainedPress.bind(this);
 
     board.setDigitalPinMode(pin.number, Pin.DIN);
 
@@ -49,41 +52,35 @@
 
     if (this._buttonMode === Button.PULL_DOWN) {
       if (btnVal === 1) {
-        stateHandler = onPress.bind(this);
+        stateHandler = this._pressHandler;
       } else {
-        stateHandler = onRelease.bind(this);
+        stateHandler = this._releaseHandler;
       }
     } else if (this._buttonMode === Button.PULL_UP || this._buttonMode === Button.INTERNAL_PULL_UP) {
       if (btnVal === 1) {
-        stateHandler = onRelease.bind(this);
+        stateHandler = this._releaseHandler;
       } else {
-        stateHandler = onPress.bind(this);
+        stateHandler = this._pressHandler;
       }
     }
 
-    if (this._timeout === null) {
-      this._timeout = setTimeout(stateHandler, this._debounceInterval);
-    } else {
+    if (this._timeout) {
       clearTimeout(this._timeout);
-      this._timeout = setTimeout(stateHandler, this._debounceInterval);
     }
+    this._timeout = setTimeout(stateHandler, this._debounceInterval);
   }
 
   function onPress() {
-    this._timeout = null;
     this.emit(ButtonEvent.PRESS);
-    this._timer = setInterval(onSustainedPress.bind(this), this._sustainedPressInterval);
+    this._timer = setInterval(this._sustainedPressHandler, this._sustainedPressInterval);
   }
 
   function onRelease() {
-    this._timeout = null;
     this.emit(ButtonEvent.RELEASE);
-
-    if (this._timer !== null) {
+    if (this._timer) {
       clearInterval(this._timer);
       delete this._timer;
     }
-
     this._repeatCount = 0;
   }
 
