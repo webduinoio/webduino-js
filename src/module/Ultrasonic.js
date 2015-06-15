@@ -12,7 +12,7 @@
     proto;
 
   var ULTRASONIC_MESSAGE = 0x01,
-    MIN_PING_INTERVAL = 333;
+    MIN_PING_INTERVAL = 350;
 
   var UltrasonicEvent = {
     PING: 'ping',
@@ -26,6 +26,7 @@
     this._board = board;
     this._trigger = trigger;
     this._echo = echo;
+    this._lastRecv = null;
     this._pingTimer = null;
     this._pingCallback = function () {};
 
@@ -57,6 +58,7 @@
         i += 2;
       }
 
+      self._lastRecv = Date.now();
       self.emit(UltrasonicEvent.PING, parseInt(str));
     }
   }
@@ -85,7 +87,12 @@
       timer = function () {
         self._board.sendSysex(ULTRASONIC_MESSAGE, [self._trigger.number, self._echo.number]);
         if (interval) {
-          self._pingTimer = setTimeout(timer, Math.max(interval, MIN_PING_INTERVAL));
+          interval = Math.max(interval, MIN_PING_INTERVAL);
+          if (self._lastRecv === null || Date.now() - self._lastRecv < 5 * interval) {
+            self._pingTimer = setTimeout(timer, interval);
+          } else {
+            self.stopPing();
+          }
         }
       };
       timer();
@@ -95,6 +102,7 @@
   proto.stopPing = function () {
     this.removeListener(UltrasonicEvent.PING, this._pingCallback);
     this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
+    this._lastRecv = null;
 
     if (this._pingTimer) {
       clearTimeout(this._pingTimer);

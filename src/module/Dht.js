@@ -12,7 +12,7 @@
     proto;
 
   var DHT_MESSAGE = [0x04, 0x04],
-    MIN_READ_INTERVAL = 333;
+    MIN_READ_INTERVAL = 300;
 
   var DhtEvent = {
     READ: 'read',
@@ -25,6 +25,7 @@
     this._type = 'DHT11';
     this._board = board;
     this._pin = pin;
+    this._lastRecv = null;
     this._readTimer = null;
     this._readCallback = function () {};
 
@@ -63,6 +64,7 @@
         }
       }
 
+      self._lastRecv = Date.now();
       self.emit(DhtEvent.READ, dd[0], dd[1]);
     }
   }
@@ -94,7 +96,12 @@
       timer = function () {
         self._board.sendSysex(DHT_MESSAGE[0], [DHT_MESSAGE[1], self._pin.number]);
         if (interval) {
-          self._readTimer = setTimeout(timer, Math.max(interval, MIN_READ_INTERVAL));
+          interval = Math.max(interval, MIN_READ_INTERVAL);
+          if (self._lastRecv === null || Date.now() - self._lastRecv < 5 * interval) {
+            self._readTimer = setTimeout(timer, interval);
+          } else {
+            self.stopRead();
+          }
         }
       };
       timer();
@@ -104,6 +111,7 @@
   proto.stopRead = function () {
     this.removeListener(DhtEvent.READ, this._readCallback);
     this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
+    this._lastRecv = null;
 
     if (this._readTimer) {
       clearTimeout(this._readTimer);
