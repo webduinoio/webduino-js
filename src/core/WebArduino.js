@@ -88,7 +88,7 @@
     mockMessageEvent(this, msg);
   };
 
-  WebArduino.DEFAULT_SERVER = 'webduino.io';
+  WebArduino.DEFAULT_SERVER = 'ws.webduino.io';
 
   function mockMessageEvent(board, message) {
     board._transport.emit(TransportEvent.MESSAGE, message);
