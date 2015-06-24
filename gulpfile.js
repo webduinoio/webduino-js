@@ -13,6 +13,7 @@ var base = [
     'src/webduino.js',
     'src/core/EventEmitter.js',
     'src/core/util.js',
+    'src/util/promisify.js',
     'src/core/Transport.js',
     'src/transport/MqttTransport.js',
     'src/core/Pin.js',
