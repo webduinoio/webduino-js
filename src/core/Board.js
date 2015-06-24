@@ -367,7 +367,7 @@
         }
 
         pin = new Pin(pinCounter, type);
-        pin._setCapabilities(pinCapabilities);
+        pin.setCapabilities(pinCapabilities);
         this.managePinListener(pin);
         this._ioPins[pinCounter] = pin;
 
@@ -401,7 +401,7 @@
     for (var i = 1; i < len; i++) {
       if (msg[i] !== 127) {
         this._analogPinMapping[msg[i]] = i - 1;
-        this.getPin(i - 1)._setAnalogNumber(msg[i]);
+        this.getPin(i - 1).setAnalogNumber(msg[i]);
       }
     }
 
@@ -435,11 +435,11 @@
     }
 
     if (pin._type !== pinType) {
-      pin._setType(pinType);
+      pin.setType(pinType);
       this.managePinListener(pin);
     }
 
-    pin._setState(pinState);
+    pin.setState(pinState);
 
     this._numPinStateRequests--;
     if (this._numPinStateRequests < 0) {
@@ -609,7 +609,7 @@
   };
 
   proto.setDigitalPinMode = function (pinNumber, mode, silent) {
-    this.getDigitalPin(pinNumber)._setType(mode);
+    this.getDigitalPin(pinNumber).setType(mode);
     this.managePinListener(this.getDigitalPin(pinNumber));
 
     if (!silent || silent !== true) {
@@ -618,7 +618,7 @@
   };
 
   proto.setAnalogPinMode = function (pinNumber, mode, silent) {
-    this.getAnalogPin(pinNumber)._setType(mode);
+    this.getAnalogPin(pinNumber).setType(mode);
 
     if (!silent || silent !== true) {
       this.send([SET_PIN_MODE, pinNumber, mode]);
@@ -732,7 +732,7 @@
     this.send(servoData);
 
     servoPin = this.getDigitalPin(pin);
-    servoPin._setType(Pin.SERVO);
+    servoPin.setType(Pin.SERVO);
     this.managePinListener(servoPin);
   };
 
