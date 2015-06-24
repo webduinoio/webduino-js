@@ -12,8 +12,7 @@
     toStr = objProto.toString;
 
   function isFn(value) {
-    var isAlert = typeof window !== 'undefined' && value === window.alert;
-    return isAlert || '[object Function]' === toStr.call(value);
+    return typeof value === 'function';
   }
 
   function isObject(value) {
