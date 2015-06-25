@@ -19,8 +19,7 @@
       };
     }
     options = util.extend(util.extend({}, getDefaultOptions()), options);
-    options.url = ((typeof location !== 'undefined' &&
-      location.protocol === 'https:') ? 'wss://' : 'ws://') + options.server + '/';
+    options.url = dertermineServerUrl(options.server) + '/';
 
     Board.call(this, options);
   }
@@ -32,6 +31,14 @@
       login: 'admin',
       password: 'password'
     };
+  }
+
+  function dertermineServerUrl(url) {
+    if (url.indexOf('ws://') === 0 || url.indexOf('wss://') === 0) {
+      return url;
+    } else {
+      return (typeof location !== 'undefined' && location.protocol === 'https:' ? 'wss://' : 'ws://') + url;
+    }
   }
 
   WebArduino.prototype = proto = Object.create(Board.prototype, {
@@ -88,7 +95,7 @@
     mockMessageEvent(this, msg);
   };
 
-  WebArduino.DEFAULT_SERVER = 'ws.webduino.io';
+  WebArduino.DEFAULT_SERVER = 'wss://ws.webduino.io';
 
   function mockMessageEvent(board, message) {
     board._transport.emit(TransportEvent.MESSAGE, message);
