@@ -12,6 +12,7 @@
     Transport = scope.Transport,
     PinEvent = scope.PinEvent,
     Pin = scope.Pin,
+    util = scope.util,
     proto;
 
   var BoardEvent = {
@@ -79,6 +80,7 @@
     this._capabilityQueryResponseReceived = false;
     this._numPinStateRequests = 0;
     this._transport = null;
+    this._pinStateEventCenter = new EventEmitter();
 
     this._initialVersionResultHandler = onInitialVersionResult.bind(this);
     this._sendOutHandler = sendOut.bind(this);
@@ -367,7 +369,7 @@
         }
 
         pin = new Pin(pinCounter, type);
-        pin._setCapabilities(pinCapabilities);
+        pin.setCapabilities(pinCapabilities);
         this.managePinListener(pin);
         this._ioPins[pinCounter] = pin;
 
@@ -401,7 +403,7 @@
     for (var i = 1; i < len; i++) {
       if (msg[i] !== 127) {
         this._analogPinMapping[msg[i]] = i - 1;
-        this.getPin(i - 1)._setAnalogNumber(msg[i]);
+        this.getPin(i - 1).setAnalogNumber(msg[i]);
       }
     }
 
@@ -435,16 +437,18 @@
     }
 
     if (pin._type !== pinType) {
-      pin._setType(pinType);
+      pin.setType(pinType);
       this.managePinListener(pin);
     }
 
-    pin._setState(pinState);
+    pin.setState(pinState);
 
     this._numPinStateRequests--;
     if (this._numPinStateRequests < 0) {
       this._numPinStateRequests = 0;
     }
+
+    this._pinStateEventCenter.emit(pinNumber, pin);
 
     this.emit(BoardEvent.PIN_STATE_RESPONSE, {
       pin: pin
@@ -609,7 +613,7 @@
   };
 
   proto.setDigitalPinMode = function (pinNumber, mode, silent) {
-    this.getDigitalPin(pinNumber)._setType(mode);
+    this.getDigitalPin(pinNumber).setType(mode);
     this.managePinListener(this.getDigitalPin(pinNumber));
 
     if (!silent || silent !== true) {
@@ -618,7 +622,7 @@
   };
 
   proto.setAnalogPinMode = function (pinNumber, mode, silent) {
-    this.getAnalogPin(pinNumber)._setType(mode);
+    this.getAnalogPin(pinNumber).setType(mode);
 
     if (!silent || silent !== true) {
       this.send([SET_PIN_MODE, pinNumber, mode]);
@@ -683,10 +687,33 @@
     return capabilities;
   };
 
-  proto.queryPinState = function (pin) {
-    var pinNumber = pin.number;
-    this.send([START_SYSEX, PIN_STATE_QUERY, pinNumber, END_SYSEX]);
-    this._numPinStateRequests++;
+  proto.queryPinState = function (pins, callback) {
+    var self = this,
+      promises = [],
+      cmds = [];
+
+    pins = util.isArray(pins) ? pins : [pins];
+
+    if (typeof callback === 'function') {
+      var once = self._pinStateEventCenter.once.bind(self._pinStateEventCenter);
+
+      pins.forEach(function (pin) {
+        promises.push(util.promisify(once, function (pin) {
+          this.resolve(pin);
+        })(pin.number));
+      });
+
+      Promise.all(promises).then(function (pins) {
+        callback.call(self, pins.length > 1 ? pins : pins[0]);
+      });
+    }
+
+    pins.forEach(function (pin) {
+      cmds = cmds.concat([START_SYSEX, PIN_STATE_QUERY, pin.number, END_SYSEX]);
+      self._numPinStateRequests++;
+    })
+
+    self.send(cmds);
   };
 
   proto.sendDigitalPort = function (portNumber, portData) {
@@ -732,7 +759,7 @@
     this.send(servoData);
 
     servoPin = this.getDigitalPin(pin);
-    servoPin._setType(Pin.SERVO);
+    servoPin.setType(Pin.SERVO);
     this.managePinListener(servoPin);
   };
 

@@ -38,6 +38,14 @@
     }
   }
 
+  function checkPinState(self, pin, state, callback) {
+    self._board.queryPinState(pin, function (pin) {
+      if (pin.state === state) {
+        callback.call(self);
+      }
+    });
+  }
+
   Led.prototype = proto = Object.create(Module.prototype, {
 
     constructor: {
@@ -67,16 +75,25 @@
 
   });
 
-  proto.on = function () {
+  proto.on = function (callback) {
     this._pin.value = this._onValue;
+    if (typeof callback === 'function') {
+      checkPinState(this, this._pin, this._pin.value, callback);
+    }
   };
 
-  proto.off = function () {
+  proto.off = function (callback) {
     this._pin.value = this._offValue;
+    if (typeof callback === 'function') {
+      checkPinState(this, this._pin, this._pin.value, callback);
+    }
   };
 
-  proto.toggle = function () {
+  proto.toggle = function (callback) {
     this._pin.value = 1 - this._pin.value;
+    if (typeof callback === 'function') {
+      checkPinState(this, this._pin, this._pin.value, callback);
+    }
   };
 
   Led.SOURCE_DRIVE = 0;

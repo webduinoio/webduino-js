@@ -141,32 +141,32 @@
 
   });
 
-  proto._setAnalogNumber = function (num) {
+  proto.setAnalogNumber = function (num) {
     this._analogNumber = num;
   };
 
-  proto._setAnalogWriteResolution = function (value) {
+  proto.setAnalogWriteResolution = function (value) {
     this._analogWriteResolution = value;
   };
 
-  proto._setAnalogReadResolution = function (value) {
+  proto.setAnalogReadResolution = function (value) {
     this._analogReadResolution = value;
   };
 
-  proto._setState = function (state) {
+  proto.setState = function (state) {
     if (this._type === Pin.PWM) {
       state = state / this._analogWriteResolution;
     }
     this._state = state;
   };
 
-  proto._setType = function (type) {
+  proto.setType = function (type) {
     if (type >= 0 && type < Pin.TOTAL_PIN_MODES) {
       this._type = type;
     }
   };
 
-  proto._setCapabilities = function (capabilities) {
+  proto.setCapabilities = function (capabilities) {
     this._capabilities = capabilities;
     var analogWriteRes = this._capabilities[Pin.PWM];
     var analogReadRes = this._capabilities[Pin.AIN];
