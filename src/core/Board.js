@@ -12,6 +12,7 @@
     Transport = scope.Transport,
     PinEvent = scope.PinEvent,
     Pin = scope.Pin,
+    util = scope.util,
     proto;
 
   var BoardEvent = {
@@ -79,6 +80,7 @@
     this._capabilityQueryResponseReceived = false;
     this._numPinStateRequests = 0;
     this._transport = null;
+    this._pinStateEventCenter = new EventEmitter();
 
     this._initialVersionResultHandler = onInitialVersionResult.bind(this);
     this._sendOutHandler = sendOut.bind(this);
@@ -446,6 +448,8 @@
       this._numPinStateRequests = 0;
     }
 
+    this._pinStateEventCenter.emit(pinNumber, pin);
+
     this.emit(BoardEvent.PIN_STATE_RESPONSE, {
       pin: pin
     });
@@ -683,10 +687,33 @@
     return capabilities;
   };
 
-  proto.queryPinState = function (pin) {
-    var pinNumber = pin.number;
-    this.send([START_SYSEX, PIN_STATE_QUERY, pinNumber, END_SYSEX]);
-    this._numPinStateRequests++;
+  proto.queryPinState = function (pins, callback) {
+    var self = this,
+      promises = [],
+      cmds = [];
+
+    pins = util.isArray(pins) ? pins : [pins];
+
+    if (typeof callback === 'function') {
+      var once = self._pinStateEventCenter.once.bind(self._pinStateEventCenter);
+
+      pins.forEach(function (pin) {
+        promises.push(util.promisify(once, function (pin) {
+          this.resolve(pin);
+        })(pin.number));
+      });
+
+      Promise.all(promises).then(function (pins) {
+        callback.call(self, pins.length > 1 ? pins : pins[0]);
+      });
+    }
+
+    pins.forEach(function (pin) {
+      cmds = cmds.concat([START_SYSEX, PIN_STATE_QUERY, pin.number, END_SYSEX]);
+      self._numPinStateRequests++;
+    })
+
+    self.send(cmds);
   };
 
   proto.sendDigitalPort = function (portNumber, portData) {
