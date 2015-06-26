@@ -128,6 +128,20 @@
     return Math.max(duration, TONE_MIN_LENGTH);
   }
 
+  function padDurations(durations, len) {
+    var durLen = durations.length,
+      dur = durLen ? durations[durLen - 1] : TONE_MIN_LENGTH;
+
+    if (durLen < len) {
+      durations = durations.concat(new Array(len - durLen));
+      for (var i = durLen; i < durations.length; i++) {
+        durations[i] = dur;
+      }
+    }
+
+    return durations;
+  }
+
   Buzzer.prototype = proto = Object.create(Module.prototype, {
     constructor: {
       value: Buzzer
@@ -156,6 +170,7 @@
         return 1000 / t;
       });
 
+    durations = padDurations(durations, len);
     for (var i = 0; i < len; i++) {
       setTimeout((function (d) {
         return function () {
