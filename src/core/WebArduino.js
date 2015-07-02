@@ -34,10 +34,12 @@
   }
 
   function dertermineServerUrl(url) {
-    if (url.indexOf('ws://') === 0 || url.indexOf('wss://') === 0) {
+    var parsed = util.parseURL(url);
+    if (['ws:', 'wss:', 'tcp:'].indexOf(parsed.protocol) !== -1) {
       return url;
     } else {
-      return (typeof location !== 'undefined' && location.protocol === 'https:' ? 'wss://' : 'ws://') + url;
+      return (typeof location !== 'undefined' && location.protocol === 'https:' ? 'wss:' : 'ws:') +
+        '//' + parsed.hostname;
     }
   }
 
@@ -95,7 +97,7 @@
     mockMessageEvent(this, msg);
   };
 
-  WebArduino.DEFAULT_SERVER = 'wss://ws.webduino.io';
+  WebArduino.DEFAULT_SERVER = 'wss://ws.webduino.io:443';
 
   function mockMessageEvent(board, message) {
     board._transport.emit(TransportEvent.MESSAGE, message);
