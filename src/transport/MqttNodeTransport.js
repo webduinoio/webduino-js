@@ -43,6 +43,7 @@ module.exports = function (scope) {
 
   function init(self) {
     self._client = mqtt.connect(self._options.url, {
+      clientId: self._options.device + '_node_' + Date.now(),
       username: self._options.login || '',
       password: new Buffer(self._options.password || ''),
       keepalive: MqttNodeTransport.KEEPALIVE_INTERVAL,

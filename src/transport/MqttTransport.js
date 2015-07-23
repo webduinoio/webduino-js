@@ -25,7 +25,6 @@
     Transport.call(this, options);
 
     this._options = options;
-    this._clientId = '_' + new Date().getTime();
     this._client = null;
     this._timer = null;
     this._reconnTime = 0;
@@ -42,7 +41,7 @@
   }
 
   function init(self) {
-    self._client = new Paho.MQTT.Client(self._options.url, self._clientId);
+    self._client = new Paho.MQTT.Client(self._options.url, self._options.device + '_web_' + Date.now());
     self._client.onMessageArrived = self._messageHandler;
     self._client.onConnectionLost = self._disconnHandler;
     self._client.connect({
