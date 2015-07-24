@@ -6,6 +6,7 @@
   "keywords": ["arduino", "webduino"],
   "license": "MIT",
   "dependencies": {
-    "paho": "http://git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.javascript.git#1.0.1"
+    "paho": "http://git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.javascript.git#1.0.1",
+    "setimmediate": "https://github.com/YuzuJS/setImmediate.git#1.0.2"
   }
 }

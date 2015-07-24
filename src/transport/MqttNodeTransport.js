@@ -3,6 +3,8 @@ module.exports = function (scope) {
 
   var mqtt = require('mqtt');
 
+  var push = Array.prototype.push;
+
   var Transport = scope.Transport,
     TransportEvent = scope.TransportEvent,
     proto;
@@ -29,12 +31,15 @@ module.exports = function (scope) {
 
     this._options = options;
     this._client = null;
+    this._sendTimer = null;
     this._status = '';
     this._buf = [];
     this._isReady = false;
 
     this._connHandler = onConnect.bind(this);
     this._messageHandler = onMessage.bind(this);
+    this._messageSentHandler = onMessageSent.bind(this);
+    this._sendOutHandler = sendOut.bind(this);
     this._disconnHandler = onDisconnect.bind(this);
     this._errorHandler = onError.bind(this);
 
@@ -78,6 +83,12 @@ module.exports = function (scope) {
     }
   }
 
+  function onMessageSent() {
+    this._buf = [];
+    clearTimeout(this._sendTimer);
+    this._sendTimer = null;
+  }
+
   function detectStatusChange(self, newStatus, oldStatus) {
     if (newStatus === oldStatus) {
       return;
@@ -103,6 +114,13 @@ module.exports = function (scope) {
     this.emit(TransportEvent.ERROR, error);
   }
 
+  function sendOut() {
+    var payload = new Buffer(this._buf);
+    this._client.publish(this._options.device + TOPIC.PING, payload, {
+      qos: 0
+    }, this._messageSentHandler);
+  }
+
   MqttNodeTransport.prototype = proto = Object.create(Transport.prototype, {
 
     constructor: {
@@ -118,10 +136,10 @@ module.exports = function (scope) {
   });
 
   proto.send = function (payload) {
-    payload = new Buffer(payload.length ? payload : [payload]);
-    this._client.publish(this._options.device + TOPIC.PING, payload, {
-      qos: 0
-    });
+    push.apply(this._buf, payload);
+    if (!this._sendTimer) {
+      this._sendTimer = setImmediate(this._sendOutHandler);
+    }
   };
 
   proto.close = function () {

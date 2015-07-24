@@ -7,6 +7,8 @@
 }(function (scope) {
   'use strict';
 
+  var push = Array.prototype.push;
+
   var EventEmitter = scope.EventEmitter,
     TransportEvent = scope.TransportEvent,
     Transport = scope.Transport,
@@ -709,7 +711,7 @@
     }
 
     pins.forEach(function (pin) {
-      cmds = cmds.concat([START_SYSEX, PIN_STATE_QUERY, pin.number, END_SYSEX]);
+      push.apply(cmds, [START_SYSEX, PIN_STATE_QUERY, pin.number, END_SYSEX]);
       self._numPinStateRequests++;
     })
 

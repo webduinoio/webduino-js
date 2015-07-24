@@ -1,5 +1,7 @@
 var webduino = require('./src/webduino');
 
+require('setimmediate');
+
 require('./src/core/EventEmitter')(webduino);
 require('./src/core/util')(webduino);
 require('./src/util/promisify')(webduino);
