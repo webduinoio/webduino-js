@@ -12,7 +12,9 @@
     proto;
 
   var DHT_MESSAGE = [0x04, 0x04],
-    MIN_READ_INTERVAL = 300;
+    MIN_READ_INTERVAL = 1000,
+    MIN_RESPONSE_TIME = 20,
+    RETRY_INTERVAL = 6000;
 
   var DhtEvent = {
     READ: 'read',
@@ -30,6 +32,7 @@
     this._readCallback = function () {};
 
     this._messageHandler = onMessage.bind(this);
+    this._board.once(BoardEvent.ERROR, this.stopRead.bind(this));
   }
 
   function onMessage(event) {
@@ -82,8 +85,6 @@
     self.stopRead();
 
     if (typeof callback === 'function') {
-      self._board.once(BoardEvent.ERROR, self.stopRead.bind(self));
-
       self._readCallback = function (humidity, temperature) {
         callback({
           humidity: humidity,
@@ -101,10 +102,22 @@
             self._readTimer = setTimeout(timer, interval);
           } else {
             self.stopRead();
+            setTimeout(function () {
+              self.read(callback, interval);
+            }, RETRY_INTERVAL);
           }
         }
       };
+
       timer();
+    } else {
+      return new Promise(function (resolve, reject) {
+        self.read(function (data) {
+          setTimeout(function () {
+            resolve(data);
+          }, MIN_RESPONSE_TIME);
+        });
+      });
     }
   };
 
