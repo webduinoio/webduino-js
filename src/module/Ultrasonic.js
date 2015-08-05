@@ -28,6 +28,7 @@
     this._board = board;
     this._trigger = trigger;
     this._echo = echo;
+    this._distance = null;
     this._lastRecv = null;
     this._pingTimer = null;
     this._pingCallback = function () {};
@@ -69,6 +70,12 @@
   Ultrasonic.prototype = proto = Object.create(Module.prototype, {
     constructor: {
       value: Ultrasonic
+    },
+
+    distance: {
+      get: function () {
+        return this._distance;
+      }
     }
   });
 
@@ -80,6 +87,7 @@
 
     if (typeof callback === 'function') {
       self._pingCallback = function (distance) {
+        self._distance = distance;
         callback(distance);
       };
       self._board.on(BoardEvent.SYSEX_MESSAGE, self._messageHandler);
@@ -104,6 +112,7 @@
     } else {
       return new Promise(function (resolve, reject) {
         self.ping(function (cm) {
+          self._distance = cm;
           setTimeout(function () {
             resolve(cm);
           }, MIN_RESPONSE_TIME);

@@ -27,6 +27,8 @@
     this._type = 'DHT11';
     this._board = board;
     this._pin = pin;
+    this._humidity = null;
+    this._temperature = null;
     this._lastRecv = null;
     this._readTimer = null;
     this._readCallback = function () {};
@@ -75,6 +77,18 @@
   Dht.prototype = proto = Object.create(Module.prototype, {
     constructor: {
       value: Dht
+    },
+
+    humidity: {
+      get: function () {
+        return this._humidity;
+      }
+    },
+
+    temperature: {
+      get: function () {
+        return this._temperature;
+      }
     }
   });
 
@@ -86,6 +100,8 @@
 
     if (typeof callback === 'function') {
       self._readCallback = function (humidity, temperature) {
+        self._humidity = humidity;
+        self._temperature = temperature;
         callback({
           humidity: humidity,
           temperature: temperature
@@ -113,6 +129,8 @@
     } else {
       return new Promise(function (resolve, reject) {
         self.read(function (data) {
+          self._humidity = data.humidity;
+          self._temperature = data.temperature;
           setTimeout(function () {
             resolve(data);
           }, MIN_RESPONSE_TIME);
