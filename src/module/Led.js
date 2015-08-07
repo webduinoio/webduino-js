@@ -106,7 +106,7 @@
    */
   proto.toggle = function (callback) {
     if (this._blinkTimer) {
-      this.stopBlink();
+      this.off();
     } else {
       this._pin.value = 1 - this._pin.value;
     }
@@ -129,28 +129,18 @@
     msec = isNaN(msec) || msec <= 0 ? 1000 : msec;
 
     this._clearBlinkTimer();
-    this._blinkTimer = this._blink(msec);
-    if (typeof callback === 'function') {
-      checkPinState(this, this._pin, this._pin.value, callback);
-    }
+    this._blinkTimer = this._blink(msec, callback);
   };
 
-  proto._blink = function (msec) {
+  proto._blink = function (msec, callback) {
     var self = this;
     return setTimeout(function() {
       self._pin.value = 1 - self._pin.value;
-      self._blinkTimer = self._blink(msec);
+      if (typeof callback === 'function') {
+        checkPinState(self, self._pin, self._pin.value, callback);
+      }
+      self._blinkTimer = self._blink(msec, callback);
     }, msec);
-  };
-
-  /**
-   * Clear blink timer and set led to off state.
-   * @param {Function} [callback] - Led state changed callback.
-   */
-  proto.stopBlink = function (callback) {
-    if (this._blinkTimer) {
-      this.off(callback);
-    }
   };
 
   proto._clearBlinkTimer = function() {
