@@ -13,7 +13,7 @@
 
   var ULTRASONIC_MESSAGE = 0x01,
     MIN_PING_INTERVAL = 20,
-    MIN_RESPONSE_TIME = 20,
+    MIN_RESPONSE_TIME = 30,
     RETRY_INTERVAL = 5000;
 
   var UltrasonicEvent = {

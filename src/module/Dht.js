@@ -13,7 +13,7 @@
 
   var DHT_MESSAGE = [0x04, 0x04],
     MIN_READ_INTERVAL = 1000,
-    MIN_RESPONSE_TIME = 20,
+    MIN_RESPONSE_TIME = 30,
     RETRY_INTERVAL = 6000;
 
   var DhtEvent = {
