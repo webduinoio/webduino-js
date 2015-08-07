@@ -18,6 +18,7 @@
     this._pin = pin;
     this._driveMode = driveMode || Led.SOURCE_DRIVE;
     this._supportsPWM = undefined;
+    this._blinkTimer = null;
 
     if (this._driveMode === Led.SOURCE_DRIVE) {
       this._onValue = 1;
@@ -75,24 +76,77 @@
 
   });
 
+  /**
+   * Set led to on.
+   * @param {Function} [callback] - Led state changed callback.
+   */
   proto.on = function (callback) {
+    this._clearBlinkTimer();
     this._pin.value = this._onValue;
     if (typeof callback === 'function') {
       checkPinState(this, this._pin, this._pin.value, callback);
     }
   };
 
+  /**
+   * Set led to off.
+   * @param {Function} [callback] - Led state changed callback.
+   */
   proto.off = function (callback) {
+    this._clearBlinkTimer();
     this._pin.value = this._offValue;
     if (typeof callback === 'function') {
       checkPinState(this, this._pin, this._pin.value, callback);
     }
   };
 
+  /**
+   * Toggle led between on/off.
+   * @param {Function} [callback] - Led state changed callback.
+   */
   proto.toggle = function (callback) {
-    this._pin.value = 1 - this._pin.value;
+    if (this._blinkTimer) {
+      this.off();
+    } else {
+      this._pin.value = 1 - this._pin.value;
+    }
     if (typeof callback === 'function') {
       checkPinState(this, this._pin, this._pin.value, callback);
+    }
+  };
+
+  /**
+   * Set led blinking. Both msec and callback are optional
+   * and can be passed as the only one parameter.
+   * @param {number} [msec=1000] - Led blinking interval.
+   * @param {Function} [callback] - Led state changed callback.
+   */
+  proto.blink = function (msec, callback) {
+    if (arguments.length === 1 && typeof arguments[0] === 'function') {
+      callback = arguments[0];
+    }
+    msec = parseInt(msec);
+    msec = isNaN(msec) || msec <= 0 ? 1000 : msec;
+
+    this._clearBlinkTimer();
+    this._blinkTimer = this._blink(msec, callback);
+  };
+
+  proto._blink = function (msec, callback) {
+    var self = this;
+    return setTimeout(function() {
+      self._pin.value = 1 - self._pin.value;
+      if (typeof callback === 'function') {
+        checkPinState(self, self._pin, self._pin.value, callback);
+      }
+      self._blinkTimer = self._blink(msec, callback);
+    }, msec);
+  };
+
+  proto._clearBlinkTimer = function() {
+    if (this._blinkTimer) {
+      clearTimeout(this._blinkTimer);
+      this._blinkTimer = null;
     }
   };
 
