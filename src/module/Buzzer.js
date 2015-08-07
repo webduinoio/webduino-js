@@ -7,6 +7,8 @@
 }(function (scope) {
   'use strict';
 
+  var push = Array.prototype.push;
+
   var util = scope.util,
     Module = scope.Module,
     proto;
@@ -133,7 +135,7 @@
       dur = durLen ? durations[durLen - 1] : TONE_MIN_LENGTH;
 
     if (durLen < len) {
-      durations = durations.concat(new Array(len - durLen));
+      push.apply(durations, new Array(len - durLen));
       for (var i = durLen; i < durations.length; i++) {
         durations[i] = dur;
       }

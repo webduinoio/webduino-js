@@ -39,7 +39,7 @@
       return url;
     } else {
       return (typeof location !== 'undefined' && location.protocol === 'https:' ? 'wss:' : 'ws:') +
-        '//' + parsed.hostname;
+        '//' + url;
     }
   }
 

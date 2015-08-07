@@ -26,7 +26,7 @@
   }
 
   function isArray(value) {
-    return '[object Array]' === toStr.call(value);
+    return Array.isArray(value);
   }
 
   // source:

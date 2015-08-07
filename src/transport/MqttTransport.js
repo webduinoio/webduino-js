@@ -7,6 +7,8 @@
 }(function (scope) {
   'use strict';
 
+  var push = Array.prototype.push;
+
   var Transport = scope.Transport,
     TransportEvent = scope.TransportEvent,
     proto;
@@ -25,9 +27,9 @@
     Transport.call(this, options);
 
     this._options = options;
-    this._clientId = '_' + new Date().getTime();
     this._client = null;
     this._timer = null;
+    this._sendTimer = null;
     this._reconnTime = 0;
     this._status = '';
     this._buf = [];
@@ -35,6 +37,8 @@
 
     this._connHandler = onConnect.bind(this);
     this._messageHandler = onMessage.bind(this);
+    this._messageSentHandler = onMessageSent.bind(this);
+    this._sendOutHandler = sendOut.bind(this);
     this._disconnHandler = onDisconnect.bind(this);
     this._errorHandler = onError.bind(this);
 
@@ -42,8 +46,9 @@
   }
 
   function init(self) {
-    self._client = new Paho.MQTT.Client(self._options.url, self._clientId);
+    self._client = new Paho.MQTT.Client(self._options.url, self._options.device + '_web_' + Date.now());
     self._client.onMessageArrived = self._messageHandler;
+    self._client.onMessageDelivered = self._messageSentHandler;
     self._client.onConnectionLost = self._disconnHandler;
     self._client.connect({
       userName: self._options.login || '',
@@ -78,6 +83,12 @@
       this.emit(TransportEvent.MESSAGE, message.payloadBytes);
       break;
     }
+  }
+
+  function onMessageSent(message) {
+    this._buf = [];
+    clearTimeout(this._sendTimer);
+    this._sendTimer = null;
   }
 
   function detectStatusChange(self, newStatus, oldStatus) {
@@ -130,6 +141,14 @@
     }
   }
 
+  function sendOut() {
+    var payload = new Uint8Array(this._buf);
+    payload = new Paho.MQTT.Message(payload);
+    payload.destinationName = this._options.device + TOPIC.PING;
+    payload.qos = 0;
+    this._client.send(payload);
+  }
+
   MqttTransport.prototype = proto = Object.create(Transport.prototype, {
 
     constructor: {
@@ -145,11 +164,10 @@
   });
 
   proto.send = function (payload) {
-    this._buf = new Uint8Array(payload.length ? payload : [payload]);
-    payload = new Paho.MQTT.Message(this._buf);
-    payload.destinationName = this._options.device + TOPIC.PING;
-    payload.qos = 0;
-    this._client.send(payload);
+    push.apply(this._buf, payload);
+    if (!this._sendTimer) {
+      this._sendTimer = setImmediate(this._sendOutHandler);
+    }
   };
 
   proto.close = function () {

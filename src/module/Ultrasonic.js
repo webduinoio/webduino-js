@@ -12,7 +12,9 @@
     proto;
 
   var ULTRASONIC_MESSAGE = 0x01,
-    MIN_PING_INTERVAL = 350;
+    MIN_PING_INTERVAL = 20,
+    MIN_RESPONSE_TIME = 30,
+    RETRY_INTERVAL = 5000;
 
   var UltrasonicEvent = {
     PING: 'ping',
@@ -26,11 +28,13 @@
     this._board = board;
     this._trigger = trigger;
     this._echo = echo;
+    this._distance = null;
     this._lastRecv = null;
     this._pingTimer = null;
     this._pingCallback = function () {};
 
     this._messageHandler = onMessage.bind(this);
+    this._board.once(BoardEvent.ERROR, this.stopPing.bind(this));
   }
 
   function onMessage(event) {
@@ -66,6 +70,12 @@
   Ultrasonic.prototype = proto = Object.create(Module.prototype, {
     constructor: {
       value: Ultrasonic
+    },
+
+    distance: {
+      get: function () {
+        return this._distance;
+      }
     }
   });
 
@@ -76,9 +86,8 @@
     self.stopPing();
 
     if (typeof callback === 'function') {
-      self._board.once(BoardEvent.ERROR, self.stopPing.bind(self));
-
       self._pingCallback = function (distance) {
+        self._distance = distance;
         callback(distance);
       };
       self._board.on(BoardEvent.SYSEX_MESSAGE, self._messageHandler);
@@ -92,10 +101,23 @@
             self._pingTimer = setTimeout(timer, interval);
           } else {
             self.stopPing();
+            setTimeout(function () {
+              self.ping(callback, interval);
+            }, RETRY_INTERVAL);
           }
         }
       };
+
       timer();
+    } else {
+      return new Promise(function (resolve, reject) {
+        self.ping(function (cm) {
+          self._distance = cm;
+          setTimeout(function () {
+            resolve(cm);
+          }, MIN_RESPONSE_TIME);
+        });
+      });
     }
   };
 
