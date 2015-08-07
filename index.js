@@ -24,5 +24,6 @@ require('./src/module/Sound')(webduino);
 require('./src/module/Relay')(webduino);
 require('./src/module/Dht')(webduino);
 require('./src/module/Buzzer')(webduino);
+require('./src/module/Max7219')(webduino);
 
 module.exports = webduino;

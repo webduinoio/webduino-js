@@ -34,7 +34,8 @@ var base = [
     'src/module/Sound.js',
     'src/module/Relay.js',
     'src/module/Dht.js',
-    'src/module/Buzzer.js'
+    'src/module/Buzzer.js',
+    'src/module/Max7219.js'
   ];
 
 gulp.task('clean', shell.task([
