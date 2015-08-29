@@ -695,6 +695,9 @@
       cmds = [];
 
     pins = util.isArray(pins) ? pins : [pins];
+    pins = pins.map(function (pin) {
+      return pin instanceof Pin ? pin : self.getDigitalPin(pin)
+    });
 
     if (typeof callback === 'function') {
       var once = self._pinStateEventCenter.once.bind(self._pinStateEventCenter);
