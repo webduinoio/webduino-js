@@ -87,7 +87,7 @@
 
   function onMessageSent(message) {
     this._buf = [];
-    clearTimeout(this._sendTimer);
+    clearImmediate(this._sendTimer);
     this._sendTimer = null;
   }
 
