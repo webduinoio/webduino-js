@@ -37,7 +37,6 @@
 
     this._connHandler = onConnect.bind(this);
     this._messageHandler = onMessage.bind(this);
-    this._messageSentHandler = onMessageSent.bind(this);
     this._sendOutHandler = sendOut.bind(this);
     this._disconnHandler = onDisconnect.bind(this);
     this._errorHandler = onError.bind(this);
@@ -48,7 +47,6 @@
   function init(self) {
     self._client = new Paho.MQTT.Client(self._options.url, self._options.device + '_web_' + Date.now());
     self._client.onMessageArrived = self._messageHandler;
-    self._client.onMessageDelivered = self._messageSentHandler;
     self._client.onConnectionLost = self._disconnHandler;
     self._client.connect({
       userName: self._options.login || '',
@@ -83,12 +81,6 @@
       this.emit(TransportEvent.MESSAGE, message.payloadBytes);
       break;
     }
-  }
-
-  function onMessageSent(message) {
-    this._buf = [];
-    clearImmediate(this._sendTimer);
-    this._sendTimer = null;
   }
 
   function detectStatusChange(self, newStatus, oldStatus) {
@@ -147,6 +139,13 @@
     payload.destinationName = this._options.device + TOPIC.PING;
     payload.qos = 0;
     this._client.send(payload);
+    clearBuf(this);
+  }
+
+  function clearBuf(self) {
+    self._buf = [];
+    clearImmediate(self._sendTimer);
+    self._sendTimer = null;
   }
 
   MqttTransport.prototype = proto = Object.create(Transport.prototype, {
@@ -164,6 +163,9 @@
   });
 
   proto.send = function (payload) {
+    if (this._buf.length + payload.length > MqttTransport.BUF_SIZE) {
+      this._sendOutHandler();
+    }
     push.apply(this._buf, payload);
     if (!this._sendTimer) {
       this._sendTimer = setImmediate(this._sendOutHandler);
@@ -182,6 +184,8 @@
   MqttTransport.KEEPALIVE_INTERVAL = 30;
 
   MqttTransport.CONNECT_TIMEOUT = 60;
+
+  MqttTransport.BUF_SIZE = 128 / Uint8Array.BYTES_PER_ELEMENT;
 
   scope.transport.mqtt = MqttTransport;
 }));
