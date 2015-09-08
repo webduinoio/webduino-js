@@ -38,7 +38,6 @@ module.exports = function (scope) {
 
     this._connHandler = onConnect.bind(this);
     this._messageHandler = onMessage.bind(this);
-    this._messageSentHandler = onMessageSent.bind(this);
     this._sendOutHandler = sendOut.bind(this);
     this._disconnHandler = onDisconnect.bind(this);
     this._errorHandler = onError.bind(this);
@@ -83,12 +82,6 @@ module.exports = function (scope) {
     }
   }
 
-  function onMessageSent() {
-    this._buf = [];
-    clearTimeout(this._sendTimer);
-    this._sendTimer = null;
-  }
-
   function detectStatusChange(self, newStatus, oldStatus) {
     if (newStatus === oldStatus) {
       return;
@@ -118,7 +111,14 @@ module.exports = function (scope) {
     var payload = new Buffer(this._buf);
     this._client.publish(this._options.device + TOPIC.PING, payload, {
       qos: 0
-    }, this._messageSentHandler);
+    });
+    clearBuf(this);
+  }
+
+  function clearBuf(self) {
+    self._buf = [];
+    clearImmediate(self._sendTimer);
+    self._sendTimer = null;
   }
 
   MqttNodeTransport.prototype = proto = Object.create(Transport.prototype, {
@@ -136,6 +136,9 @@ module.exports = function (scope) {
   });
 
   proto.send = function (payload) {
+    if (this._buf.length + payload.length > MqttNodeTransport.BUF_SIZE) {
+      this._sendOutHandler();
+    }
     push.apply(this._buf, payload);
     if (!this._sendTimer) {
       this._sendTimer = setImmediate(this._sendOutHandler);
@@ -154,6 +157,8 @@ module.exports = function (scope) {
   MqttNodeTransport.KEEPALIVE_INTERVAL = 30;
 
   MqttNodeTransport.CONNECT_TIMEOUT = 60;
+
+  MqttNodeTransport.BUF_SIZE = 128;
 
   scope.transport.mqtt = MqttNodeTransport;
 };
