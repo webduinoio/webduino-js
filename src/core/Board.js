@@ -414,8 +414,8 @@
 
   proto.startup = function () {
     this._isReady = true;
-    this.enableDigitalPins();
     this.emit(BoardEvent.READY);
+    this.enableDigitalPins();
   };
 
   proto.systemReset = function () {

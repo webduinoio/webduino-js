@@ -1,6 +1,6 @@
 {
   "name": "webduino-js",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "main": "index.js",
   "description": "The Webduino javascript core, for browser and node.js",
   "repository": "https://github.com/webduinoio/webduino-js.git",
