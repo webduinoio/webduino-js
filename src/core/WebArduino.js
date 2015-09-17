@@ -19,7 +19,7 @@
       };
     }
     options = util.extend(util.extend({}, getDefaultOptions()), options);
-    options.url = dertermineServerUrl(options.server) + '/';
+    options.url = determineServerUrl(options.server) + '/';
 
     Board.call(this, options);
   }
@@ -33,7 +33,7 @@
     };
   }
 
-  function dertermineServerUrl(url) {
+  function determineServerUrl(url) {
     var parsed = util.parseURL(url);
     if (['ws:', 'wss:', 'tcp:'].indexOf(parsed.protocol) !== -1) {
       return url;
