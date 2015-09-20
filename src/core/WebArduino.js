@@ -29,7 +29,9 @@
       transport: 'mqtt',
       server: WebArduino.DEFAULT_SERVER,
       login: 'admin',
-      password: 'password'
+      password: 'password',
+      autoReconnect: false,
+      multi: false
     };
   }
 
