@@ -192,7 +192,6 @@
   proto.processInput = function (inputData) {
     var len, cmd;
 
-    inputData = parseInt(inputData, 10);
     this._buf.push(inputData);
     len = this._buf.length;
     cmd = this._buf[0];

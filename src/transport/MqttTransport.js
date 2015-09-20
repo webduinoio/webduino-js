@@ -134,8 +134,7 @@
   }
 
   function sendOut() {
-    var payload = new Uint8Array(this._buf);
-    payload = new Paho.MQTT.Message(payload);
+    var payload = new Paho.MQTT.Message(new Uint8Array(this._buf).buffer);
     payload.destinationName = this._options.device + TOPIC.PING;
     payload.qos = 0;
     this._client.send(payload);

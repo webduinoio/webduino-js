@@ -91,12 +91,6 @@
     mockMessageEvent(this, msg);
   };
 
-  proto.startup = function () {
-    var msg = [144, 0, 0, 145, 0, 0, 146, 0, 0];
-    Board.prototype.startup.call(this);
-    mockMessageEvent(this, msg);
-  };
-
   WebArduino.DEFAULT_SERVER = 'wss://ws.webduino.io:443';
 
   function mockMessageEvent(board, message) {
