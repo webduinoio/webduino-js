@@ -22,6 +22,7 @@
     "yuidocjs": "0.x",
     "mqtt": "1.x",
     "es6-promise": "3.x",
-    "setimmediate": "1.x"
+    "setimmediate": "1.x",
+    "serialport": "1.x"
   }
 }

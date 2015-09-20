@@ -11,16 +11,19 @@ function expectFiles(ary) {
 var base = [
     '../setimmediate/setImmediate.js',
     '../paho/src/mqttws31.js',
+    '../chrome-api-proxy/lib/chrome.serial.js',
     'src/webduino.js',
     'src/core/EventEmitter.js',
     'src/core/util.js',
     'src/util/promisify.js',
     'src/core/Transport.js',
     'src/transport/MqttTransport.js',
+    'src/transport/SerialTransport.js',
     'src/core/Pin.js',
     'src/core/Module.js',
     'src/core/Board.js',
-    'src/core/WebArduino.js'
+    'src/core/WebArduino.js',
+    'src/core/Arduino.js'
   ],
   modules = [
     'src/module/Led.js',

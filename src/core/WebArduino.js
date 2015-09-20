@@ -18,16 +18,15 @@
         device: options
       };
     }
-    options = util.extend(util.extend({}, getDefaultOptions()), options);
-    options.url = determineServerUrl(options.server) + '/';
+    options = util.extend(getDefaultOptions(options), options);
 
     Board.call(this, options);
   }
 
-  function getDefaultOptions() {
+  function getDefaultOptions(opts) {
     return {
       transport: 'mqtt',
-      server: WebArduino.DEFAULT_SERVER,
+      url: determineServerUrl(opts.server || WebArduino.DEFAULT_SERVER) + '/',
       login: 'admin',
       password: 'password',
       autoReconnect: false,
