@@ -136,7 +136,8 @@ module.exports = function (scope) {
   });
 
   proto.send = function (payload) {
-    if (this._buf.length + payload.length > MqttNodeTransport.BUF_SIZE) {
+    if (this._buf.length + payload.length + this._options.device.length + TOPIC.PING.length + 4 >
+      MqttNodeTransport.MAX_PACKET_SIZE) {
       this._sendOutHandler();
     }
     push.apply(this._buf, payload);
@@ -158,7 +159,7 @@ module.exports = function (scope) {
 
   MqttNodeTransport.CONNECT_TIMEOUT = 60;
 
-  MqttNodeTransport.BUF_SIZE = 128;
+  MqttNodeTransport.MAX_PACKET_SIZE = 128;
 
   scope.transport.mqtt = MqttNodeTransport;
 };

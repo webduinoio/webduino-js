@@ -162,7 +162,8 @@
   });
 
   proto.send = function (payload) {
-    if (this._buf.length + payload.length > MqttTransport.BUF_SIZE) {
+    if (this._buf.length + payload.length + this._options.device.length + TOPIC.PING.length + 4 >
+      MqttTransport.MAX_PACKET_SIZE) {
       this._sendOutHandler();
     }
     push.apply(this._buf, payload);
@@ -184,7 +185,7 @@
 
   MqttTransport.CONNECT_TIMEOUT = 60;
 
-  MqttTransport.BUF_SIZE = 128 / Uint8Array.BYTES_PER_ELEMENT;
+  MqttTransport.MAX_PACKET_SIZE = 128;
 
   scope.transport.mqtt = MqttTransport;
 }));
