@@ -66,7 +66,7 @@
   proto.off = function() {
     this._state = 'off';
     this._board.disableAnalogPin(this._pinNumber);
-    this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
+    this._board.removeListener(BoardEvent.ANALOG_DATA, this._messageHandler);
     this.removeListener(PhotocellEvent.MESSAGE, this._callback);
     this._callback = null;
   };

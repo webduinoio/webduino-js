@@ -84,7 +84,7 @@
   proto.off = function() {
     this._state = 'off';
     this._board.disableAnalogPin(this._pinNumber);
-    this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
+    this._board.removeListener(BoardEvent.ANALOG_DATA, this._messageHandler);
     if (this._analogCallback) {
       this.removeListener(MQ2Event.MESSAGE, this._analogCallback);
       this._analogCallback = null;
