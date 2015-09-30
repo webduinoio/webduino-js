@@ -102,6 +102,10 @@
     }
   }
 
+  function randomId() {
+    return (Math.random() * Date.now()).toString(36).replace(/\./g, '');
+  }
+
   scope.util = {
     isFn: isFn,
     isFunction: isFn,
@@ -109,6 +113,7 @@
     isHash: isHash,
     isArray: isArray,
     extend: extend,
-    parseURL: parseURL
+    parseURL: parseURL,
+    randomId: randomId
   };
 }));

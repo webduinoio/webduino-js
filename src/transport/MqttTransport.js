@@ -1,16 +1,11 @@
-+(function (factory) {
-  if (typeof exports === 'undefined') {
-    factory(webduino || {});
-  } else {
-    module.exports = factory;
-  }
-}(function (scope) {
++(function (scope) {
   'use strict';
 
   var push = Array.prototype.push;
 
   var Transport = scope.Transport,
     TransportEvent = scope.TransportEvent,
+    util = scope.util,
     proto;
 
   var STATUS = {
@@ -45,7 +40,9 @@
   }
 
   function init(self) {
-    self._client = new Paho.MQTT.Client(self._options.url, self._options.device + '_web_' + Date.now());
+    self._client = new Paho.MQTT.Client(self._options.url,
+      '_' + self._options.device + (self._options.multi ? '.' + util.randomId() : '')
+    );
     self._client.onMessageArrived = self._messageHandler;
     self._client.onConnectionLost = self._disconnHandler;
     self._client.connect({
@@ -118,12 +115,15 @@
   function startReconnect(self) {
     stopReconnect(self);
     self.close();
-    self._timer = setTimeout(function () {
-      self._reconnTime += MqttTransport.RECONNECT_PERIOD * 1000;
-      if (self._reconnTime < MqttTransport.CONNECT_TIMEOUT * 1000) {
-        init(self);
-      }
-    }, MqttTransport.RECONNECT_PERIOD * 1000);
+
+    if (self._options.autoReconnect) {
+      self._timer = setTimeout(function () {
+        self._reconnTime += MqttTransport.RECONNECT_PERIOD * 1000;
+        if (self._reconnTime < MqttTransport.CONNECT_TIMEOUT * 1000) {
+          init(self);
+        }
+      }, MqttTransport.RECONNECT_PERIOD * 1000);
+    }
   }
 
   function stopReconnect(self) {
@@ -179,13 +179,13 @@
     delete this._client;
   };
 
-  MqttTransport.RECONNECT_PERIOD = 5;
+  MqttTransport.RECONNECT_PERIOD = 1;
 
-  MqttTransport.KEEPALIVE_INTERVAL = 30;
+  MqttTransport.KEEPALIVE_INTERVAL = 15;
 
-  MqttTransport.CONNECT_TIMEOUT = 60;
+  MqttTransport.CONNECT_TIMEOUT = 30;
 
   MqttTransport.MAX_PACKET_SIZE = 128;
 
   scope.transport.mqtt = MqttTransport;
-}));
+}(webduino || {}));

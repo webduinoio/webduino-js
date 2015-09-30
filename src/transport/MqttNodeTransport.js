@@ -7,6 +7,7 @@ module.exports = function (scope) {
 
   var Transport = scope.Transport,
     TransportEvent = scope.TransportEvent,
+    util = scope.util,
     proto;
 
   var STATUS = {
@@ -47,11 +48,11 @@ module.exports = function (scope) {
 
   function init(self) {
     self._client = mqtt.connect(self._options.url, {
-      clientId: self._options.device + '_node_' + Date.now(),
+      clientId: '_' + self._options.device + (self._options.multi ? '.' + util.randomId() : ''),
       username: self._options.login || '',
       password: new Buffer(self._options.password || ''),
       keepalive: MqttNodeTransport.KEEPALIVE_INTERVAL,
-      reconnectPeriod: MqttNodeTransport.RECONNECT_PERIOD * 1000,
+      reconnectPeriod: self._options.autoReconnect ? MqttNodeTransport.RECONNECT_PERIOD * 1000 : 0,
       connectTimeout: MqttNodeTransport.CONNECT_TIMEOUT * 1000
     });
     self._client.on(MQTT_EVENTS.CONNECT, self._connHandler);
@@ -153,11 +154,11 @@ module.exports = function (scope) {
     delete this._client;
   };
 
-  MqttNodeTransport.RECONNECT_PERIOD = 5;
+  MqttNodeTransport.RECONNECT_PERIOD = 1;
 
-  MqttNodeTransport.KEEPALIVE_INTERVAL = 30;
+  MqttNodeTransport.KEEPALIVE_INTERVAL = 15;
 
-  MqttNodeTransport.CONNECT_TIMEOUT = 60;
+  MqttNodeTransport.CONNECT_TIMEOUT = 30;
 
   MqttNodeTransport.MAX_PACKET_SIZE = 128;
 
