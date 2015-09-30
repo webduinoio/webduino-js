@@ -35,7 +35,13 @@ var base = [
     'src/module/Relay.js',
     'src/module/Dht.js',
     'src/module/Buzzer.js',
-    'src/module/Max7219.js'
+    'src/module/Max7219.js',
+    'src/module/ADXL345.js',
+    'src/module/IRLed.js',
+    'src/module/IRRecv.js',
+    'src/module/Joystick.js',
+    'src/module/MQ2.js',
+    'src/module/Photocell.js'
   ];
 
 gulp.task('clean', shell.task([

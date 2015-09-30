@@ -25,5 +25,11 @@ require('./src/module/Relay')(webduino);
 require('./src/module/Dht')(webduino);
 require('./src/module/Buzzer')(webduino);
 require('./src/module/Max7219')(webduino);
+require('./src/module/ADXL345')(webduino);
+require('./src/module/IRLed')(webduino);
+require('./src/module/IRRecv')(webduino);
+require('./src/module/Joystick')(webduino);
+require('./src/module/MQ2')(webduino);
+require('./src/module/Photocell')(webduino);
 
 module.exports = webduino;
