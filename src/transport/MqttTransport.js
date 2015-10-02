@@ -99,6 +99,7 @@
 
     if (this._isReady) {
       this._isReady = false;
+      delete this._client;
       this.emit(TransportEvent.CLOSE);
       startReconnect(this);
     }
@@ -176,7 +177,6 @@
     if (this._isReady) {
       this._client.disconnect();
     }
-    delete this._client;
   };
 
   MqttTransport.RECONNECT_PERIOD = 1;

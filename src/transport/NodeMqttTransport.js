@@ -27,7 +27,7 @@ module.exports = function (scope) {
     ERROR: 'error'
   };
 
-  function MqttNodeTransport(options) {
+  function NodeMqttTransport(options) {
     Transport.call(this, options);
 
     this._options = options;
@@ -51,9 +51,9 @@ module.exports = function (scope) {
       clientId: '_' + self._options.device + (self._options.multi ? '.' + util.randomId() : ''),
       username: self._options.login || '',
       password: new Buffer(self._options.password || ''),
-      keepalive: MqttNodeTransport.KEEPALIVE_INTERVAL,
-      reconnectPeriod: self._options.autoReconnect ? MqttNodeTransport.RECONNECT_PERIOD * 1000 : 0,
-      connectTimeout: MqttNodeTransport.CONNECT_TIMEOUT * 1000
+      keepalive: NodeMqttTransport.KEEPALIVE_INTERVAL,
+      reconnectPeriod: self._options.autoReconnect ? NodeMqttTransport.RECONNECT_PERIOD * 1000 : 0,
+      connectTimeout: NodeMqttTransport.CONNECT_TIMEOUT * 1000
     });
     self._client.on(MQTT_EVENTS.CONNECT, self._connHandler);
     self._client.on(MQTT_EVENTS.MESSAGE, self._messageHandler);
@@ -100,6 +100,7 @@ module.exports = function (scope) {
 
     if (this._isReady) {
       this._isReady = false;
+      delete this._client;
       this.emit(TransportEvent.CLOSE);
     }
   }
@@ -122,10 +123,10 @@ module.exports = function (scope) {
     self._sendTimer = null;
   }
 
-  MqttNodeTransport.prototype = proto = Object.create(Transport.prototype, {
+  NodeMqttTransport.prototype = proto = Object.create(Transport.prototype, {
 
     constructor: {
-      value: MqttNodeTransport
+      value: NodeMqttTransport
     },
 
     isReady: {
@@ -138,7 +139,7 @@ module.exports = function (scope) {
 
   proto.send = function (payload) {
     if (this._buf.length + payload.length + this._options.device.length + TOPIC.PING.length + 4 >
-      MqttNodeTransport.MAX_PACKET_SIZE) {
+      NodeMqttTransport.MAX_PACKET_SIZE) {
       this._sendOutHandler();
     }
     push.apply(this._buf, payload);
@@ -151,16 +152,15 @@ module.exports = function (scope) {
     if (this._isReady) {
       this._client.end();
     }
-    delete this._client;
   };
 
-  MqttNodeTransport.RECONNECT_PERIOD = 1;
+  NodeMqttTransport.RECONNECT_PERIOD = 1;
 
-  MqttNodeTransport.KEEPALIVE_INTERVAL = 15;
+  NodeMqttTransport.KEEPALIVE_INTERVAL = 15;
 
-  MqttNodeTransport.CONNECT_TIMEOUT = 30;
+  NodeMqttTransport.CONNECT_TIMEOUT = 30;
 
-  MqttNodeTransport.MAX_PACKET_SIZE = 128;
+  NodeMqttTransport.MAX_PACKET_SIZE = 128;
 
-  scope.transport.mqtt = MqttNodeTransport;
+  scope.transport.mqtt = NodeMqttTransport;
 };
