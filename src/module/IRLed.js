@@ -23,14 +23,19 @@
     }
   });
 
-  proto.send = function(callback) {
+  proto.send = function(code) {
     var aryCode = [0x09, 0x04, 0x20];
-    if (this._encode) {
-      this._encode.match(/\w{2}/g).forEach(function(val) {
+    code = code || this._encode;
+    if (code) {
+      code.match(/\w{2}/g).forEach(function(val) {
         aryCode.push(parseInt(val, 16));
       });
       this._board.sendSysex(0x04, aryCode);
     }
+  };
+
+  proto.updateEncode = function(code) {
+    this._encode = code;
   };
 
   scope.module.IRLed = IRLed;
