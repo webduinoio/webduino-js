@@ -62,5 +62,38 @@
     this._board.send([0xf0, 4, 8, 2, 0xf7]);
   };
 
+  proto.animate = function(data, times, duration, callback) {
+    var p = 0;
+
+    if (typeof arguments[arguments.length - 1] === 'function') {
+      callback = arguments[arguments.length - 1];
+    } else {
+      callback = function() {};
+    }
+
+    var run = function() {
+      this.on(data[p++ % data.length]);
+      this._timer = setTimeout(run, times);
+    }.bind(this);
+
+    var stop = function() {
+      clearTimeout(this._timer);
+      callback();
+    }.bind(this);
+
+    if (times && times > 0) {
+      run();
+    }
+
+    if (duration && duration > 0) {
+      this._timerDuration = setTimeout(stop, duration);
+    }
+  };
+
+  proto.animateStop = function() {
+    clearTimeout(this._timer);
+    clearTimeout(this._timerDuration);
+  };
+
   scope.module.Max7219 = Max7219;
 }));
