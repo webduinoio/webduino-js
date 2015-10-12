@@ -11,6 +11,7 @@ function expectFiles(ary) {
 var base = [
     '../setimmediate/setImmediate.js',
     '../paho/src/mqttws31.js',
+    '../chrome-api-proxy/lib/chrome._api.js',
     '../chrome-api-proxy/lib/chrome.serial.js',
     'src/webduino.js',
     'src/core/EventEmitter.js',
