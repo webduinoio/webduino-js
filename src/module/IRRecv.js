@@ -27,15 +27,25 @@
   }
 
   function onMessage(event) {
+    var recvChk = [0x04, 0x10, 0x0A];
     var msg = event.message;
+    var data = msg.slice(3);
     var str = '';
-    var i;
+    var i, tp, len;
 
-    for (i = 0; i < msg.length; i++) {
-      str += Number(msg[i]).toString(16);
+    for (i = 0, len = recvChk.length; i < len; i++) {
+      if (recvChk[i] !== msg[i]) {
+        return false;
+      }
     }
 
-    if (msg.length === 4 && str !== 'ffffffff') {
+    for (i = 0; i < data.length; i++) {
+      tp = Number(data[i]).toString(16);
+      tp = tp.length < 2 ? '0' + tp : tp;
+      str += tp;
+    }
+
+    if (str !== 'ffffffff') {
       this.emit(IRRecvEvent.MESSAGE, str);
     } else {
       this.emit(IRRecvEvent.MESSAGE_ERROR, str, msg);
