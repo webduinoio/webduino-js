@@ -24,12 +24,22 @@
   });
 
   proto.send = function(code) {
-    var aryCode = [0x09, 0x04, 0x20];
+    var aryCode = [0x09, 0x04];
+    var ary;
     code = code || this._encode;
+    
     if (code) {
-      code.match(/\w{2}/g).forEach(function(val) {
-        aryCode.push(parseInt(val, 16));
+      ary = code.match(/\w{2}/g);
+
+      // data length
+      aryCode.push(ary.length * 8);
+
+      ary.forEach(function(val) {
+        for (var i = 0, len = val.length; i < len; i++) {
+          aryCode.push(val.charCodeAt(i));
+        }
       });
+      
       this._board.sendSysex(0x04, aryCode);
     }
   };

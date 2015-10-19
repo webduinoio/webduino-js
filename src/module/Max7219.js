@@ -42,18 +42,22 @@
   proto.on = function (data) {
     if (data) {
       this._data = data;
+    } else {
+      data = this._data;
     }
 
-    if (!this._data) {
+    if (!data) {
       return false;
     }
 
     var sendData = [0xf0, 4, 8, 1];
-    var hex;
-    for (var i = 0; i < this._data.length; i = i + 2) {
-      hex = '0x' + this._data.substring(i, i + 2);
-      sendData.push(parseInt(hex));
+    var i = 0;
+    var len = data.length;
+
+    for (; i < len; i++) {
+      sendData.push(data.charCodeAt(i));
     }
+
     sendData.push(0xf7);
     this._board.send(sendData);
   };

@@ -45,7 +45,8 @@ var base = [
     'src/module/IRRecv.js',
     'src/module/Joystick.js',
     'src/module/MQ2.js',
-    'src/module/Photocell.js'
+    'src/module/Photocell.js',
+    'src/module/Pot.js'
   ];
 
 gulp.task('clean', shell.task([

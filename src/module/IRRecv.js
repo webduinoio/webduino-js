@@ -40,9 +40,8 @@
     }
 
     for (i = 0; i < data.length; i++) {
-      tp = Number(data[i]).toString(16);
-      tp = tp.length < 2 ? '0' + tp : tp;
-      str += tp;
+      tp = String.fromCharCode(data[i]);
+      str += tp.toLowerCase();
     }
 
     if (str !== 'ffffffff') {

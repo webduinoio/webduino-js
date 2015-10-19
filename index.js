@@ -33,5 +33,6 @@ require('./src/module/IRRecv')(webduino);
 require('./src/module/Joystick')(webduino);
 require('./src/module/MQ2')(webduino);
 require('./src/module/Photocell')(webduino);
+require('./src/module/Pot')(webduino);
 
 module.exports = webduino;
