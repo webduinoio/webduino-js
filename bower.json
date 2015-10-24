@@ -8,6 +8,6 @@
   "dependencies": {
     "paho": "http://git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.javascript.git#1.x",
     "setimmediate": "https://github.com/YuzuJS/setImmediate.git#1.x",
-    "chrome-api-proxy": "0.x"
+    "chrome-api-proxy": "gh-pages"
   }
 }
