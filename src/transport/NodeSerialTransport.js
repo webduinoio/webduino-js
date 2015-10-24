@@ -16,7 +16,6 @@ module.exports = function (scope) {
     this._port = null;
     this._sendTimer = null;
     this._buf = [];
-    this._isReady = false;
 
     this._connHandler = onConnect.bind(this);
     this._messageHandler = onMessage.bind(this);
@@ -39,9 +38,7 @@ module.exports = function (scope) {
   }
 
   function onConnect() {
-    this._isReady = true;
     this.emit(TransportEvent.OPEN);
-    this.emit(TransportEvent.READY);
   }
 
   function onMessage(data) {
@@ -49,7 +46,10 @@ module.exports = function (scope) {
   }
 
   function onDisconnect(error) {
-    this._isReady = false;
+    if (error) {
+      this.emit(TransportEvent.ERROR, error);
+    }
+    this._port.removeAllListeners();
     delete this._port;
     this.emit(TransportEvent.CLOSE);
   }
@@ -76,9 +76,9 @@ module.exports = function (scope) {
       value: NodeSerialTransport
     },
 
-    isReady: {
+    isOpen: {
       get: function () {
-        return this._isReady;
+        return this._port.isOpen();
       }
     }
 
@@ -92,7 +92,7 @@ module.exports = function (scope) {
   };
 
   proto.close = function () {
-    if (this._isReady) {
+    if (this._port) {
       this._port.close();
     }
   };

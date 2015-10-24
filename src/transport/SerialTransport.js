@@ -28,18 +28,17 @@
 
   function init(self) {
     var options = self._options;
+    window.addEventListener('beforeunload', self._beforeUnloadHandler);
+    serial.onReceive.addListener(self._messageHandler);
+    serial.onReceiveError.addListener(self._errorHandler);
     serial.connect(options.path, {
       bitrate: options.baudRate
     }, self._connHandler);
   }
 
   function onConnect(connectionInfo) {
-    this.emit(TransportEvent.OPEN);
-    window.addEventListener('beforeunload', this._beforeUnloadHandler);
-    serial.onReceive.addListener(this._messageHandler);
-    serial.onReceiveError.addListener(this._errorHandler);
     this._connectionId = connectionInfo.connectionId;
-    this.emit(TransportEvent.READY);
+    this.emit(TransportEvent.OPEN);
   }
 
   function onMessage(message) {
@@ -49,10 +48,10 @@
   }
 
   function onDisconnect(result) {
-    delete this._connectionId;
     window.removeEventListener('beforeunload', this._beforeUnloadHandler);
     serial.onReceive.removeListener(this._messageHandler);
     serial.onReceiveError.removeListener(this._errorHandler);
+    delete this._connectionId;
     this.emit(TransportEvent.CLOSE);
   }
 
@@ -78,9 +77,9 @@
       value: SerialTransport
     },
 
-    isReady: {
+    isOpen: {
       get: function () {
-        return !!this._connectionId;
+        return this._connectionId;
       }
     }
 
@@ -94,9 +93,7 @@
   };
 
   proto.close = function () {
-    if (this.isReady) {
-      serial.disconnect(this._connectionId, this._disconnHandler);
-    }
+    serial.disconnect(this._connectionId, this._disconnHandler);
   };
 
   scope.transport.serial = SerialTransport;

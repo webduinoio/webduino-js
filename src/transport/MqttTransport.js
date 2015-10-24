@@ -26,15 +26,15 @@
     this._timer = null;
     this._sendTimer = null;
     this._reconnTime = 0;
-    this._status = '';
     this._buf = [];
-    this._isReady = false;
+
+    this._status = '';
 
     this._connHandler = onConnect.bind(this);
+    this._connFailedHandler = onConnectFailed.bind(this);
     this._messageHandler = onMessage.bind(this);
     this._sendOutHandler = sendOut.bind(this);
     this._disconnHandler = onDisconnect.bind(this);
-    this._errorHandler = onError.bind(this);
 
     init(this);
   }
@@ -51,18 +51,22 @@
       timeout: MqttTransport.CONNECT_TIMEOUT,
       keepAliveInterval: MqttTransport.KEEPALIVE_INTERVAL,
       onSuccess: self._connHandler,
-      onFailure: self._errorHandler
+      onFailure: self._connFailedHandler
     });
   }
 
   function onConnect() {
     stopReconnect(this);
-    this._isReady = true;
     this._reconnTime = 0;
-
-    this.emit(TransportEvent.OPEN);
     this._client.subscribe(this._options.device + TOPIC.PONG);
     this._client.subscribe(this._options.device + TOPIC.STATUS);
+  }
+
+  function onConnectFailed(respObj) {
+    this.emit(TransportEvent.ERROR, new Error(respObj.errorMessage));
+    if (this._options.autoReconnect) {
+      startReconnect(this);
+    }
   }
 
   function onMessage(message) {
@@ -70,13 +74,16 @@
       oldStatus = this._status;
 
     switch (dest.substr(dest.lastIndexOf('/') + 1)) {
+
     case 'STATUS':
       this._status = message.payloadString;
       detectStatusChange(this, this._status, oldStatus);
       break;
+
     default:
-      this.emit(TransportEvent.MESSAGE, message.payloadBytes);
+      (this._status === STATUS.OK) && this.emit(TransportEvent.MESSAGE, message.payloadBytes);
       break;
+
     }
   }
 
@@ -86,45 +93,31 @@
     }
 
     if (newStatus === STATUS.OK) {
-      self.emit(TransportEvent.READY);
+      self.emit(TransportEvent.OPEN);
     } else {
-      self.emit(TransportEvent.ERROR, new Error('error: board connection failed. (1)'));
+      self.emit(TransportEvent.ERROR, new Error('error: board connection failed.'));
     }
   }
 
   function onDisconnect(respObj) {
-    this.emit(TransportEvent.ERROR, new Error(
-      respObj.errorCode ? respObj.errorMessage : 'error: board connection failed. (2)'
-    ));
-
-    if (this._isReady) {
-      this._isReady = false;
-      delete this._client;
-      this.emit(TransportEvent.CLOSE);
-      startReconnect(this);
+    if (respObj.errorCode) {
+      this.emit(TransportEvent.ERROR, new Error(respObj.errorMessage));
     }
-  }
-
-  function onError(respObj) {
-    this.emit(TransportEvent.ERROR, new Error(respObj.errorMessage));
-
-    if (!this._isReady) {
+    delete this._client;
+    this.emit(TransportEvent.CLOSE);
+    if (this._options.autoReconnect && respObj.errorCode) {
       startReconnect(this);
     }
   }
 
   function startReconnect(self) {
     stopReconnect(self);
-    self.close();
-
-    if (self._options.autoReconnect) {
-      self._timer = setTimeout(function () {
-        self._reconnTime += MqttTransport.RECONNECT_PERIOD * 1000;
-        if (self._reconnTime < MqttTransport.CONNECT_TIMEOUT * 1000) {
-          init(self);
-        }
-      }, MqttTransport.RECONNECT_PERIOD * 1000);
-    }
+    self._timer = setTimeout(function () {
+      self._reconnTime += MqttTransport.RECONNECT_PERIOD * 1000;
+      if (self._reconnTime < MqttTransport.CONNECT_TIMEOUT * 1000) {
+        init(self);
+      }
+    }, MqttTransport.RECONNECT_PERIOD * 1000);
   }
 
   function stopReconnect(self) {
@@ -154,9 +147,9 @@
       value: MqttTransport
     },
 
-    isReady: {
+    isOpen: {
       get: function () {
-        return this._isReady;
+        return this._client && this._client.isConnected();
       }
     }
 
@@ -174,8 +167,12 @@
   };
 
   proto.close = function () {
-    if (this._isReady) {
-      this._client.disconnect();
+    if (this._client) {
+      if (this._client.isConnected()) {
+        this._client.disconnect();
+      } else {
+        delete this._client;
+      }
     }
   };
 

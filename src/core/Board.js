@@ -86,9 +86,10 @@
 
     this._initialVersionResultHandler = onInitialVersionResult.bind(this);
     this._sendOutHandler = sendOut.bind(this);
-    this._readyHandler = onReady.bind(this);
+    this._openHandler = onOpen.bind(this);
     this._messageHandler = onMessage.bind(this);
     this._errorHandler = onError.bind(this);
+    this._closeHandler = onClose.bind(this);
 
     this.setTransport(this._options.transport || 0);
   }
@@ -125,7 +126,7 @@
     }
   }
 
-  function onReady() {
+  function onOpen() {
     this.begin();
   }
 
@@ -144,6 +145,10 @@
   function onError(error) {
     this._isReady = false;
     this.emit(BoardEvent.ERROR, error);
+  }
+
+  function onClose() {
+    this._isReady = false;
   }
 
   function debug(msg) {
@@ -572,9 +577,10 @@
 
     if (klass && (trsp = new klass(this._options)) instanceof Transport) {
       this._transport = trsp;
-      trsp.on(TransportEvent.READY, this._readyHandler);
+      trsp.on(TransportEvent.OPEN, this._openHandler);
       trsp.on(TransportEvent.MESSAGE, this._messageHandler);
       trsp.on(TransportEvent.ERROR, this._errorHandler);
+      trsp.on(TransportEvent.CLOSE, this._closeHandler);
     }
   };
 

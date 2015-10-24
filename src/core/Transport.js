@@ -12,7 +12,6 @@
 
   var TransportEvent = {
     OPEN: 'open',
-    READY: 'ready',
     MESSAGE: 'message',
     ERROR: 'error',
     CLOSE: 'close'
@@ -23,9 +22,15 @@
   }
 
   Transport.prototype = proto = Object.create(EventEmitter.prototype, {
+
     constructor: {
       value: Transport
+    },
+
+    isOpen: {
+      value: false
     }
+
   });
 
   proto.send = function (payload) {

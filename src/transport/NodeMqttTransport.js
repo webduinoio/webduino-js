@@ -33,9 +33,9 @@ module.exports = function (scope) {
     this._options = options;
     this._client = null;
     this._sendTimer = null;
-    this._status = '';
     this._buf = [];
-    this._isReady = false;
+
+    this._status = '';
 
     this._connHandler = onConnect.bind(this);
     this._messageHandler = onMessage.bind(this);
@@ -62,8 +62,6 @@ module.exports = function (scope) {
   }
 
   function onConnect() {
-    this._isReady = true;
-    this.emit(TransportEvent.OPEN);
     this._client.subscribe(this._options.device + TOPIC.PONG);
     this._client.subscribe(this._options.device + TOPIC.STATUS);
   }
@@ -73,13 +71,16 @@ module.exports = function (scope) {
       oldStatus = this._status;
 
     switch (dest.substr(dest.lastIndexOf('/') + 1)) {
+
     case 'STATUS':
       this._status = message.toString();
       detectStatusChange(this, this._status, oldStatus);
       break;
+
     default:
-      this.emit(TransportEvent.MESSAGE, message);
+      (this._status === STATUS.OK) && this.emit(TransportEvent.MESSAGE, message);
       break;
+
     }
   }
 
@@ -89,20 +90,16 @@ module.exports = function (scope) {
     }
 
     if (newStatus === STATUS.OK) {
-      self.emit(TransportEvent.READY);
+      self.emit(TransportEvent.OPEN);
     } else {
-      self.emit(TransportEvent.ERROR, new Error('error: board connection failed. (1)'));
+      self.emit(TransportEvent.ERROR, new Error('error: board connection failed.'));
     }
   }
 
   function onDisconnect() {
-    this.emit(TransportEvent.ERROR, new Error('error: board connection failed. (2)'));
-
-    if (this._isReady) {
-      this._isReady = false;
-      delete this._client;
-      this.emit(TransportEvent.CLOSE);
-    }
+    this._client.removeAllListeners();
+    delete this._client;
+    this.emit(TransportEvent.CLOSE);
   }
 
   function onError(error) {
@@ -129,9 +126,9 @@ module.exports = function (scope) {
       value: NodeMqttTransport
     },
 
-    isReady: {
+    isOpen: {
       get: function () {
-        return this._isReady;
+        return this._client && this._client.connected;
       }
     }
 
@@ -149,8 +146,8 @@ module.exports = function (scope) {
   };
 
   proto.close = function () {
-    if (this._isReady) {
-      this._client.end();
+    if (this._client) {
+      this._client.end(true);
     }
   };
 
