@@ -1,6 +1,6 @@
 {
   "name": "webduino-js",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "main": "index.js",
   "description": "The Webduino javascript core, for browser and node.js",
   "repository": "https://github.com/webduinoio/webduino-js.git",
@@ -23,6 +23,6 @@
     "mqtt": "1.x",
     "es6-promise": "3.x",
     "setimmediate": "1.x",
-    "serialport": "1.x"
+    "serialport": "2.x"
   }
 }
