@@ -24,10 +24,18 @@
   }
 
   function getDefaultOptions(opts) {
-    return {
-      transport: 'serial',
-      baudRate: 57600
+    var def = {
+      serial: {
+        transport: 'serial',
+        baudRate: 57600
+      },
+      bluetooth: {
+        transport: 'bluetooth',
+        uuid: '1101'
+      }
     };
+
+    return def[opts.transport] || {};
   }
 
   Arduino.prototype = proto = Object.create(Board.prototype, {
@@ -38,6 +46,9 @@
 
   proto.begin = function () {
     this.once(BoardEvent.FIRMWARE_NAME, this._initialVersionResultHandler);
+    if (this._options.transport !== 'serial') {
+      this.reportFirmware();
+    }
   };
 
   scope.Arduino = Arduino;

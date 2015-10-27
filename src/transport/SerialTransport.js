@@ -79,7 +79,7 @@
 
     isOpen: {
       get: function () {
-        return this._connectionId;
+        return !!this._connectionId;
       }
     }
 
@@ -93,7 +93,9 @@
   };
 
   proto.close = function () {
-    serial.disconnect(this._connectionId, this._disconnHandler);
+    if (this.isOpen) {
+      serial.disconnect(this._connectionId, this._disconnHandler);
+    }
   };
 
   scope.transport.serial = SerialTransport;
