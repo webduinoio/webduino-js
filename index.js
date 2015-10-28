@@ -7,7 +7,9 @@ require('./src/core/util')(webduino);
 require('./src/util/promisify')(webduino);
 require('./src/core/Transport')(webduino);
 require('./src/transport/NodeMqttTransport')(webduino);
-require('./src/transport/NodeSerialTransport')(webduino);
+if (process.env.NODE_ENV === 'development') {
+  require('./src/transport/NodeSerialTransport')(webduino);
+}
 require('./src/core/Pin')(webduino);
 require('./src/core/Module')(webduino);
 require('./src/core/Board')(webduino);
