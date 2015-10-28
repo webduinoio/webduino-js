@@ -1,6 +1,6 @@
 {
   "name": "webduino-js",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "main": "index.js",
   "description": "The Webduino javascript core, for browser and node.js",
   "repository": "https://github.com/webduinoio/webduino-js.git",
@@ -13,16 +13,18 @@
   "scripts": {
     "build": "./node_modules/.bin/gulp"
   },
-  "dependencies": {
+  "devDependencies": {
     "gulp": "3.x",
     "gulp-expect-file": "0.x",
     "gulp-concat": "2.x",
     "gulp-uglify": "1.x",
     "gulp-shell": "0.x",
     "yuidocjs": "0.x",
+    "serialport": "2.x"
+  },
+  "dependencies": {
     "mqtt": "1.x",
     "es6-promise": "3.x",
-    "setimmediate": "1.x",
-    "serialport": "2.x"
+    "setimmediate": "1.x"
   }
 }
