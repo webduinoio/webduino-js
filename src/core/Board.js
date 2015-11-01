@@ -59,9 +59,6 @@
     SYSEX_NON_REALTIME = 0x7E,
     SYSEX_REALTIME = 0x7F;
 
-  var MIN_SAMPLING_INTERVAL = 10,
-    MAX_SAMPLING_INTERVAL = 100;
-
   function Board(options) {
     EventEmitter.call(this);
 
@@ -166,7 +163,7 @@
         return this._samplingInterval;
       },
       set: function (interval) {
-        if (interval >= MIN_SAMPLING_INTERVAL && interval <= MAX_SAMPLING_INTERVAL) {
+        if (interval >= Board.MIN_SAMPLING_INTERVAL && interval <= Board.MAX_SAMPLING_INTERVAL) {
           this._samplingInterval = interval;
           this.send([
             START_SYSEX,
@@ -175,8 +172,8 @@
             END_SYSEX
           ]);
         } else {
-          throw new Error('warning: Sampling interval must be between ' + MIN_SAMPLING_INTERVAL +
-            ' and ' + MAX_SAMPLING_INTERVAL);
+          throw new Error('warning: Sampling interval must be between ' + Board.MIN_SAMPLING_INTERVAL +
+            ' and ' + Board.MAX_SAMPLING_INTERVAL);
         }
       }
     },
@@ -830,6 +827,11 @@
     this._transport.close();
   };
 
+  Board.MIN_SAMPLING_INTERVAL = 10;
+
+  Board.MAX_SAMPLING_INTERVAL = 15000;
+
   scope.BoardEvent = BoardEvent;
+
   scope.Board = Board;
 }));

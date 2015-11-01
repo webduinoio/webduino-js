@@ -1,7 +1,7 @@
 {
   "name": "webduino-js",
   "description": "The Webduino javascript core, for browser and node.js",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "url": "http://webduino.io/",
   "options": {
     "outdir": "docs"
