@@ -11,6 +11,7 @@
 
   var util = scope.util,
     Module = scope.Module,
+    BoardEvent = scope.BoardEvent,
     proto;
 
   var BUZZER_MESSAGE = [0x04, 0x07],
@@ -123,6 +124,8 @@
     this._timer = null;
     this._sequence = null;
     this._state = BUZZER_STATE.STOPPED;
+
+    this._board.on(BoardEvent.BEFORECLOSE, this.stop.bind(this));
   }
 
   function getDuration(duration) {

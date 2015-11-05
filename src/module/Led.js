@@ -9,6 +9,7 @@
 
   var Pin = scope.Pin,
     Module = scope.Module,
+    BoardEvent = scope.BoardEvent,
     proto;
 
   function Led(board, pin, driveMode) {
@@ -20,6 +21,8 @@
     this._supportsPWM = undefined;
     this._blinkTimer = null;
 
+    this._board.on(BoardEvent.BEFORECLOSE, this._clearBlinkTimer.bind(this));
+
     if (this._driveMode === Led.SOURCE_DRIVE) {
       this._onValue = 1;
       this._offValue = 0;
@@ -27,7 +30,7 @@
       this._onValue = 0;
       this._offValue = 1;
     } else {
-      throw new Error('error: driveMode should be Led.SOURCE_DRIVE or Led.SYNC_DRIVE');
+      throw new Error('driveMode should be Led.SOURCE_DRIVE or Led.SYNC_DRIVE');
     }
 
     if (pin.capabilities[Pin.PWM]) {
@@ -134,7 +137,7 @@
 
   proto._blink = function (msec, callback) {
     var self = this;
-    return setTimeout(function() {
+    return setTimeout(function () {
       self._pin.value = 1 - self._pin.value;
       if (typeof callback === 'function') {
         checkPinState(self, self._pin, self._pin.value, callback);
@@ -143,7 +146,7 @@
     }, msec);
   };
 
-  proto._clearBlinkTimer = function() {
+  proto._clearBlinkTimer = function () {
     if (this._blinkTimer) {
       clearTimeout(this._blinkTimer);
       this._blinkTimer = null;
