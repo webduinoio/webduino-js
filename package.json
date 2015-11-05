@@ -19,12 +19,13 @@
     "gulp-concat": "2.x",
     "gulp-uglify": "1.x",
     "gulp-shell": "0.x",
-    "yuidocjs": "0.x",
-    "serialport": "2.x"
+    "yuidocjs": "0.x"
   },
   "dependencies": {
     "mqtt": "1.x",
     "es6-promise": "3.x",
-    "setimmediate": "1.x"
+    "setimmediate": "1.x",
+    "serialport": "2.x",
+    "bluetooth-serial-port": "1.x"
   }
 }

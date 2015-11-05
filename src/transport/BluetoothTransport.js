@@ -6,6 +6,7 @@
 
   var Transport = scope.Transport,
     TransportEvent = scope.TransportEvent,
+    retry = 0,
     proto;
 
   function BluetoothTransport(options) {
@@ -27,16 +28,31 @@
 
   function init(self) {
     var options = self._options;
-    getSocketId(options.address, function (socketId) {
-      if (!socketId) {
-        self.emit(TransportEvent.ERROR, new Error('error: no device found'));
+
+    getSocketId(options.address, function (err, socketId) {
+      if (err || !socketId) {
+        self.emit(TransportEvent.ERROR, new Error(err));
       } else {
         window.addEventListener('beforeunload', self._beforeUnloadHandler);
         bluetooth.onReceive.addListener(self._messageHandler);
         bluetooth.onReceiveError.addListener(self._errorHandler);
         bluetooth.connect(socketId, options.address, options.uuid, function () {
-          self._socketId = socketId;
-          self.emit(TransportEvent.OPEN);
+          if (chrome.runtime.lastError) {
+            console.warn(chrome.runtime.lastError.message);
+            bluetooth.close(socketId, function () {
+              window.removeEventListener('beforeunload', self._beforeUnloadHandler);
+              bluetooth.onReceive.removeListener(self._messageHandler);
+              bluetooth.onReceiveError.removeListener(self._errorHandler);
+              if (++retry <= BluetoothTransport.MAX_RETRIES) {
+                init(self);
+              } else {
+                self.emit(TransportEvent.ERROR, new Error('too many retries'));
+              }
+            });
+          } else {
+            self._socketId = socketId;
+            self.emit(TransportEvent.OPEN);
+          }
         });
       }
     });
@@ -45,34 +61,25 @@
   function getSocketId(address, callback) {
     var uuids, connectedId;
 
-    chrome.bluetooth.getDevice(address, function (devInfo) {
-      if (devInfo) {
-        uuids = devInfo.uuids;
-        bluetooth.getSockets(function (sks) {
-          sks.some(function (skt) {
-            if (uuids.indexOf(skt.uuid) !== -1) {
-              connectedId = skt.socketId;
-              return true;
+    chrome.bluetooth.getDevice(address, function (dev) {
+      if (dev) {
+        uuids = dev.uuids;
+        bluetooth.getSockets(function (scks) {
+          scks.some(function (sck) {
+            if (uuids.indexOf(sck.uuid) !== -1) {
+              return connectedId = sck.socketId;
             }
           });
           if (typeof connectedId === 'undefined') {
             bluetooth.create(function (createInfo) {
-              callback(createInfo.socketId);
+              callback(null, createInfo.socketId);
             });
           } else {
-            bluetooth.getInfo(connectedId, function (sktInfo) {
-              if (sktInfo.connected) {
-                bluetooth.disconnect(sktInfo.socketId, function () {
-                  callback(sktInfo.socketId);
-                });
-              } else {
-                callback(sktInfo.socketId);
-              }
-            });
+            callback(null, connectedId);
           }
         });
       } else {
-        callback(null);
+        callback('no such device "' + address + '"');
       }
     });
   }
@@ -129,10 +136,10 @@
   };
 
   proto.close = function () {
-    if (this.isOpen) {
-      bluetooth.close(this._socketId, this._disconnHandler);
-    }
+    bluetooth.close(this._socketId, this._disconnHandler);
   };
+
+  BluetoothTransport.MAX_RETRIES = 10;
 
   scope.transport.bluetooth = BluetoothTransport;
 }(webduino || {}));
