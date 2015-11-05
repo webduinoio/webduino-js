@@ -93,9 +93,7 @@
   };
 
   proto.close = function () {
-    if (this.isOpen) {
-      serial.disconnect(this._connectionId, this._disconnHandler);
-    }
+    serial.disconnect(this._connectionId, this._disconnHandler);
   };
 
   scope.transport.serial = SerialTransport;

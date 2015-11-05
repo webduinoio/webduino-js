@@ -95,7 +95,7 @@
     if (newStatus === STATUS.OK) {
       self.emit(TransportEvent.OPEN);
     } else {
-      self.emit(TransportEvent.ERROR, new Error('error: board connection failed.'));
+      self.emit(TransportEvent.ERROR, new Error('board connection failed.'));
     }
   }
 
@@ -131,7 +131,7 @@
     var payload = new Paho.MQTT.Message(new Uint8Array(this._buf).buffer);
     payload.destinationName = this._options.device + TOPIC.PING;
     payload.qos = 0;
-    this._client.send(payload);
+    this._client && this._client.send(payload);
     clearBuf(this);
   }
 

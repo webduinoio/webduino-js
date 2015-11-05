@@ -60,7 +60,7 @@ module.exports = function (scope) {
 
   function sendOut() {
     var payload = new Buffer(this._buf);
-    this._port.write(payload);
+    this._port && this._port.write(payload);
     clearBuf(this);
   }
 
@@ -78,7 +78,7 @@ module.exports = function (scope) {
 
     isOpen: {
       get: function () {
-        return this._port.isOpen();
+        return this._port && this._port.isOpen();
       }
     }
 

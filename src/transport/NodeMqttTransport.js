@@ -92,7 +92,7 @@ module.exports = function (scope) {
     if (newStatus === STATUS.OK) {
       self.emit(TransportEvent.OPEN);
     } else {
-      self.emit(TransportEvent.ERROR, new Error('error: board connection failed.'));
+      self.emit(TransportEvent.ERROR, new Error('board connection failed.'));
     }
   }
 
@@ -108,7 +108,7 @@ module.exports = function (scope) {
 
   function sendOut() {
     var payload = new Buffer(this._buf);
-    this._client.publish(this._options.device + TOPIC.PING, payload, {
+    this._client && this._client.publish(this._options.device + TOPIC.PING, payload, {
       qos: 0
     });
     clearBuf(this);

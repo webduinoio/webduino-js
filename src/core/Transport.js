@@ -34,11 +34,11 @@
   });
 
   proto.send = function (payload) {
-    throw new Error('error: direct call on abstract method.');
+    throw new Error('direct call on abstract method.');
   };
 
   proto.close = function () {
-    throw new Error('error: direct call on abstract method.');
+    throw new Error('direct call on abstract method.');
   };
 
   scope.TransportEvent = TransportEvent;
