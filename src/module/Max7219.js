@@ -21,7 +21,7 @@
     this._intensity = 0;
     this._data = 'ffffffffffffffff';
 
-    this._board.on(BoardEvent.BEFORECLOSE, this.animateStop.bind(this));
+    this._board.on(BoardEvent.BEFOREDISCONNECT, this.animateStop.bind(this));
     this._board.send([0xf0, 4, 8, 0, din.number, cs.number, clk.number, 0xf7]);
   }
 

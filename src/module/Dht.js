@@ -33,7 +33,7 @@
     this._readTimer = null;
     this._readCallback = function () {};
 
-    this._board.on(BoardEvent.BEFORECLOSE, this.stopRead.bind(this));
+    this._board.on(BoardEvent.BEFOREDISCONNECT, this.stopRead.bind(this));
     this._messageHandler = onMessage.bind(this);
     this._board.on(BoardEvent.ERROR, this.stopRead.bind(this));
   }

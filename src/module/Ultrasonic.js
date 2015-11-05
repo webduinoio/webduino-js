@@ -33,7 +33,7 @@
     this._pingTimer = null;
     this._pingCallback = function () {};
 
-    this._board.on(BoardEvent.BEFORECLOSE, this.stopPing.bind(this));
+    this._board.on(BoardEvent.BEFOREDISCONNECT, this.stopPing.bind(this));
     this._messageHandler = onMessage.bind(this);
     this._board.on(BoardEvent.ERROR, this.stopPing.bind(this));
   }

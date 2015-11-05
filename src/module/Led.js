@@ -21,7 +21,7 @@
     this._supportsPWM = undefined;
     this._blinkTimer = null;
 
-    this._board.on(BoardEvent.BEFORECLOSE, this._clearBlinkTimer.bind(this));
+    this._board.on(BoardEvent.BEFOREDISCONNECT, this._clearBlinkTimer.bind(this));
 
     if (this._driveMode === Led.SOURCE_DRIVE) {
       this._onValue = 1;

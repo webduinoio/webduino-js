@@ -29,12 +29,12 @@ board.on(webduino.BoardEvent.ERROR, function (err) {
   console.log(err);
 });
 
-board.on(webduino.BoardEvent.BEFORECLOSE, function () {
-  console.log('before close');
+board.on(webduino.BoardEvent.BEFOREDISCONNECT, function () {
+  console.log('before disconnect');
 });
 
-board.on(webduino.BoardEvent.CLOSE, function () {
-  console.log('close');
-  // test: should not emit 'close' again
-  board.close();
+board.on(webduino.BoardEvent.DISCONNECT, function () {
+  console.log('disconnect');
+  // test: should not emit 'disconnect' again
+  board.disconnect();
 });

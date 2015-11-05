@@ -27,8 +27,8 @@
     PIN_STATE_RESPONSE: 'pinStateResponse',
     READY: 'ready',
     ERROR: 'error',
-    BEFORECLOSE: 'beforeclose',
-    CLOSE: 'close'
+    BEFOREDISCONNECT: 'beforeDisconnect',
+    DISCONNECT: 'disconnect'
   };
 
   // Message command bytes (128-255/0x80-0xFF)
@@ -148,7 +148,7 @@
 
   function onClose() {
     this._isReady = false;
-    this.emit(BoardEvent.CLOSE);
+    this.emit(BoardEvent.DISCONNECT);
   }
 
   function debug(msg) {
@@ -827,7 +827,11 @@
   };
 
   proto.close = function () {
-    this.emit(BoardEvent.BEFORECLOSE);
+    this.disconnect();
+  };
+
+  proto.disconnect = function () {
+    this.emit(BoardEvent.BEFOREDISCONNECT);
     setImmediate(this._transport.close.bind(this._transport));
   };
 
