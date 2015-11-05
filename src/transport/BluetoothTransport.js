@@ -38,7 +38,6 @@
         bluetooth.onReceiveError.addListener(self._errorHandler);
         bluetooth.connect(socketId, options.address, options.uuid, function () {
           if (chrome.runtime.lastError) {
-            console.warn(chrome.runtime.lastError.message);
             bluetooth.close(socketId, function () {
               window.removeEventListener('beforeunload', self._beforeUnloadHandler);
               bluetooth.onReceive.removeListener(self._messageHandler);
@@ -50,6 +49,7 @@
               }
             });
           } else {
+            retry = 0;
             self._socketId = socketId;
             self.emit(TransportEvent.OPEN);
           }
