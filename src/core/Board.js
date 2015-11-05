@@ -26,7 +26,9 @@
     SYSEX_MESSAGE: 'sysexMessage',
     PIN_STATE_RESPONSE: 'pinStateResponse',
     READY: 'ready',
-    ERROR: 'error'
+    ERROR: 'error',
+    BEFORECLOSE: 'beforeclose',
+    CLOSE: 'close'
   };
 
   // Message command bytes (128-255/0x80-0xFF)
@@ -100,7 +102,7 @@
       // this.systemReset();
       this.queryCapabilities();
     } else {
-      throw new Error('error: You must upload StandardFirmata version 2.3 ' +
+      throw new Error('You must upload StandardFirmata version 2.3 ' +
         'or greater from Arduino version 1.0 or higher');
     }
   }
@@ -146,6 +148,7 @@
 
   function onClose() {
     this._isReady = false;
+    this.emit(BoardEvent.CLOSE);
   }
 
   function debug(msg) {
@@ -415,7 +418,7 @@
 
   proto.startup = function () {
     this._isReady = true;
-    this.emit(BoardEvent.READY);
+    this.emit(BoardEvent.READY, this);
     this.enableDigitalPins();
   };
 
@@ -501,7 +504,7 @@
 
     // If > 16 bits
     if (value > Math.pow(2, 16)) {
-      throw new Error('error: Extended Analog values > 16 bits are not currently supported by StandardFirmata');
+      throw new Error('Extended Analog values > 16 bits are not currently supported by StandardFirmata');
     }
 
     analogData[0] = START_SYSEX;
@@ -824,7 +827,8 @@
   };
 
   proto.close = function () {
-    this._transport.close();
+    this.emit(BoardEvent.BEFORECLOSE);
+    setImmediate(this._transport.close.bind(this._transport));
   };
 
   Board.MIN_SAMPLING_INTERVAL = 10;
