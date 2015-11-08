@@ -87,7 +87,9 @@
   };
 
   proto.close = function () {
-    bluetoothSerial.disconnect(this._disconnHandler, this._disconnHandler);
+    if (this.isOpen) {
+      bluetoothSerial.disconnect(this._disconnHandler, this._disconnHandler);
+    }
   };
 
   scope.transport.bluetooth = CordovaBluetoothTransport;

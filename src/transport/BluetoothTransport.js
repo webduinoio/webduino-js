@@ -136,7 +136,9 @@
   };
 
   proto.close = function () {
-    bluetooth.close(this._socketId, this._disconnHandler);
+    if (this.isOpen) {
+      bluetooth.close(this._socketId, this._disconnHandler);
+    }
   };
 
   BluetoothTransport.MAX_RETRIES = 10;

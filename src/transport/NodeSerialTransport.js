@@ -92,7 +92,7 @@ module.exports = function (scope) {
   };
 
   proto.close = function () {
-    if (this._port) {
+    if (this.isOpen) {
       this._port.close();
     }
   };

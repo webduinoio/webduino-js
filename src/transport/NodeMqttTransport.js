@@ -146,8 +146,8 @@ module.exports = function (scope) {
   };
 
   proto.close = function () {
-    if (this._client) {
-      this._client.end(true);
+    if (this.isOpen) {
+      this._client.end();
     }
   };
 

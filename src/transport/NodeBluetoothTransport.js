@@ -115,7 +115,7 @@ module.exports = function (scope) {
   };
 
   proto.close = function () {
-    if (this._btSerial) {
+    if (this.isOpen) {
       this._btSerial.close();
     }
   };
