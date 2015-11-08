@@ -185,6 +185,12 @@
       get: function () {
         return this._isReady;
       }
+    },
+
+    isConnected: {
+      get: function () {
+        return this._transport && this._transport.isOpen;
+      }
     }
 
   });
