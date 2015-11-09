@@ -90,7 +90,7 @@
     this._errorHandler = onError.bind(this);
     this._closeHandler = onClose.bind(this);
 
-    this.setTransport(this._options.transport || 0);
+    this._setTransport(this._options.transport);
   }
 
   function onInitialVersionResult(event) {
@@ -148,6 +148,8 @@
 
   function onClose() {
     this._isReady = false;
+    this._transport.removeAllListeners();
+    delete this._transport;
     this.emit(BoardEvent.DISCONNECT);
   }
 
@@ -569,24 +571,19 @@
     return this._transport;
   };
 
-  proto.setTransport = function (type) {
-    var klass = scope.transport[type],
-      trsp;
+  proto._setTransport = function (trsp) {
+    var klass = trsp;
 
-    if (this._transport instanceof Transport) {
-      try {
-        this._transport.close();
-      } catch (e) {}
-      this._transport.removeAllListeners();
-      delete this._transport;
+    if (typeof trsp === 'string') {
+      klass = scope.transport[trsp];
     }
 
-    if (klass && (trsp = new klass(this._options)) instanceof Transport) {
-      this._transport = trsp;
+    if (klass && (trsp = new klass(this._options))) {
       trsp.on(TransportEvent.OPEN, this._openHandler);
       trsp.on(TransportEvent.MESSAGE, this._messageHandler);
       trsp.on(TransportEvent.ERROR, this._errorHandler);
       trsp.on(TransportEvent.CLOSE, this._closeHandler);
+      this._transport = trsp;
     }
   };
 
@@ -837,8 +834,10 @@
   };
 
   proto.disconnect = function () {
-    this.emit(BoardEvent.BEFOREDISCONNECT);
-    setImmediate(this._transport.close.bind(this._transport));
+    if (this.isConnected) {
+      this.emit(BoardEvent.BEFOREDISCONNECT);
+      setImmediate(this._transport.close.bind(this._transport));
+    }
   };
 
   Board.MIN_SAMPLING_INTERVAL = 10;
