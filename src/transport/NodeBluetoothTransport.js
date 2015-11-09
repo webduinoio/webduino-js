@@ -47,7 +47,7 @@ module.exports = function (scope) {
     var btSerial = new BluetoothSerialPort();
 
     btSerial.on('found', function (foundAddr, name) {
-      if (foundAddr.replace(/-/g, ':') === address) {
+      if (foundAddr.replace(/-/g, ':').toUpperCase() === address.toUpperCase()) {
         btSerial.findSerialPortChannel(address, function (channel) {
           btSerial.connect(address, channel, function () {
             callback(null, btSerial);

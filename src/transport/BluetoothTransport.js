@@ -38,6 +38,7 @@
         bluetooth.onReceiveError.addListener(self._errorHandler);
         bluetooth.connect(socketId, options.address, options.uuid, function () {
           if (chrome.runtime.lastError) {
+            console.log(chrome.runtime.lastError.message);
             bluetooth.close(socketId, function () {
               window.removeEventListener('beforeunload', self._beforeUnloadHandler);
               bluetooth.onReceive.removeListener(self._messageHandler);
@@ -59,27 +60,33 @@
   }
 
   function getSocketId(address, callback) {
-    var uuids, connectedId;
+    var socketId;
 
-    chrome.bluetooth.getDevice(address, function (dev) {
-      if (dev) {
-        uuids = dev.uuids;
-        bluetooth.getSockets(function (scks) {
-          scks.some(function (sck) {
-            if (uuids.indexOf(sck.uuid) !== -1) {
-              return connectedId = sck.socketId;
-            }
-          });
-          if (typeof connectedId === 'undefined') {
-            bluetooth.create(function (createInfo) {
-              callback(null, createInfo.socketId);
+    chrome.bluetooth.getAdapterState(function (state) {
+      if (state.available) {
+        chrome.bluetooth.getDevice(address, function (dev) {
+          if (dev) {
+            bluetooth.getSockets(function (scks) {
+              scks.some(function (sck) {
+                if (!sck.connected) {
+                  socketId = sck.socketId;
+                  return true;
+                }
+              });
+              if (typeof socketId === 'undefined') {
+                bluetooth.create(function (createInfo) {
+                  callback(null, createInfo.socketId);
+                });
+              } else {
+                callback(null, socketId);
+              }
             });
           } else {
-            callback(null, connectedId);
+            callback('No such device "' + address + '"');
           }
         });
       } else {
-        callback('no such device "' + address + '"');
+        callback('Bluetooth adapter not available');
       }
     });
   }
