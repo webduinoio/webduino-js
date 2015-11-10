@@ -1,62 +1,64 @@
 # webduino-js
-
-The Webduino javascript core, for browser and node.js
+The Webduino Javascript Core, for Browser and Node.js
 
 ## Installation
-
 #### Browser
-
-```Shell
+Using [bower](http://bower.io):
+```sh
 $ bower install webduino-js
 ```
 
-For dist files and docs:
-
-```Shell
+Build dist files and docs:
+```sh
 $ cd bower_components/webduino-js
 $ npm install && npm run build
 ```
 
-#### Node.js
+Insert scripts:
+```html
+<script src="bower_components/webduino-js/dist/webduino-base.js"></script>
+<script src="bower_components/webduino-js/src/module/Led.js"></script>
+... (modules used)
+```
 
-```Shell
+Or all-in-one:
+```html
+<script src="bower_components/webduino-js/dist/webduino-all.js"></script>
+```
+
+#### Node.js
+```sh
 $ npm install webduino-js
 ```
 
 ## Usage
-
-#### Browser
-
-Insert scripts in your html:
-
-```
-<script src="bower_components/webduino-js/dist/webduino-base.min.js"></script>
-<script src="bower_components/webduino-js/src/module/Led.js"></script>
-```
-
-#### Node.js
-
-Require the module:
+**webduino-js** provides isomorphic APIs:
 
 ```javascript
-var webduino = require('webduino-js');
-```
+// need to acquire 'webduino' in Node.js:
+// var webduino = require('webduino-js');
 
-Then use it with the same APIs:
-
-```javascript
 var board, led;
 
 board = new webduino.WebArduino('device_id');
 
-board.on(webduino.BoardEvent.READY, function() {
-	led = new webduino.module.Led(board, board.getDigitalPin(10));
-	led.on();
+board.on('ready', function() {
+  led = new webduino.module.Led(board, board.getDigitalPin(10));
+  led.on();
 });
 ```
 
-## API
+## Transports
+**webduino-js** talks to Webduino Dev Board via MQTT by default. However, since **webduino-js** speaks [Firmata](https://www.arduino.cc/en/Reference/Firmata), we can also _directly_ talk to standard Arduino or any dev board that understands firmata.
 
-_(coming soon...)_
+Currently we have transports supporting USB serial port and Bluetooth (HC-06 tested) communications: _(Note: you have to install Firmata library first)_
+
+[webduino-serial-transport](https://github.com/webduinoio/webduino-serial-transport)
+[webduino-bluetooth-transport](https://github.com/webduinoio/webduino-bluetooth-transport)
+
+## See Also
+[Webduino Dev Board and Webduino Dev Kit](https://webduino.io)
+[The Firmata Protocol](https://github.com/firmata/protocol)
+[Arduino Firmata Installation](http://www.instructables.com/id/Arduino-Installing-Standard-Firmata)
 
 ## [License](LICENSE)

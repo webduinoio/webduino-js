@@ -1,9 +1,12 @@
 {
   "name": "webduino-js",
-  "description": "The Webduino javascript core, for browser and node.js",
+  "description": "The Webduino Javascript Core, for Browser and Node.js",
   "repository": "https://github.com/webduinoio/webduino-js.git",
-  "homepage": "http://webduino.io",
-  "keywords": ["arduino", "webduino"],
+  "homepage": "https://webduino.io",
+  "keywords": [
+    "arduino",
+    "webduino"
+  ],
   "license": "MIT",
   "dependencies": {
     "paho": "http://git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.javascript.git#1.x",
