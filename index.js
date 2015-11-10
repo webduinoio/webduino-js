@@ -6,9 +6,6 @@ require('./src/core/EventEmitter')(webduino);
 require('./src/core/util')(webduino);
 require('./src/util/promisify')(webduino);
 require('./src/core/Transport')(webduino);
-require('./src/transport/NodeMqttTransport')(webduino);
-require('./src/transport/NodeSerialTransport')(webduino);
-require('./src/transport/NodeBluetoothTransport')(webduino);
 require('./src/core/Pin')(webduino);
 require('./src/core/Module')(webduino);
 require('./src/core/Board')(webduino);
@@ -35,5 +32,17 @@ require('./src/module/Joystick')(webduino);
 require('./src/module/MQ2')(webduino);
 require('./src/module/Photocell')(webduino);
 require('./src/module/Pot')(webduino);
+
+webduino.transport.mqtt = require('./src/transport/NodeMqttTransport');
+findTransport('serial', 'webduino-serial-transport');
+findTransport('bluetooth', 'webduino-bluetooth-transport');
+
+function findTransport(type, name) {
+  try {
+    if (require.resolve(name)) {
+      webduino.transport[type] = require(name);
+    }
+  } catch (e) {}
+}
 
 module.exports = webduino;

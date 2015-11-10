@@ -11,22 +11,22 @@ function expectFiles(ary) {
 var base = [
     '../setimmediate/setImmediate.js',
     '../paho/src/mqttws31.js',
-    '../chrome-api-proxy/lib/chrome._api.js',
-    '../chrome-api-proxy/lib/chrome.serial.js',
-    '../chrome-api-proxy/lib/chrome.bluetooth.js',
     'src/webduino.js',
     'src/core/EventEmitter.js',
     'src/core/util.js',
     'src/util/promisify.js',
     'src/core/Transport.js',
     'src/transport/MqttTransport.js',
-    'src/transport/SerialTransport.js',
-    'src/transport/BluetoothTransport.js',
     'src/core/Pin.js',
     'src/core/Module.js',
     'src/core/Board.js',
     'src/core/WebArduino.js',
-    'src/core/Arduino.js'
+    'src/core/Arduino.js',
+    '../chrome-api-proxy/lib/chrome._api.js',
+    '../chrome-api-proxy/lib/chrome.serial.js',
+    '../webduino-serial-transport/src/SerialTransport.js',
+    '../chrome-api-proxy/lib/chrome.bluetooth.js',
+    '../webduino-bluetooth-transport/src/BluetoothTransport.js'
   ],
   modules = [
     'src/module/Led.js',
