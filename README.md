@@ -53,15 +53,13 @@ board.on('ready', function() {
 
 Currently we have transports supporting USB serial port and Bluetooth (HC-06 tested) communications: _(Note: you have to install Firmata library first)_
 
-[webduino-serial-transport](https://github.com/webduinoio/webduino-serial-transport)
-
-[webduino-bluetooth-transport](https://github.com/webduinoio/webduino-bluetooth-transport)
+* [webduino-serial-transport](https://github.com/webduinoio/webduino-serial-transport)
+* [webduino-bluetooth-transport](https://github.com/webduinoio/webduino-bluetooth-transport)
 
 ## See Also
-[Webduino Dev Board and Webduino Dev Kit](https://webduino.io)
+* [Webduino Dev Board and Webduino Dev Kit](https://webduino.io)
+* [The Firmata Protocol](https://github.com/firmata/protocol)
+* [Arduino Firmata Installation](http://www.instructables.com/id/Arduino-Installing-Standard-Firmata)
 
-[The Firmata Protocol](https://github.com/firmata/protocol)
-
-[Arduino Firmata Installation](http://www.instructables.com/id/Arduino-Installing-Standard-Firmata)
-
-## [License](LICENSE)
+## License
+[MIT](LICENSE)

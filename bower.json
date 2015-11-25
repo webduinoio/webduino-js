@@ -9,10 +9,10 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "paho": "http://git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.javascript.git#1.x",
-    "setimmediate": "https://github.com/YuzuJS/setImmediate.git#1.x",
-    "chrome-api-proxy": "webduinoio/chrome-api-proxy#gh-pages",
-    "webduino-serial-transport": "webduinoio/webduino-serial-transport#0.x",
-    "webduino-bluetooth-transport": "webduinoio/webduino-bluetooth-transport#0.x"
+    "paho": "eclipse-paho-mqtt-js#develop",
+    "setimmediate": "YuzuJS/setImmediate#1.x",
+    "chrome-api-proxy": "chrome-api-proxy#0.x",
+    "webduino-serial-transport": "webduino-serial-transport#0.x",
+    "webduino-bluetooth-transport": "webduino-bluetooth-transport#0.x"
   }
 }

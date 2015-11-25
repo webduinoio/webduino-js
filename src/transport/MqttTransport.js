@@ -181,4 +181,4 @@
   MqttTransport.MAX_PACKET_SIZE = 128;
 
   scope.transport.mqtt = MqttTransport;
-}(webduino || {}));
+}(webduino));
