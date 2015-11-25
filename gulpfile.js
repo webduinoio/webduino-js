@@ -48,7 +48,8 @@ var base = [
     'src/module/Joystick.js',
     'src/module/MQ2.js',
     'src/module/Photocell.js',
-    'src/module/Pot.js'
+    'src/module/Pot.js',
+    'src/module/RFID.js'
   ];
 
 gulp.task('clean', shell.task([

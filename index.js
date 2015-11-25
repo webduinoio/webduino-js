@@ -32,6 +32,7 @@ require('./src/module/Joystick')(webduino);
 require('./src/module/MQ2')(webduino);
 require('./src/module/Photocell')(webduino);
 require('./src/module/Pot')(webduino);
+require('./src/module/RFID')(webduino);
 
 webduino.transport.mqtt = require('./src/transport/NodeMqttTransport');
 findTransport('serial', 'webduino-serial-transport');
