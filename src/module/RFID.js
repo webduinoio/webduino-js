@@ -12,19 +12,22 @@
     proto;
 
   var RFIDEvent = {
-    MESSAGE: 'message'
+    ENTER: 'enter',
+    LEAVE: 'leave'
   };
 
   function RFID(board) {
     Module.call(this);
     this._board = board;
     this._messageHandler = onMessage.bind(this);
-    this._callback = function() {};
-    this._state = 'off';
+    this._isListened = false;
+    this._enterHandlers = [];
+    this._leaveHandlers = [];
     this._board.send([0xf0, 0x04, 0x0f, 0x00, 0xf7]);
   }
 
   function onMessage(event) {
+    var _this = this;
     var msg = event.message;
     var val;
 
@@ -34,46 +37,61 @@
 
     if (msg.length === 1) {
       val = 0;
+      _this._leaveHandlers.forEach(function(fn, idx, ary) {
+        fn.call(_this, val);
+      });
+      _this.emit(RFIDEvent.LEAVE, val);
     } else {
       val = String.fromCharCode.apply(null, msg);
+      _this._enterHandlers.forEach(function(fn, idx, ary) {
+        fn.call(_this, val);
+      });
+      _this.emit(RFIDEvent.ENTER, val);
     }
-
-    this.emit(RFIDEvent.MESSAGE, val);
   }
 
   RFID.prototype = proto = Object.create(Module.prototype, {
     constructor: {
       value: RFID
-    },
-    state: {
-      get: function() {
-        return this._state;
-      },
-      set: function(val) {
-        this._state = val;
-      }
     }
   });
 
-  proto.on = function(callback) {
-    this._board.send([0xf0, 0x04, 0x0f, 0x01,0xf7]);
-
-    if (typeof callback !== 'function') {
-      callback = function() {};
+  proto.listen = function(enterHander, leaveHandler) {
+    if (!this._isListened) {
+      this._isListened = true;
+      this._board.send([0xf0, 0x04, 0x0f, 0x01,0xf7]);
+      this._board.on(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
     }
 
-    this._callback = callback;
-    this._state = 'on';
-    this._board.on(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
-    this.addListener(RFIDEvent.MESSAGE, this._callback);
+    if (typeof enterHander === 'function') {
+      this._enterHandlers.push(enterHander);
+    }
+
+    if (typeof leaveHandler === 'function') {
+      this._leaveHandlers.push(leaveHandler);
+    }
   };
 
-  proto.off = function() {
-    this._state = 'off';
+  proto.stopListen = function() {
     this._board.send([0xf0, 0x04, 0x0f, 0x02, 0xf7]);
     this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
-    this.removeListener(RFIDEvent.MESSAGE, this._callback);
-    this._callback = null;
+    this._isListened = false;
+    this._enterHandlers = [];
+    this._leaveHandlers = [];
+  };
+
+  proto.isListened = function() {
+    return this._isListened;
+  };
+
+  proto.off = function(evtType, handler) {
+    this.removeListener(evtType, handler);
+  };
+
+  proto.destroy = function() {
+    this.stopListen();
+    this.removeAllListeners(RFIDEvent.ENTER);
+    this.removeAllListeners(RFIDEvent.LEAVE);
   };
 
   scope.module.RFID = RFID;
