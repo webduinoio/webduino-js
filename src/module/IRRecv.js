@@ -1,10 +1,10 @@
-+(function(factory) {
++(function (factory) {
   if (typeof exports === 'undefined') {
     factory(webduino || {});
   } else {
     module.exports = factory;
   }
-}(function(scope) {
+}(function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -21,15 +21,15 @@
     this._board = board;
     this._pin = pin;
     this._messageHandler = onMessage.bind(this);
-    this._recvCallback = function() {};
-    this._recvErrorCallback = function() {};
+    this._recvCallback = function () {};
+    this._recvErrorCallback = function () {};
     this._board.send([0xf0, 0x04, 0x0A, 0x01, 0xf7]);
   }
 
   function onMessage(event) {
-    var recvChk = [0x04, 0x10, 0x0A];
+    var recvChk = [0x04, 0x10];
     var msg = event.message;
-    var data = msg.slice(3);
+    var data = msg.slice(2);
     var str = '';
     var i, tp, len;
 
@@ -56,24 +56,24 @@
       value: IRRecv
     },
     state: {
-      get: function() {
+      get: function () {
         return this._state;
       },
-      set: function(val) {
+      set: function (val) {
         this._state = val;
       }
     }
   });
 
-  proto.on = function(callback, errorCallback) {
+  proto.on = function (callback, errorCallback) {
     var aryCode = [0xf0, 0x04, 0x0A, 0x00];
 
     if (typeof callback !== 'function') {
-      callback = function() {};
+      callback = function () {};
     }
 
     if (typeof errorCallback !== 'function') {
-      errorCallback = function() {};
+      errorCallback = function () {};
     }
 
     if (this._pin) {
@@ -81,11 +81,11 @@
       this._board.send(aryCode);
       this._state = 'on';
 
-      this._recvCallback = function(value) {
+      this._recvCallback = function (value) {
         callback(value);
       };
 
-      this._recvErrorCallback = function(value, msg) {
+      this._recvErrorCallback = function (value, msg) {
         errorCallback(value, msg);
       };
 
@@ -95,7 +95,7 @@
     }
   };
 
-  proto.off = function() {
+  proto.off = function () {
     this._board.send([0xf0, 0x04, 0x0A, 0x01, 0xf7]);
     this._state = 'off';
 
