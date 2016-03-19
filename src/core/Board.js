@@ -440,10 +440,10 @@
     }
 
     var len = msg.length,
-      pinNumber = msg[1],
+      pinNum = msg[1],
       pinType = msg[2],
       pinState,
-      pin = this._ioPins[pinNumber];
+      pin = this._ioPins[pinNum];
 
     if (len > 4) {
       pinState = this.getValueFromTwo7bitBytes(msg[3], msg[4]);
@@ -463,7 +463,7 @@
       this._numPinStateRequests = 0;
     }
 
-    this._pinStateEventCenter.emit(pinNumber, pin);
+    this._pinStateEventCenter.emit(pinNum, pin);
 
     this.emit(BoardEvent.PIN_STATE_RESPONSE, {
       pin: pin
@@ -611,32 +611,32 @@
     this.send([(REPORT_DIGITAL | port), mode]);
   };
 
-  proto.enableAnalogPin = function (pin) {
-    this.sendAnalogPinReporting(pin, Pin.ON);
+  proto.enableAnalogPin = function (pinNum) {
+    this.sendAnalogPinReporting(pinNum, Pin.ON);
   };
 
-  proto.disableAnalogPin = function (pin) {
-    this.sendAnalogPinReporting(pin, Pin.OFF);
+  proto.disableAnalogPin = function (pinNum) {
+    this.sendAnalogPinReporting(pinNum, Pin.OFF);
   };
 
-  proto.sendAnalogPinReporting = function (pinNumber, mode) {
-    this.send([REPORT_ANALOG | pinNumber, mode]);
+  proto.sendAnalogPinReporting = function (pinNum, mode) {
+    this.send([REPORT_ANALOG | pinNum, mode]);
   };
 
-  proto.setDigitalPinMode = function (pinNumber, mode, silent) {
-    this.getDigitalPin(pinNumber).setType(mode);
-    this.managePinListener(this.getDigitalPin(pinNumber));
+  proto.setDigitalPinMode = function (pinNum, mode, silent) {
+    this.getDigitalPin(pinNum).setType(mode);
+    this.managePinListener(this.getDigitalPin(pinNum));
 
     if (!silent || silent !== true) {
-      this.send([SET_PIN_MODE, pinNumber, mode]);
+      this.send([SET_PIN_MODE, pinNum, mode]);
     }
   };
 
-  proto.setAnalogPinMode = function (pinNumber, mode, silent) {
-    this.getAnalogPin(pinNumber).setType(mode);
+  proto.setAnalogPinMode = function (pinNum, mode, silent) {
+    this.getAnalogPin(pinNum).setType(mode);
 
     if (!silent || silent !== true) {
-      this.send([SET_PIN_MODE, pinNumber, mode]);
+      this.send([SET_PIN_MODE, pinNum, mode]);
     }
   };
 
@@ -777,24 +777,24 @@
     this.managePinListener(servoPin);
   };
 
-  proto.getPin = function (pinNumber) {
-    return this._ioPins[pinNumber];
+  proto.getPin = function (pinNum) {
+    return this._ioPins[pinNum];
   };
 
-  proto.getAnalogPin = function (pinNumber) {
-    return this._ioPins[this._analogPinMapping[pinNumber]];
+  proto.getAnalogPin = function (pinNum) {
+    return this._ioPins[this._analogPinMapping[pinNum]];
   };
 
-  proto.getDigitalPin = function (pinNumber) {
-    return this._ioPins[this._digitalPinMapping[pinNumber]];
+  proto.getDigitalPin = function (pinNum) {
+    return this._ioPins[this._digitalPinMapping[pinNum]];
   };
 
   proto.getPins = function () {
     return this._ioPins;
   };
 
-  proto.analogToDigital = function (analogPinNumber) {
-    return this.getAnalogPin(analogPinNumber).number;
+  proto.analogToDigital = function (analogPinNum) {
+    return this.getAnalogPin(analogPinNum).number;
   };
 
   proto.getPinCount = function () {
