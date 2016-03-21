@@ -431,7 +431,7 @@
   };
 
   proto.systemReset = function () {
-    this.send(SYSEX_RESET);
+    this.send([SYSEX_RESET]);
   };
 
   proto.processPinStateResponse = function (msg) {
@@ -705,7 +705,7 @@
 
     pins = util.isArray(pins) ? pins : [pins];
     pins = pins.map(function (pin) {
-      return pin instanceof Pin ? pin : self.getDigitalPin(pin)
+      return pin instanceof Pin ? pin : self.getPin(pin)
     });
 
     if (typeof callback === 'function') {
