@@ -12,7 +12,6 @@
   var EventEmitter = scope.EventEmitter,
     TransportEvent = scope.TransportEvent,
     Transport = scope.Transport,
-    PinEvent = scope.PinEvent,
     Pin = scope.Pin,
     util = scope.util,
     proto;
@@ -84,7 +83,6 @@
     this._pinStateEventCenter = new EventEmitter();
 
     this._initialVersionResultHandler = onInitialVersionResult.bind(this);
-    this._sendOutHandler = sendOut.bind(this);
     this._openHandler = onOpen.bind(this);
     this._messageHandler = onMessage.bind(this);
     this._errorHandler = onError.bind(this);
@@ -104,24 +102,6 @@
     } else {
       throw new Error('You must upload StandardFirmata version 2.3 ' +
         'or greater from Arduino version 1.0 or higher');
-    }
-  }
-
-  function sendOut(pin) {
-    var type = pin._type,
-      pinNum = pin.number,
-      value = pin.value;
-
-    switch (type) {
-    case Pin.DOUT:
-      this.sendDigitalData(pinNum, value);
-      break;
-    case Pin.AOUT:
-      this.sendAnalogData(pinNum, value);
-      break;
-    case Pin.SERVO:
-      this.sendServoData(pinNum, value);
-      break;
     }
   }
 
@@ -269,7 +249,7 @@
         return;
       }
 
-      if (pin._type === Pin.DIN) {
+      if (pin.type === Pin.DIN) {
         pinVal = (portVal >> j) & 0x01;
         if (pinVal !== pin.value) {
           pin.value = pinVal;
@@ -382,9 +362,8 @@
           this._analogPinMapping[analogPinCounter++] = pinCounter;
         }
 
-        pin = new Pin(pinCounter, type);
+        pin = new Pin(this, pinCounter, type);
         pin.setCapabilities(pinCapabilities);
-        this.managePinListener(pin);
         this._ioPins[pinCounter] = pin;
 
         if (pin._capabilities[Pin.I2C]) {
@@ -451,12 +430,11 @@
       pinState = msg[3];
     }
 
-    if (pin._type !== pinType) {
-      pin.setType(pinType);
-      this.managePinListener(pin);
+    if (pin.type !== pinType) {
+      pin.setMode(pinType, true);
     }
 
-    pin.setState(pinState);
+    pin.state = pinState;
 
     this._numPinStateRequests--;
     if (this._numPinStateRequests < 0) {
@@ -474,23 +452,6 @@
     ch = ch.substring(0, 1);
     var decVal = ch.charCodeAt(0);
     return decVal;
-  };
-
-  proto.managePinListener = function (pin) {
-    if (pin._type === Pin.DOUT || pin._type === Pin.AOUT || pin._type === Pin.SERVO) {
-      if (!EventEmitter.listenerCount(pin, PinEvent.CHANGE)) {
-        pin.on(PinEvent.CHANGE, this._sendOutHandler);
-      }
-    } else {
-      if (EventEmitter.listenerCount(pin, PinEvent.CHANGE)) {
-        try {
-          pin.removeListener(PinEvent.CHANGE, this._sendOutHandler);
-        } catch (e) {
-          // Pin had reference to other handler, ignore
-          debug("debug: caught pin removeEventListener exception");
-        }
-      }
-    }
   };
 
   proto.sendAnalogData = function (pin, value) {
@@ -550,7 +511,7 @@
   proto.sendServoData = function (pin, value) {
     var servoPin = this.getDigitalPin(pin);
 
-    if (servoPin._type === Pin.SERVO && servoPin.lastValue !== value) {
+    if (servoPin.type === Pin.SERVO && servoPin.lastValue !== value) {
       this.sendAnalogData(pin, value);
     }
   };
@@ -624,20 +585,15 @@
   };
 
   proto.setDigitalPinMode = function (pinNum, mode, silent) {
-    this.getDigitalPin(pinNum).setType(mode);
-    this.managePinListener(this.getDigitalPin(pinNum));
-
-    if (!silent || silent !== true) {
-      this.send([SET_PIN_MODE, pinNum, mode]);
-    }
+    this.getDigitalPin(pinNum).setMode(mode, silent);
   };
 
   proto.setAnalogPinMode = function (pinNum, mode, silent) {
-    this.getAnalogPin(pinNum).setType(mode);
+    this.getAnalogPin(pinNum).setMode(mode, silent);
+  };
 
-    if (!silent || silent !== true) {
-      this.send([SET_PIN_MODE, pinNum, mode]);
-    }
+  proto.setPinMode = function (pinNum, mode) {
+    this.send([SET_PIN_MODE, pinNum, mode]);
   };
 
   proto.enablePullUp = function (pinNum) {
@@ -701,33 +657,32 @@
   proto.queryPinState = function (pins, callback) {
     var self = this,
       promises = [],
-      cmds = [];
+      cmds = [],
+      done;
 
+    done = self._pinStateEventCenter.once.bind(self._pinStateEventCenter);
     pins = util.isArray(pins) ? pins : [pins];
     pins = pins.map(function (pin) {
       return pin instanceof Pin ? pin : self.getPin(pin)
     });
 
+    pins.forEach(function (pin) {
+      promises.push(util.promisify(done, function (pin) {
+        this.resolve(pin);
+      })(pin.number));
+      push.apply(cmds, [START_SYSEX, PIN_STATE_QUERY, pin.number, END_SYSEX]);
+      self._numPinStateRequests++;
+    });
+
+    self.send(cmds);
+
     if (typeof callback === 'function') {
-      var once = self._pinStateEventCenter.once.bind(self._pinStateEventCenter);
-
-      pins.forEach(function (pin) {
-        promises.push(util.promisify(once, function (pin) {
-          this.resolve(pin);
-        })(pin.number));
-      });
-
       Promise.all(promises).then(function (pins) {
         callback.call(self, pins.length > 1 ? pins : pins[0]);
       });
+    } else {
+      return pins.length > 1 ? promises : promises[0];
     }
-
-    pins.forEach(function (pin) {
-      push.apply(cmds, [START_SYSEX, PIN_STATE_QUERY, pin.number, END_SYSEX]);
-      self._numPinStateRequests++;
-    })
-
-    self.send(cmds);
   };
 
   proto.sendDigitalPort = function (portNumber, portData) {
@@ -773,8 +728,7 @@
     this.send(servoData);
 
     servoPin = this.getDigitalPin(pin);
-    servoPin.setType(Pin.SERVO);
-    this.managePinListener(servoPin);
+    servoPin.setMode(Pin.SERVO, true);
   };
 
   proto.getPin = function (pinNum) {
@@ -840,7 +794,7 @@
     }
   };
 
-  Board.MIN_SAMPLING_INTERVAL = 10;
+  Board.MIN_SAMPLING_INTERVAL = 20;
 
   Board.MAX_SAMPLING_INTERVAL = 15000;
 

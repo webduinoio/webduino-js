@@ -16,9 +16,10 @@
     FALLING_EDGE: 'fallingEdge'
   };
 
-  function Pin(number, type) {
+  function Pin(board, number, type) {
     EventEmitter.call(this);
 
+    this._board = board;
     this._type = type;
     this._capabilities = {};
     this._number = number;
@@ -36,7 +37,50 @@
     this._filters = null;
     this._generator = null;
     this._state = undefined;
+
+    this._sendOutHandler = sendOut.bind(this);
     this._autoSetValueCallback = this.autoSetValue.bind(this);
+
+    managePinListener(this);
+  }
+
+  function managePinListener(self) {
+    var type = self._type,
+      board = self._board;
+
+    if (type === Pin.DOUT || type === Pin.AOUT || type === Pin.SERVO) {
+      if (!EventEmitter.listenerCount(self, PinEvent.CHANGE)) {
+        self.on(PinEvent.CHANGE, self._sendOutHandler);
+      }
+    } else {
+      if (EventEmitter.listenerCount(self, PinEvent.CHANGE)) {
+        try {
+          self.removeListener(PinEvent.CHANGE, self._sendOutHandler);
+        } catch (e) {
+          // Pin had reference to other handler, ignore
+          debug("debug: caught self removeEventListener exception");
+        }
+      }
+    }
+  }
+
+  function sendOut(self) {
+    var type = self._type,
+      pinNum = self._number,
+      board = self._board,
+      value = self.value;
+
+    switch (type) {
+    case Pin.DOUT:
+      board.sendDigitalData(pinNum, value);
+      break;
+    case Pin.AOUT:
+      board.sendAnalogData(pinNum, value);
+      break;
+    case Pin.SERVO:
+      board.sendServoData(pinNum, value);
+      break;
+    }
   }
 
   Pin.prototype = proto = Object.create(EventEmitter.prototype, {
@@ -78,6 +122,18 @@
     state: {
       get: function () {
         return this._state;
+      },
+      set: function (val) {
+        if (this._type === Pin.PWM) {
+          val = val / this._analogWriteResolution;
+        }
+        this._state = val;
+      }
+    },
+
+    type: {
+      get: function () {
+        return this._type;
       }
     },
 
@@ -153,19 +209,6 @@
     this._analogReadResolution = value;
   };
 
-  proto.setState = function (state) {
-    if (this._type === Pin.PWM) {
-      state = state / this._analogWriteResolution;
-    }
-    this._state = state;
-  };
-
-  proto.setType = function (type) {
-    if (type >= 0 && type < Pin.TOTAL_PIN_MODES) {
-      this._type = type;
-    }
-  };
-
   proto.setCapabilities = function (capabilities) {
     this._capabilities = capabilities;
     var analogWriteRes = this._capabilities[Pin.PWM];
@@ -175,6 +218,20 @@
     }
     if (analogReadRes) {
       this._analogReadResolution = Math.pow(2, analogReadRes) - 1;
+    }
+  };
+
+  proto.setMode = function (mode, silent) {
+    var pinNum = this._number,
+      board = this._board;
+
+    if (mode >= 0 && mode < Pin.TOTAL_PIN_MODES) {
+      this._type = mode;
+      managePinListener(this);
+
+      if (!silent || silent !== true) {
+        board.setPinMode(pinNum, mode);
+      }
     }
   };
 
@@ -267,6 +324,46 @@
       result = this._filters[i].processSample(result);
     }
     return result;
+  };
+
+  proto.read = function () {
+    var type = this._type,
+      board = this._board,
+      self = this;
+
+    switch (type) {
+    case Pin.DOUT:
+    case Pin.AOUT:
+    case Pin.SERVO:
+      return board.queryPinState(self._number).then(function (pin) {
+        return pin.state;
+      });
+
+    case Pin.AIN:
+      if (self._numSamples === 0) {
+        board.enableAnalogPin(self._analogNumber);
+      }
+      return new Promise(function (resolve) {
+        board.once(scope.BoardEvent.ANALOG_DATA, function (msg) {
+          resolve(msg.pin.value);
+        });
+      });
+
+    case Pin.DIN:
+      return new Promise(function (resolve) {
+        board.once(scope.BoardEvent.DIGITAL_DATA, function (msg) {
+          resolve(msg.pin.value);
+        });
+      });
+    }
+  };
+
+  proto.write = function (value) {
+    var type = this._type;
+
+    if (type === Pin.DOUT || type === Pin.AOUT || type === Pin.SERVO) {
+      this.value = value;
+    }
   };
 
   Pin.HIGH = 1;
