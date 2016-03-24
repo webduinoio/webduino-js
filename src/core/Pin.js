@@ -37,6 +37,7 @@
     this._filters = null;
     this._generator = null;
     this._state = undefined;
+    this._analogReporting = false;
 
     this._sendOutHandler = sendOut.bind(this);
     this._autoSetValueCallback = this.autoSetValue.bind(this);
@@ -340,19 +341,14 @@
       });
 
     case Pin.AIN:
-      if (self._numSamples === 0) {
+      if (!self._analogReporting) {
         board.enableAnalogPin(self._analogNumber);
       }
-      return new Promise(function (resolve) {
-        board.once(scope.BoardEvent.ANALOG_DATA, function (msg) {
-          resolve(msg.pin.value);
-        });
-      });
 
     case Pin.DIN:
       return new Promise(function (resolve) {
-        board.once(scope.BoardEvent.DIGITAL_DATA, function (msg) {
-          resolve(msg.pin.value);
+        setImmediate(function () {
+          resolve(self.value);
         });
       });
     }

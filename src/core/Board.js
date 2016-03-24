@@ -271,6 +271,9 @@
 
     analogPin.value = this.getValueFromTwo7bitBytes(bits0_6, bits7_13) / analogPin.analogReadResolution;
     if (analogPin.value !== analogPin.lastValue) {
+      if (this._isReady) {
+        analogPin._analogReporting = true;
+      }
       this.emit(BoardEvent.ANALOG_DATA, {
         pin: analogPin
       });
@@ -574,10 +577,12 @@
 
   proto.enableAnalogPin = function (pinNum) {
     this.sendAnalogPinReporting(pinNum, Pin.ON);
+    this.getAnalogPin(pinNum)._analogReporting = true;
   };
 
   proto.disableAnalogPin = function (pinNum) {
     this.sendAnalogPinReporting(pinNum, Pin.OFF);
+    this.getAnalogPin(pinNum)._analogReporting = false;
   };
 
   proto.sendAnalogPinReporting = function (pinNum, mode) {
