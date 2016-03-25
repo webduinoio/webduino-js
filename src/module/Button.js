@@ -29,7 +29,7 @@
 
     this._buttonMode = buttonMode || Button.PULL_DOWN;
     this._sustainedPressInterval = sustainedPressInterval || 1000;
-    this._debounceInterval = 8;
+    this._debounceInterval = 20;
     this._pressHandler = onPress.bind(this);
     this._releaseHandler = onRelease.bind(this);
     this._sustainedPressHandler = onSustainedPress.bind(this);
@@ -72,6 +72,10 @@
 
   function onPress() {
     this.emit(ButtonEvent.PRESS);
+    if (this._timer) {
+      clearInterval(this._timer);
+      delete this._timer;
+    }
     this._timer = setInterval(this._sustainedPressHandler, this._sustainedPressInterval);
   }
 
