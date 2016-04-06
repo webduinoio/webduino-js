@@ -128,7 +128,7 @@
         if (this._type === Pin.PWM) {
           val = val / this._analogWriteResolution;
         }
-        this._state = val;
+        this.value = this._value = this._state = val;
       }
     },
 
