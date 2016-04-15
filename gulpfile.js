@@ -49,7 +49,8 @@ var base = [
     'src/module/MQ2.js',
     'src/module/Photocell.js',
     'src/module/Pot.js',
-    'src/module/RFID.js'
+    'src/module/RFID.js',
+    'src/module/Soil.js'
   ];
 
 gulp.task('clean', shell.task([
