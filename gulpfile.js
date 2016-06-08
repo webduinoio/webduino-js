@@ -50,7 +50,8 @@ var base = [
     'src/module/Photocell.js',
     'src/module/Pot.js',
     'src/module/RFID.js',
-    'src/module/Soil.js'
+    'src/module/Soil.js',
+    'src/module/G3.js'
   ];
 
 gulp.task('clean', shell.task([
