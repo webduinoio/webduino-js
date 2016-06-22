@@ -23,7 +23,6 @@
   }
 
   function formatter(val) {
-    val = 1 - val;
     val = Math.round(val * 10000) / 100;
     return val;
   }
