@@ -33,6 +33,7 @@ require('./src/module/MQ2')(webduino);
 require('./src/module/Photocell')(webduino);
 require('./src/module/Pot')(webduino);
 require('./src/module/RFID')(webduino);
+require('./src/module/Soil')(webduino);
 require('./src/module/G3')(webduino);
 
 webduino.transport.mqtt = require('./src/transport/NodeMqttTransport');

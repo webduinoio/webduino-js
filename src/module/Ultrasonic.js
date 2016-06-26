@@ -113,7 +113,6 @@
     } else {
       return new Promise(function (resolve, reject) {
         self.ping(function (cm) {
-          self._distance = cm;
           setTimeout(function () {
             resolve(cm);
           }, MIN_RESPONSE_TIME);
