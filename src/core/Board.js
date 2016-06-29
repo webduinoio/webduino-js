@@ -87,7 +87,9 @@
     this._messageHandler = onMessage.bind(this);
     this._errorHandler = onError.bind(this);
     this._closeHandler = onClose.bind(this);
+    this._beforeUnloadHandler = this.disconnect.bind(this);
 
+    window.addEventListener('beforeunload', this._beforeUnloadHandler);
     this._setTransport(this._options.transport);
   }
 
