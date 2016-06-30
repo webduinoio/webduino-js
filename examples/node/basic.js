@@ -16,9 +16,14 @@ board = new webduino.WebArduino('device_id');
 //   'address': '30:14:09:30:15:67'
 // });
 
+// board = new webduino.Arduino({
+//   'transport': 'websocket',
+//   'url': 'wa1501.local'
+// });
+
 board.on(webduino.BoardEvent.READY, function () {
   led = new webduino.module.Led(board, board.getDigitalPin(10));
-  led.blink(50);
+  led.blink(500);
 
   setTimeout(function () {
     board.close();

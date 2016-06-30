@@ -17,6 +17,7 @@ var base = [
     'src/util/promisify.js',
     'src/core/Transport.js',
     'src/transport/MqttTransport.js',
+    'src/transport/WebSocketTransport.js',
     'src/core/Pin.js',
     'src/core/Module.js',
     'src/core/Board.js',
