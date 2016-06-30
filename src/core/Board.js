@@ -89,7 +89,7 @@
     this._closeHandler = onClose.bind(this);
     this._beforeUnloadHandler = this.disconnect.bind(this);
 
-    window.addEventListener('beforeunload', this._beforeUnloadHandler);
+    attachUnloadCleaner(this);
     this._setTransport(this._options.transport);
   }
 
@@ -133,6 +133,16 @@
     this._transport.removeAllListeners();
     delete this._transport;
     this.emit(BoardEvent.DISCONNECT);
+  }
+
+  function attachUnloadCleaner(self) {
+    if (typeof exports === 'undefined') {
+      window.addEventListener('beforeunload', self._beforeUnloadHandler);
+    } else {
+      process.on('exit', self._beforeUnloadHandler);
+      process.on('SIGINT', self._beforeUnloadHandler);
+      process.on('uncaughtException', self._beforeUnloadHandler);
+    }
   }
 
   function debug(msg) {
@@ -797,7 +807,7 @@
   proto.disconnect = function () {
     if (this.isConnected) {
       this.emit(BoardEvent.BEFOREDISCONNECT);
-      setImmediate(this._transport.close.bind(this._transport));
+      this._transport.close();
     }
   };
 

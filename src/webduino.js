@@ -1,5 +1,5 @@
 var webduino = webduino || {
-  version: '0.3.9'
+  version: '0.3.10'
 };
 
 if (typeof exports !== 'undefined') {
