@@ -108,7 +108,7 @@ function onError(error) {
 
 function sendOut() {
   var payload = new Buffer(this._buf);
-  this._client && this._client.publish(this._options.device + TOPIC.PING, payload, {
+  this.isOpen && this._client.publish(this._options.device + TOPIC.PING, payload, {
     qos: 0
   });
   clearBuf(this);

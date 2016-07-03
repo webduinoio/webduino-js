@@ -55,7 +55,7 @@
 
   function sendOut() {
     var payload = new Uint8Array(this._buf).buffer;
-    this._client && this._client.send(payload);
+    this.isOpen && this._client.send(payload);
     clearBuf(this);
   }
 
