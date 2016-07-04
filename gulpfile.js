@@ -52,7 +52,8 @@ var base = [
     'src/module/Pot.js',
     'src/module/RFID.js',
     'src/module/Soil.js',
-    'src/module/G3.js'
+    'src/module/G3.js',
+    'src/module/Stepper.js'
   ];
 
 gulp.task('clean', shell.task([

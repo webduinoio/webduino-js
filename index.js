@@ -35,6 +35,7 @@ require('./src/module/Pot')(webduino);
 require('./src/module/RFID')(webduino);
 require('./src/module/Soil')(webduino);
 require('./src/module/G3')(webduino);
+require('./src/module/Stepper')(webduino);
 
 webduino.transport.mqtt = require('./src/transport/NodeMqttTransport');
 webduino.transport.websocket = require('./src/transport/NodeWebSocketTransport');
