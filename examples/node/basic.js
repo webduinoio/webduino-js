@@ -17,6 +17,14 @@ board = new webduino.WebArduino('device_id');
 // });
 
 // board = new webduino.Arduino({
+//   'transport': 'mqtt',
+//   'device': '',
+//   'server': 'wss://ws.webduino.io:443/',
+//   'login': 'admin',
+//   'password': 'password'
+// });
+
+// board = new webduino.Arduino({
 //   'transport': 'websocket',
 //   'url': 'wa1501.local'
 // });

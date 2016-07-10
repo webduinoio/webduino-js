@@ -47,7 +47,7 @@ function NodeMqttTransport(options) {
 }
 
 function init(self) {
-  self._client = mqtt.connect(self._options.url, {
+  self._client = mqtt.connect(self._options.server, {
     clientId: '_' + self._options.device + (self._options.multi ? '.' + util.randomId() : ''),
     username: self._options.login || '',
     password: new Buffer(self._options.password || ''),

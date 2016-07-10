@@ -26,7 +26,7 @@
   function getDefaultOptions(opts) {
     return {
       transport: 'mqtt',
-      url: determineServerUrl(opts.server || WebArduino.DEFAULT_SERVER) + '/',
+      server: parseServer(opts.server || WebArduino.DEFAULT_SERVER) + '/',
       login: 'admin',
       password: 'password',
       autoReconnect: false,
@@ -34,7 +34,7 @@
     };
   }
 
-  function determineServerUrl(url) {
+  function parseServer(url) {
     var parsed = util.parseURL(url);
     if (['ws:', 'wss:', 'tcp:'].indexOf(parsed.protocol) !== -1) {
       return url;

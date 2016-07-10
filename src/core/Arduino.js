@@ -15,6 +15,7 @@
   function Arduino(options) {
     if (typeof options === 'string') {
       options = {
+        transport: 'serial',
         path: options
       };
     }

@@ -40,7 +40,7 @@
   }
 
   function init(self) {
-    self._client = new Paho.MQTT.Client(self._options.url,
+    self._client = new Paho.MQTT.Client(self._options.server,
       '_' + self._options.device + (self._options.multi ? '.' + util.randomId() : '')
     );
     self._client.onMessageArrived = self._messageHandler;
