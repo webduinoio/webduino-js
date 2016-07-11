@@ -126,6 +126,7 @@
   function onError(error) {
     this._isReady = false;
     this.emit(BoardEvent.ERROR, error);
+    setImmediate(this._beforeUnloadHandler);
   }
 
   function onClose() {
@@ -797,7 +798,7 @@
   };
 
   proto.send = function (data) {
-    this._transport.send(data);
+    this.isConnected && this._transport.send(data);
   };
 
   proto.close = function () {

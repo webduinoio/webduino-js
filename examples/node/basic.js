@@ -39,15 +39,15 @@ board.on(webduino.BoardEvent.READY, function () {
 });
 
 board.on(webduino.BoardEvent.ERROR, function (err) {
-  console.log(err);
+  console.log('board error', err.message);
 });
 
 board.on(webduino.BoardEvent.BEFOREDISCONNECT, function () {
-  console.log('before disconnect');
+  console.log('board beforedisconnect');
 });
 
 board.on(webduino.BoardEvent.DISCONNECT, function () {
-  console.log('disconnect');
+  console.log('board disconnect');
   // test: should not emit 'disconnect' again
   board.disconnect();
 });
