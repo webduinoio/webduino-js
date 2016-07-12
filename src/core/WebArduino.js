@@ -19,6 +19,7 @@
       };
     }
     options = util.extend(getDefaultOptions(options), options);
+    options.server = parseServer(options.server);
 
     Board.call(this, options);
   }
@@ -26,7 +27,7 @@
   function getDefaultOptions(opts) {
     return {
       transport: 'mqtt',
-      server: parseServer(opts.server || WebArduino.DEFAULT_SERVER) + '/',
+      server: WebArduino.DEFAULT_SERVER,
       login: 'admin',
       password: 'password',
       autoReconnect: false,
@@ -35,13 +36,13 @@
   }
 
   function parseServer(url) {
-    var parsed = util.parseURL(url);
-    if (['ws:', 'wss:', 'tcp:'].indexOf(parsed.protocol) !== -1) {
-      return url;
-    } else {
-      return (typeof location !== 'undefined' && location.protocol === 'https:' ? 'wss:' : 'ws:') +
+    if (url.indexOf('://') === -1) {
+      url = (typeof location !== 'undefined' &&
+          location.protocol === 'https:' ? 'wss:' : 'ws:') +
         '//' + url;
     }
+    url = util.parseURL(url);
+    return url.protocol + '//' + url.host + '/';
   }
 
   WebArduino.prototype = proto = Object.create(Board.prototype, {
