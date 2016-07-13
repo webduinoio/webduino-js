@@ -140,9 +140,13 @@
     if (typeof exports === 'undefined') {
       window.addEventListener('beforeunload', self._beforeUnloadHandler);
     } else {
-      process.on('exit', self._beforeUnloadHandler);
-      process.on('SIGINT', self._beforeUnloadHandler);
-      process.on('uncaughtException', self._beforeUnloadHandler);
+      process.on('SIGINT', cleanup);
+      process.on('uncaughtException', cleanup);
+
+      function cleanup() {
+        self._beforeUnloadHandler();
+        setImmediate(process.exit);
+      }
     }
   }
 
