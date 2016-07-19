@@ -137,16 +137,16 @@
   }
 
   function attachUnloadCleaner(self) {
+    function cleanup() {
+      self._beforeUnloadHandler();
+      setImmediate(process.exit);
+    }
+
     if (typeof exports === 'undefined') {
       window.addEventListener('beforeunload', self._beforeUnloadHandler);
     } else {
       process.on('SIGINT', cleanup);
       process.on('uncaughtException', cleanup);
-
-      function cleanup() {
-        self._beforeUnloadHandler();
-        setImmediate(process.exit);
-      }
     }
   }
 
