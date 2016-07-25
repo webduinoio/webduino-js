@@ -20,6 +20,7 @@
     this._board = board;
     this._baseAxis = 'z';
     this._sensitive = 10;
+    this._detectTime = 50;
     this._messageHandler = onMessage.bind(this);
     this._init = false;
     this._info = {
@@ -184,6 +185,13 @@
     if (sensitive !== this._sensitive) {
       this._sensitive = sensitive;
       this._board.send([0xf0, 0x04, 0x0b, 0x03, sensitive, 0xf7]);
+    }
+  };
+
+  proto.setDetectTime = function(detectTime) {
+    if (detectTime !== this._detectTime) {
+      this._detectTime = detectTime;
+      this._board.send([0xf0, 0x04, 0x0b, 0x04, detectTime, 0xf7]);
     }
   };
 
