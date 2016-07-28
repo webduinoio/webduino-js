@@ -25,7 +25,6 @@
     this._client = null;
     this._timer = null;
     this._sendTimer = null;
-    this._reconnTime = 0;
     this._buf = [];
 
     this._status = '';
@@ -45,28 +44,26 @@
     );
     self._client.onMessageArrived = self._messageHandler;
     self._client.onConnectionLost = self._disconnHandler;
+    self._client.onConnected = self._connHandler;
     self._client.connect({
       userName: self._options.login || '',
       password: self._options.password || '',
       timeout: MqttTransport.CONNECT_TIMEOUT,
       keepAliveInterval: MqttTransport.KEEPALIVE_INTERVAL,
       onSuccess: self._connHandler,
-      onFailure: self._connFailedHandler
+      onFailure: self._connFailedHandler,
+      reconnect: !!self._options.autoReconnect,
+      reconnectInterval: MqttTransport.RECONNECT_PERIOD
     });
   }
 
   function onConnect() {
-    stopReconnect(this);
-    this._reconnTime = 0;
     this._client.subscribe(this._options.device + TOPIC.PONG);
     this._client.subscribe(this._options.device + TOPIC.STATUS);
   }
 
   function onConnectFailed(respObj) {
     this.emit(TransportEvent.ERROR, new Error(respObj.errorMessage));
-    if (this._options.autoReconnect) {
-      startReconnect(this);
-    }
   }
 
   function onMessage(message) {
@@ -100,30 +97,10 @@
   }
 
   function onDisconnect(respObj) {
-    if (respObj.errorCode) {
-      this.emit(TransportEvent.ERROR, new Error(respObj.errorMessage));
-    }
-    delete this._client;
-    this.emit(TransportEvent.CLOSE);
-    if (this._options.autoReconnect && respObj.errorCode) {
-      startReconnect(this);
-    }
-  }
-
-  function startReconnect(self) {
-    stopReconnect(self);
-    self._timer = setTimeout(function () {
-      self._reconnTime += MqttTransport.RECONNECT_PERIOD * 1000;
-      if (self._reconnTime < MqttTransport.CONNECT_TIMEOUT * 1000) {
-        init(self);
-      }
-    }, MqttTransport.RECONNECT_PERIOD * 1000);
-  }
-
-  function stopReconnect(self) {
-    if (self._timer) {
-      clearTimeout(self._timer);
-      delete(self._timer);
+    if (!respObj.errorCode || !respObj.reconnect) {
+      delete this._client;
+      respObj.errorCode && this.emit(TransportEvent.ERROR, new Error(respObj.errorMessage));
+      this.emit(TransportEvent.CLOSE);
     }
   }
 

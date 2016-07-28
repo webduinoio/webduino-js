@@ -96,10 +96,15 @@ function detectStatusChange(self, newStatus, oldStatus) {
   }
 }
 
-function onDisconnect() {
-  this._client.removeAllListeners();
-  delete this._client;
-  this.emit(TransportEvent.CLOSE);
+function onDisconnect(err) {
+  if (err && !this._options.autoReconnect) {
+    this.emit(TransportEvent.ERROR, err);
+  }
+  if (this._client.disconnecting || !this._options.autoReconnect) {
+    this._client.removeAllListeners();
+    delete this._client;
+    this.emit(TransportEvent.CLOSE);
+  }
 }
 
 function onError(error) {
