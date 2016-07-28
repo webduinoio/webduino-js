@@ -26,6 +26,7 @@
 
     this._messageHandler = onMessage.bind(this);
     this._board.on(BoardEvent.BEFOREDISCONNECT, this.destroy.bind(this));
+    this._board.on(BoardEvent.ERROR, this.destroy.bind(this));
     this._board.send([0xf0, 0x04, 0x0f, 0x00, 0xf7]);
   }
 

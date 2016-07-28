@@ -126,6 +126,7 @@
     this._state = BUZZER_STATE.STOPPED;
 
     this._board.on(BoardEvent.BEFOREDISCONNECT, this.stop.bind(this));
+    this._board.on(BoardEvent.ERROR, this.stop.bind(this));
   }
 
   function getDuration(duration) {

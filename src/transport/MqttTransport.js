@@ -167,8 +167,12 @@
   };
 
   proto.close = function () {
-    if (this.isOpen) {
-      this._client.disconnect();
+    if (this._client) {
+      if (this._client.isConnected()) {
+        this._client.disconnect();
+      } else {
+        delete this._client;
+      }
     }
   };
 

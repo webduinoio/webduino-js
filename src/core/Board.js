@@ -812,7 +812,15 @@
   proto.disconnect = function () {
     if (this.isConnected) {
       this.emit(BoardEvent.BEFOREDISCONNECT);
-      this._transport.close();
+    }
+    this._isReady = false;
+    if (this._transport) {
+      if (this._transport.isOpen) {
+        this._transport.close();
+      } else {
+        this._transport.removeAllListeners();
+        delete this._transport;
+      }
     }
   };
 

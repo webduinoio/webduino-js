@@ -87,8 +87,12 @@
   };
 
   proto.close = function () {
-    if (this.isOpen) {
-      this._client.close();
+    if (this._client) {
+      if (this._client.readyState === WebSocketClient.OPEN) {
+        this._client.close();
+      } else {
+        delete this._client;
+      }
     }
   };
 

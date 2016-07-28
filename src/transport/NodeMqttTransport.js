@@ -146,8 +146,13 @@ proto.send = function (payload) {
 };
 
 proto.close = function () {
-  if (this.isOpen) {
-    this._client.end();
+  if (this._client) {
+    if (this._client.connected) {
+      this._client.end();
+    } else {
+      this._client.removeAllListeners();
+      delete this._client;
+    }
   }
 };
 

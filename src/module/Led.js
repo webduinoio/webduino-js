@@ -22,6 +22,7 @@
     this._blinkTimer = null;
 
     this._board.on(BoardEvent.BEFOREDISCONNECT, this._clearBlinkTimer.bind(this));
+    this._board.on(BoardEvent.ERROR, this._clearBlinkTimer.bind(this));
 
     if (this._driveMode === Led.SOURCE_DRIVE) {
       this._onValue = 1;
