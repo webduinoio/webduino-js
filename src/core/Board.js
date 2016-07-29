@@ -87,9 +87,9 @@
     this._messageHandler = onMessage.bind(this);
     this._errorHandler = onError.bind(this);
     this._closeHandler = onClose.bind(this);
-    this._beforeUnloadHandler = this.disconnect.bind(this);
+    this._cleanupHandler = cleanup.bind(this);
 
-    attachUnloadCleaner(this);
+    attachCleanup(this);
     this._setTransport(this._options.transport);
   }
 
@@ -126,7 +126,7 @@
   function onError(error) {
     this._isReady = false;
     this.emit(BoardEvent.ERROR, error);
-    setImmediate(this._beforeUnloadHandler);
+    setImmediate(this.disconnect.bind(this));
   }
 
   function onClose() {
@@ -136,17 +136,29 @@
     this.emit(BoardEvent.DISCONNECT);
   }
 
-  function attachUnloadCleaner(self) {
-    function cleanup() {
-      self._beforeUnloadHandler();
-      setImmediate(process.exit);
-    }
+  function cleanup() {
+    this.disconnect(function () {
+      if (typeof exports !== 'undefined') {
+        process.exit();
+      }
+    });
+  }
 
+  function attachCleanup(self) {
     if (typeof exports === 'undefined') {
-      window.addEventListener('beforeunload', self._beforeUnloadHandler);
+      window.addEventListener('beforeunload', self._cleanupHandler);
     } else {
-      process.on('SIGINT', cleanup);
-      process.on('uncaughtException', cleanup);
+      process.addListener('SIGINT', self._cleanupHandler);
+      process.addListener('uncaughtException', self._cleanupHandler);
+    }
+  }
+
+  function unattachCleanup(self) {
+    if (typeof exports === 'undefined') {
+      window.removeEventListener('beforeunload', self._cleanupHandler);
+    } else {
+      process.removeListener('SIGINT', self._cleanupHandler);
+      process.removeListener('uncaughtException', self._cleanupHandler);
     }
   }
 
@@ -805,22 +817,28 @@
     this.isConnected && this._transport.send(data);
   };
 
-  proto.close = function () {
-    this.disconnect();
+  proto.close = function (callback) {
+    this.disconnect(callback);
   };
 
-  proto.disconnect = function () {
+  proto.disconnect = function (callback) {
+    callback = callback || function () {};
     if (this.isConnected) {
       this.emit(BoardEvent.BEFOREDISCONNECT);
     }
     this._isReady = false;
+    unattachCleanup(this);
     if (this._transport) {
       if (this._transport.isOpen) {
+        this.once(BoardEvent.DISCONNECT, callback);
         this._transport.close();
       } else {
         this._transport.removeAllListeners();
         delete this._transport;
+        callback();
       }
+    } else {
+      callback();
     }
   };
 
