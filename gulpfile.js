@@ -44,6 +44,7 @@ var base = [
     'src/module/Buzzer.js',
     'src/module/Max7219.js',
     'src/module/ADXL345.js',
+    'src/module/HX711.js',
     'src/module/IRLed.js',
     'src/module/IRRecv.js',
     'src/module/Joystick.js',

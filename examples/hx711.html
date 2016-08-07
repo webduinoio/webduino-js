@@ -1,0 +1,25 @@
+<html>
+<head>
+    <script src="../dist/webduino-all.js"></script>
+    <script src="../src/module/HX711.js"></script>
+    <script>
+    var board, hx711;
+    board = new webduino.WebArduino('device_id');
+    board.on(webduino.BoardEvent.READY, function() {
+        hx711 = new webduino.module.HX711(
+            board, board.getDigitalPin(6), board.getDigitalPin(7));
+        hx711.on(function(d) {
+            data.innerHTML =  d+ " g";
+        });
+    });
+    </script>
+</head>
+
+<body>
+    <h1>Electronic scales:</h1>
+    <p>Weight</p>
+    <span id='data'></span>
+</body>
+
+</html>
+
