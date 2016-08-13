@@ -1,0 +1,24 @@
+<html>
+<head>
+    <script src="../dist/webduino-all.js"></script>
+    <script src="../src/module/Barcode.js"></script>
+    <script>
+    var board, barcode;
+    board = new webduino.WebArduino('device_id');
+    board.on(webduino.BoardEvent.READY, function() {
+        barcode = new webduino.module.Barcode(
+            board, board.getDigitalPin(2), board.getDigitalPin(3));
+        barcode.on(function(d) {
+            data.innerHTML =  d+ "";
+        });
+    });`
+    </script>
+</head>
+
+<body>
+    <h1>Barcode Scanner:</h1>
+    <p>Data</p>
+    <span id='data'></span>
+</body>
+
+</html>
