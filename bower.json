@@ -7,12 +7,5 @@
     "arduino",
     "webduino"
   ],
-  "license": "MIT",
-  "dependencies": {
-    "paho": "webduinoio/org.eclipse.paho.mqtt.javascript#develop",
-    "setimmediate": "YuzuJS/setImmediate#1.x",
-    "chrome-api-proxy": "chrome-api-proxy#0.x",
-    "webduino-serial-transport": "webduino-serial-transport#0.x",
-    "webduino-bluetooth-transport": "webduino-bluetooth-transport#0.x"
-  }
+  "license": "MIT"
 }
