@@ -11,6 +11,8 @@
         BoardEvent = scope.BoardEvent,
         proto;
 
+    var BARCODE_MESSAGE = [0x04, 0x16];
+
     var BarcodeEvent = {
         MESSAGE: 'message'
     };
@@ -18,20 +20,23 @@
     function Barcode(board, rxPin, txPin) {
         Module.call(this);
         this._board = board;
-        this._rx = !isNaN(rxPin) ? board.getDigitalPin(rxPin): rxPin;
-        this._tx = !isNaN(txPin) ? board.getDigitalPin(txPin): txPin;
+        this._rx = !isNaN(rxPin) ? board.getDigitalPin(rxPin) : rxPin;
+        this._tx = !isNaN(txPin) ? board.getDigitalPin(txPin) : txPin;
 
         this._init = false;
         this._scanData = '';
         this._callback = function() {};
         this._messageHandler = onMessage.bind(this);
-        this._board.send([0xf0, 0x04, 0x16, 0x00, 
-            this._rx._number, this._tx._number, 0xf7]);
+        this._board.send([0xf0, 0x04, 0x16, 0x00,
+            this._rx._number, this._tx._number, 0xf7
+        ]);
     }
 
     function onMessage(event) {
         var msg = event.message;
-        this.emit(BarcodeEvent.MESSAGE, msg.slice(2));
+        if (msg[0] == BARCODE_MESSAGE[0] && msg[1] == BARCODE_MESSAGE[1]) {
+            this.emit(BarcodeEvent.MESSAGE, msg.slice(2));
+        }
     }
 
     Barcode.prototype = proto = Object.create(Module.prototype, {
@@ -56,7 +61,7 @@
         }
         this._callback = function(rawData) {
             var scanData = '';
-            for(var i=0;i<rawData.length;i++){
+            for (var i = 0; i < rawData.length; i++) {
                 scanData += String.fromCharCode(rawData[i]);
             }
             _this._scanData = scanData;
