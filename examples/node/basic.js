@@ -6,6 +6,12 @@ var webduino = require('../..'),
 
 board = new webduino.WebArduino('device_id');
 
+// board = new webduino.WebArduino({
+//   'transport': 'serial',
+//   'baudRate': 57600,
+//   'path': '/dev/cu.usbmodem1411'
+// });
+
 // board = new webduino.Arduino({
 //   'transport': 'serial',
 //   'path': '/dev/cu.usbmodem1421'

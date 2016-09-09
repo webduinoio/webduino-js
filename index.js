@@ -39,6 +39,8 @@ require('./src/module/Soil')(webduino);
 require('./src/module/G3')(webduino);
 require('./src/module/Stepper')(webduino);
 
+module.exports = webduino;
+
 webduino.transport.mqtt = require('./src/transport/NodeMqttTransport');
 webduino.transport.websocket = require('./src/transport/NodeWebSocketTransport');
 findTransport('serial', 'webduino-serial-transport');
@@ -51,5 +53,3 @@ function findTransport(type, name) {
     }
   } catch (e) {}
 }
-
-module.exports = webduino;
