@@ -5,13 +5,7 @@ The Webduino Javascript Core, for Browser and Node.js
 #### Browser
 Using [bower](http://bower.io):
 ```sh
-$ bower install webduino-js
-```
-
-Build dist files and docs:
-```sh
-$ cd bower_components/webduino-js
-$ npm install && npm run build
+$ bower install webduino-js#dist
 ```
 
 Insert scripts:

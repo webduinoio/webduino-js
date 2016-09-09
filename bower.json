@@ -8,6 +8,11 @@
     "webduino"
   ],
   "license": "MIT",
+  "main": "dist/webduino-all.min.js",
+  "license": "MIT",
+  "ignore": [
+    "package.json"
+  ],
   "dependencies": {
     "paho": "webduinoio/org.eclipse.paho.mqtt.javascript#develop",
     "setimmediate": "YuzuJS/setImmediate#1.x",
