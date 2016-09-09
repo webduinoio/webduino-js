@@ -153,6 +153,12 @@
     }
   };
 
+  proto.flush = function () {
+    if (this._buf && this._buf.length) {
+      this._sendOutHandler();
+    }
+  };
+
   MqttTransport.RECONNECT_PERIOD = 1;
 
   MqttTransport.KEEPALIVE_INTERVAL = 15;

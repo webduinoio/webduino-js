@@ -41,6 +41,10 @@
     throw new Error('direct call on abstract method.');
   };
 
+  proto.flush = function () {
+    throw new Error('direct call on abstract method.');
+  };
+
   scope.TransportEvent = TransportEvent;
   scope.Transport = Transport;
   scope.transport = scope.transport || {};

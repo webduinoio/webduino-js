@@ -161,6 +161,12 @@ proto.close = function () {
   }
 };
 
+proto.flush = function () {
+  if (this._buf && this._buf.length) {
+    this._sendOutHandler();
+  }
+};
+
 NodeMqttTransport.RECONNECT_PERIOD = 1;
 
 NodeMqttTransport.KEEPALIVE_INTERVAL = 15;

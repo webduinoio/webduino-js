@@ -81,6 +81,9 @@ NodeWebSocketTransport.prototype = proto = Object.create(Transport.prototype, {
 });
 
 proto.send = function (payload) {
+  if (this._buf.length + payload.length > NodeWebSocketTransport.MAX_PACKET_SIZE) {
+    this._sendOutHandler();
+  }
   push.apply(this._buf, payload);
   if (!this._sendTimer) {
     this._sendTimer = setImmediate(this._sendOutHandler);
@@ -97,5 +100,13 @@ proto.close = function () {
     }
   }
 };
+
+proto.flush = function () {
+  if (this._buf && this._buf.length) {
+    this._sendOutHandler();
+  }
+};
+
+NodeWebSocketTransport.MAX_PACKET_SIZE = 64;
 
 module.exports = NodeWebSocketTransport;

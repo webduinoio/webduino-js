@@ -821,6 +821,10 @@
     this.disconnect(callback);
   };
 
+  proto.flush = function () {
+    this.isConnected && this._transport.flush();
+  };
+
   proto.disconnect = function (callback) {
     callback = callback || function () {};
     if (this.isConnected) {
