@@ -80,6 +80,9 @@
   });
 
   proto.send = function (payload) {
+    if (this._buf.length + payload.length > WebSocketTransport.MAX_PACKET_SIZE) {
+      this._sendOutHandler();
+    }
     push.apply(this._buf, payload);
     if (!this._sendTimer) {
       this._sendTimer = setImmediate(this._sendOutHandler);
@@ -95,6 +98,14 @@
       }
     }
   };
+
+  proto.flush = function () {
+    if (this._buf && this._buf.length) {
+      this._sendOutHandler();
+    }
+  };
+
+  WebSocketTransport.MAX_PACKET_SIZE = 64;
 
   scope.transport.websocket = WebSocketTransport;
 }(webduino));

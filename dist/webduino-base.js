@@ -2485,7 +2485,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.7'
+  version: '0.4.8'
 };
 
 if (typeof exports !== 'undefined') {
@@ -3010,6 +3010,10 @@ if (typeof exports !== 'undefined') {
     throw new Error('direct call on abstract method.');
   };
 
+  proto.flush = function () {
+    throw new Error('direct call on abstract method.');
+  };
+
   scope.TransportEvent = TransportEvent;
   scope.Transport = Transport;
   scope.transport = scope.transport || {};
@@ -3170,6 +3174,12 @@ if (typeof exports !== 'undefined') {
     }
   };
 
+  proto.flush = function () {
+    if (this._buf && this._buf.length) {
+      this._sendOutHandler();
+    }
+  };
+
   MqttTransport.RECONNECT_PERIOD = 1;
 
   MqttTransport.KEEPALIVE_INTERVAL = 15;
@@ -3263,6 +3273,9 @@ if (typeof exports !== 'undefined') {
   });
 
   proto.send = function (payload) {
+    if (this._buf.length + payload.length > WebSocketTransport.MAX_PACKET_SIZE) {
+      this._sendOutHandler();
+    }
     push.apply(this._buf, payload);
     if (!this._sendTimer) {
       this._sendTimer = setImmediate(this._sendOutHandler);
@@ -3278,6 +3291,14 @@ if (typeof exports !== 'undefined') {
       }
     }
   };
+
+  proto.flush = function () {
+    if (this._buf && this._buf.length) {
+      this._sendOutHandler();
+    }
+  };
+
+  WebSocketTransport.MAX_PACKET_SIZE = 64;
 
   scope.transport.websocket = WebSocketTransport;
 }(webduino));
@@ -4520,6 +4541,10 @@ if (typeof exports !== 'undefined') {
 
   proto.close = function (callback) {
     this.disconnect(callback);
+  };
+
+  proto.flush = function () {
+    this.isConnected && this._transport.flush();
   };
 
   proto.disconnect = function (callback) {
