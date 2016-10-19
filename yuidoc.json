@@ -4,6 +4,8 @@
   "version": "0.4.10",
   "url": "https://webduino.io/",
   "options": {
-    "outdir": "docs"
+    "outdir": "docs",
+    "themedir": "node_modules/yuidoc-lucid-theme",
+    "helpers": ["node_modules/yuidoc-lucid-theme/helpers/helpers.js"]
   }
 }

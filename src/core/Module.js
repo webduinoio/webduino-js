@@ -9,6 +9,13 @@
 
   var EventEmitter = scope.EventEmitter;
 
+  /**
+   * The abstract module class.
+   *
+   * @namespace webduino
+   * @class  Module
+   * @constructor
+   */
   function Module() {
     EventEmitter.call(this);
   }
@@ -19,6 +26,13 @@
       value: Module
     },
 
+    /**
+     * Type of the module.
+     *
+     * @attribute type
+     * @type {String}
+     * @readOnly
+     */
     type: {
       get: function () {
         return this._type;

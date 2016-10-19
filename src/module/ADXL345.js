@@ -1,10 +1,10 @@
-+(function(factory) {
++(function (factory) {
   if (typeof exports === 'undefined') {
     factory(webduino || {});
   } else {
     module.exports = factory;
   }
-}(function(scope) {
+}(function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -12,9 +12,24 @@
     proto;
 
   var ADXL345Event = {
+
+    /**
+     * Fires when the acceleration value has changed.
+     * 
+     * @event ADXL234Event.MESSAGE
+     */
     MESSAGE: 'message'
   };
 
+  /**
+   * The ADXL345 class.
+   *
+   * @namespace webduino.module
+   * @class ADXL345
+   * @constructor
+   * @param {webduino.Board} board The board the ADXL345 accelerometer is attached to.
+   * @extends {webduino.Module}
+   */
   function ADXL345(board) {
     Module.call(this);
     this._board = board;
@@ -31,7 +46,7 @@
       fYg: 0,
       fZg: 0
     };
-    this._callback = function() {};
+    this._callback = function () {};
     this._board.send([0xf0, 0x04, 0x0b, 0x00, 0xf7]);
   }
 
@@ -46,7 +61,7 @@
       return false;
     }
 
-    msgPort.forEach(function(val, idx, ary) {
+    msgPort.forEach(function (val, idx, ary) {
       if (val !== msg[idx]) {
         stus = false;
       }
@@ -64,7 +79,7 @@
   }
 
   function calcFixed(base, data, fixedInfo) {
-    Object.getOwnPropertyNames(data).forEach(function(key, idx, ary) {
+    Object.getOwnPropertyNames(data).forEach(function (key, idx, ary) {
       fixedInfo[key] = data[key];
 
       if (key === base) {
@@ -87,7 +102,7 @@
     fZg = z * alpha + (fZg * (1.0 - alpha));
 
     // Roll & Pitch Equations
-    roll  = (Math.atan2(-fYg, fZg) * 180.0) / Math.PI;
+    roll = (Math.atan2(-fYg, fZg) * 180.0) / Math.PI;
     pitch = (Math.atan2(fXg, Math.sqrt(fYg * fYg + fZg * fZg)) * 180.0) / Math.PI;
     roll = roll.toFixed(2);
     pitch = pitch.toFixed(2);
@@ -105,32 +120,45 @@
     constructor: {
       value: ADXL345
     },
+
+    /**
+     * The state indicating whether the accelerometer is detecting.
+     * 
+     * @attribute state
+     * @type {String} 'on' or 'off
+     */
     state: {
-      get: function() {
+      get: function () {
         return this._state;
       },
-      set: function(val) {
+      set: function (val) {
         this._state = val;
       }
     }
   });
 
-  proto.on = function(callback) {
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Detection callback.
+   */
+  proto.on = function (callback) {
     var _this = this;
 
     this._board.send([0xf0, 0x04, 0x0b, 0x01, 0xf7]);
 
     if (typeof callback !== 'function') {
-      callback = function() {};
+      callback = function () {};
     }
 
-    this._callback = function(x, y, z) {
+    this._callback = function (x, y, z) {
       var info = _this._info;
       var rt;
 
       if (!_this._init) {
         _this._init = true;
-        calcFixed(this._baseAxis, {x:x, y:y, z:z}, info);
+        calcFixed(this._baseAxis, { x: x, y: y, z: z }, info);
       }
 
       x -= info.x;
@@ -138,7 +166,7 @@
       z -= info.z;
 
       rt = estimateRollandPitch(x, y, z, info.fXg, info.fYg, info.fZg);
-      ['fXg', 'fYg', 'fZg'].forEach(function(val, idx, ary) {
+      ['fXg', 'fYg', 'fZg'].forEach(function (val, idx, ary) {
         info[val] = rt[val];
       });
 
@@ -155,7 +183,12 @@
     this.addListener(ADXL345Event.MESSAGE, this._callback);
   };
 
-  proto.off = function() {
+  /**
+   * Stop detection.
+   *
+   * @method off
+   */
+  proto.off = function () {
     this._state = 'off';
     this._board.send([0xf0, 0x04, 0x0b, 0x02, 0xf7]);
     this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
@@ -163,7 +196,12 @@
     this._callback = null;
   };
 
-  proto.refresh = function() {
+  /**
+   * Reset detection value.
+   *
+   * @method refresh
+   */
+  proto.refresh = function () {
     this._init = false;
     if (this._init === true) {
       this._info = {
@@ -177,18 +215,36 @@
     }
   };
 
-  proto.setBaseAxis = function(val) {
+  /**
+   * Set the base axis for calculation.
+   *
+   * @method setBaseAxis 
+   * @param {String} axis Axis to be set to, either 'x', 'y', or 'z'.
+   */
+  proto.setBaseAxis = function (val) {
     this._baseAxis = val;
   };
 
-  proto.setSensitivity = function(sensitive) {
+  /**
+   * Set detection sensitivity.
+   *
+   * @method setSensitivity
+   * @param {Number} sensitivity Detection sensitivity.
+   */
+  proto.setSensitivity = function (sensitive) {
     if (sensitive !== this._sensitive) {
       this._sensitive = sensitive;
       this._board.send([0xf0, 0x04, 0x0b, 0x03, sensitive, 0xf7]);
     }
   };
 
-  proto.setDetectTime = function(detectTime) {
+  /**
+   * Set detecting time period.
+   *
+   * @method setDetectTime
+   * @param {Number} detectTime The time period for detecting, in ms.
+   */
+  proto.setDetectTime = function (detectTime) {
     if (detectTime !== this._detectTime) {
       this._detectTime = detectTime;
       this._board.send([0xf0, 0x04, 0x0b, 0x04, detectTime, 0xf7]);

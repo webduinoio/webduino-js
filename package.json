@@ -19,7 +19,8 @@
     "gulp-expect-file": "0.x",
     "gulp-shell": "0.x",
     "gulp-uglify": "2.x",
-    "yuidocjs": "0.x"
+    "yuidocjs": "0.x",
+    "yuidoc-lucid-theme": "0.x"
   },
   "dependencies": {
     "es6-promise": "4.x",

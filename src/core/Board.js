@@ -60,6 +60,14 @@
     SYSEX_NON_REALTIME = 0x7E,
     SYSEX_REALTIME = 0x7F;
 
+  /**
+   * The Board class.
+   *
+   * @namespace webduino
+   * @class Board
+   * @constructor
+   * @param {Object} options Constructor options for this board.
+   */
   function Board(options) {
     EventEmitter.call(this);
 

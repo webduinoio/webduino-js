@@ -12,6 +12,17 @@
     BoardEvent = scope.BoardEvent,
     proto;
 
+  /**
+   * The Led class.
+   *
+   * @namespace webduino.module
+   * @class Led
+   * @constructor
+   * @param {webduino.Board} board The board the LED is attached to.
+   * @param {webduino.Pin} pin The pin the LED is connected to.
+   * @param {Number} [driveMode] Drive mode the LED is operating at, either Led.SOURCE_DRIVE or Led.SYNC_DRIVE.
+   * @extends {webduino.Module}
+   */
   function Led(board, pin, driveMode) {
     Module.call(this);
 
@@ -57,6 +68,12 @@
       value: Led
     },
 
+    /**
+     * Intensity of the LED.
+     *
+     * @attribute intensity
+     * @type {Number}
+     */
     intensity: {
       get: function () {
         return this._pin.value;
@@ -81,8 +98,10 @@
   });
 
   /**
-   * Set led to on.
-   * @param {Function} [callback] - Led state changed callback.
+   * Light up the LED.
+   *
+   * @method on
+   * @param {Function} [callback] LED state changed callback.
    */
   proto.on = function (callback) {
     this._clearBlinkTimer();
@@ -93,8 +112,10 @@
   };
 
   /**
-   * Set led to off.
-   * @param {Function} [callback] - Led state changed callback.
+   * Dim the LED.
+   *
+   * @method off
+   * @param {Function} [callback] LED state changed callback.
    */
   proto.off = function (callback) {
     this._clearBlinkTimer();
@@ -105,8 +126,10 @@
   };
 
   /**
-   * Toggle led between on/off.
-   * @param {Function} [callback] - Led state changed callback.
+   * Toggle LED state between on/off.
+   *
+   * @method toggle
+   * @param {Function} [callback] State changed callback.
    */
   proto.toggle = function (callback) {
     if (this._blinkTimer) {
@@ -120,31 +143,32 @@
   };
 
   /**
-   * Set led blinking. Both msec and callback are optional
-   * and can be passed as the only one parameter.
-   * @param {number} [msec=1000] - Led blinking interval.
-   * @param {Function} [callback] - Led state changed callback.
+   * Blink the LED.
+   *
+   * @method blink
+   * @param {Number} [interval=1000] Led blinking interval.
+   * @param {Function} [callback] Led state changed callback.
    */
-  proto.blink = function (msec, callback) {
+  proto.blink = function (interval, callback) {
     if (arguments.length === 1 && typeof arguments[0] === 'function') {
       callback = arguments[0];
     }
-    msec = parseInt(msec);
-    msec = isNaN(msec) || msec <= 0 ? 1000 : msec;
+    interval = parseInt(interval);
+    interval = isNaN(interval) || interval <= 0 ? 1000 : interval;
 
     this._clearBlinkTimer();
-    this._blinkTimer = this._blink(msec, callback);
+    this._blinkTimer = this._blink(interval, callback);
   };
 
-  proto._blink = function (msec, callback) {
+  proto._blink = function (interval, callback) {
     var self = this;
     return setTimeout(function () {
       self._pin.value = 1 - self._pin.value;
       if (typeof callback === 'function') {
         checkPinState(self, self._pin, self._pin.value, callback);
       }
-      self._blinkTimer = self._blink(msec, callback);
-    }, msec);
+      self._blinkTimer = self._blink(interval, callback);
+    }, interval);
   };
 
   proto._clearBlinkTimer = function () {
@@ -154,7 +178,24 @@
     }
   };
 
+  /**
+   * Indicates the source LED drive mode.
+   *
+   * @property SOURCE_DRIVE
+   * @type Number
+   * @static
+   * @final
+   */
   Led.SOURCE_DRIVE = 0;
+
+  /**
+   * Indicates the synchronous LED drive mode.
+   *
+   * @property SYNC_DRIVE
+   * @type Number
+   * @static
+   * @final
+   */
   Led.SYNC_DRIVE = 1;
 
   scope.module.Led = Led;
