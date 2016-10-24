@@ -15,16 +15,17 @@
   },
   "devDependencies": {
     "gulp": "3.x",
-    "gulp-expect-file": "0.x",
     "gulp-concat": "2.x",
-    "gulp-uglify": "1.x",
+    "gulp-expect-file": "0.x",
     "gulp-shell": "0.x",
+    "gulp-uglify": "2.x",
     "yuidocjs": "0.x"
   },
   "dependencies": {
-    "mqtt": "1.x",
-    "ws": "1.x",
-    "es6-promise": "3.x",
-    "setimmediate": "1.x"
+    "es6-promise": "4.x",
+    "minimatch": "3",
+    "mqtt": "2.x",
+    "setimmediate": "1.x",
+    "ws": "1.x"
   }
 }
