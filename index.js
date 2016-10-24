@@ -12,6 +12,8 @@ require('./src/core/Board')(webduino);
 require('./src/core/WebArduino')(webduino);
 require('./src/core/Arduino')(webduino);
 
+require('./src/board/Smart')(webduino);
+
 require('./src/module/Led')(webduino);
 require('./src/module/RGBLed')(webduino);
 require('./src/module/Button')(webduino);

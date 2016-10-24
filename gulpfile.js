@@ -29,6 +29,9 @@ var base = [
     '../chrome-api-proxy/lib/chrome.bluetooth.js',
     '../webduino-bluetooth-transport/src/BluetoothTransport.js'
   ],
+  boards = [
+    'src/board/Smart.js'
+  ],
   modules = [
     'src/module/Led.js',
     'src/module/RGBLed.js',
@@ -70,7 +73,7 @@ gulp.task('dev', ['clean'], function () {
   expectFiles(base)
     .pipe(concat('webduino-base.js'))
     .pipe(gulp.dest('dist'));
-  expectFiles(base.concat(modules))
+  expectFiles(base.concat(boards).concat(modules))
     .pipe(concat('webduino-all.js'))
     .pipe(gulp.dest('dist'));
 });
@@ -80,7 +83,7 @@ gulp.task('prod', ['clean'], function () {
     .pipe(concat('webduino-base.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('dist'));
-  expectFiles(base.concat(modules))
+  expectFiles(base.concat(boards).concat(modules))
     .pipe(concat('webduino-all.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('dist'));

@@ -853,4 +853,5 @@
   scope.BoardEvent = BoardEvent;
 
   scope.Board = Board;
+  scope.board = scope.board || {};
 }));
