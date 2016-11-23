@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.9'
+  version: '0.4.10'
 };
 
 if (typeof exports !== 'undefined') {
@@ -5242,14 +5242,30 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       };
     }
     options = util.extend(getDefaultOptions(options), options);
+    options.server = parseServer(options.server);
 
     Board.call(this, options);
   }
 
   function getDefaultOptions(opts) {
     return {
-      transport: 'websocket'
+      transport: 'websocket',
+      server: Smart.DEFAULT_SERVER,
+      login: 'admin',
+      password: 'password',
+      autoReconnect: false,
+      multi: false
     };
+  }
+
+  function parseServer(url) {
+    if (url.indexOf('://') === -1) {
+      url = (typeof location !== 'undefined' &&
+          location.protocol === 'https:' ? 'wss:' : 'ws:') +
+        '//' + url;
+    }
+    url = util.parseURL(url);
+    return url.protocol + '//' + url.host + '/';
   }
 
   Smart.prototype = proto = Object.create(Board.prototype, {
@@ -5257,6 +5273,8 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       value: Smart
     }
   });
+
+  Smart.DEFAULT_SERVER = 'wss://ws.webduino.io:443';
 
   scope.board.Smart = Smart;
 }));
