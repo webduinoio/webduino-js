@@ -12,9 +12,25 @@
     proto;
 
   var PhotocellEvent = {
+
+    /**
+     * Fires when the value of brightness has changed.
+     * 
+     * @event PhotocellEvent.MESSAGE
+     */
     MESSAGE: 'message'
   };
 
+  /**
+   * The Photocell class.
+   *
+   * @namespace webduino.module
+   * @class Photocell
+   * @constructor
+   * @param {webduino.Board} board Board that the photocell is attached to.
+   * @param {Integer} analogPinNumber The pin that the photocell is connected to.
+   * @extends {webduino.Module}
+   */
   function Photocell(board, analogPinNumber) {
     Module.call(this);
     this._board = board;
@@ -35,6 +51,13 @@
     constructor: {
       value: Photocell
     },
+
+    /**
+     * The state indicating whether the module is scanning.
+     * 
+     * @attribute state
+     * @type {String} 'on' or 'off'
+     */
     state: {
       get: function() {
         return this._state;
@@ -45,6 +68,12 @@
     }
   });
 
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Callback after starting detection.
+   */
   proto.on = function(callback) {
     var _this = this;
 
@@ -63,6 +92,11 @@
     this.addListener(PhotocellEvent.MESSAGE, this._callback);
   };
 
+  /**
+   * Stop detection.
+   *
+   * @method off
+   */
   proto.off = function() {
     this._state = 'off';
     this._board.disableAnalogPin(this._pinNumber);
