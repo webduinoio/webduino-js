@@ -10,6 +10,16 @@
   var Module = scope.Module,
     proto;
 
+  /**
+   * The IRLed Class.
+   *
+   * @namespace webduino.module
+   * @class IRLed
+   * @constructor
+   * @param {webduino.Board} board The board that the buzzer is attached to.
+   * @param {webduino.encode} encode The pin that the buzzer is connected to.
+   * @extends {webduino.Module}
+   */
   function IRLed(board, encode) {
     Module.call(this);
     this._board = board;
@@ -23,6 +33,12 @@
     }
   });
 
+  /**
+   * Send IR code.
+   *
+   * @method send 
+   * @param {String} code Hexadecimal String to send.
+   */
   proto.send = function(code) {
     var aryCode = [0x09, 0x04];
     var ary;
@@ -44,6 +60,12 @@
     }
   };
 
+  /**
+   * Update code.
+   *
+   * @method updateEncode 
+   * @param {String} code Hexadecimal to update.
+   */
   proto.updateEncode = function(code) {
     this._encode = code;
   };
