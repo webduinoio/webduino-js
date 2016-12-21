@@ -12,10 +12,31 @@
     proto;
 
   var RFIDEvent = {
+
+    /**
+     * Fires when the RFID entered.
+     * 
+     * @event RFIDEvent.ENTER
+     */
     ENTER: 'enter',
+
+    /**
+     * Fires when the RFID leaved.
+     * 
+     * @event RFIDEvent.LEAVE
+     */
     LEAVE: 'leave'
   };
 
+  /**
+   * The RFID class.
+   *
+   * @namespace webduino.module
+   * @class RFID
+   * @constructor
+   * @param {webduino.Board} board Board that the RFID is attached to.
+   * @extends {webduino.Module}
+   */
   function RFID(board) {
     Module.call(this);
 
@@ -59,6 +80,13 @@
       value: RFID
     },
 
+    /**
+     * The state indicating whether the module is reading.
+     * 
+     * @attribute isReading
+     * @type {Boolean} isReading
+     * @readOnly
+     */
     isReading: {
       get: function () {
         return this._isReading;
@@ -66,6 +94,13 @@
     }
   });
 
+  /**
+   * Start reading RFID.
+   *
+   * @method read
+   * @param {Function} [enterHandler] Callback when RFID entered.
+   * @param {Function} [leaveHandler] Callback when RFID leaved.
+   */
   proto.read = function (enterHandler, leaveHandler) {
     if (!this._isReading) {
       this._board.send([0xf0, 0x04, 0x0f, 0x01, 0xf7]);
@@ -82,6 +117,11 @@
     }
   };
 
+  /**
+   * Stop reading RFID.
+   *
+   * @method stopRead
+   */
   proto.stopRead = function () {
     if (this._isReading) {
       this._board.send([0xf0, 0x04, 0x0f, 0x02, 0xf7]);
@@ -92,10 +132,22 @@
     }
   };
 
+  /**
+   * Remove listener.
+   *
+   * @method off
+   * @param {String} evtType Type of event.
+   * @param {Function} handler Callback function.
+   */
   proto.off = function (evtType, handler) {
     this.removeListener(evtType, handler);
   };
 
+  /**
+   * Stop reading RFID and remove all listeners.
+   *
+   * @method destroy
+   */
   proto.destroy = function () {
     this.stopRead();
     this.removeAllListeners(RFIDEvent.ENTER);
