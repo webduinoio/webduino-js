@@ -17,10 +17,32 @@
     RETRY_INTERVAL = 6000;
 
   var DhtEvent = {
+
+    /**
+     * Fires when reading value.
+     * 
+     * @event DhtEvent.READ
+     */
     READ: 'read',
+
+    /**
+     * Fires when error occured while reading value.
+     * 
+     * @event DhtEvent.READ_ERROR
+     */
     READ_ERROR: 'readError'
   };
 
+  /**
+   * The Dht(Digital Humidity and Temperature meter) Class.
+   *
+   * @namespace webduino.module
+   * @class Dht
+   * @constructor
+   * @param {webduino.Board} board The board that the DHT is attached to.
+   * @param {webduino.pin} pin The pin that the DHT is connected to.
+   * @extends {webduino.Module}
+   */
   function Dht(board, pin) {
     Module.call(this);
 
@@ -80,12 +102,26 @@
       value: Dht
     },
 
+    /**
+     * Return the humidity.
+     *
+     * @attribute humidity
+     * @type {Number} humidity
+     * @readOnly
+     */
     humidity: {
       get: function () {
         return this._humidity;
       }
     },
 
+    /**
+     * Return the temperature.
+     *
+     * @attribute temperature
+     * @type {Number} temperature
+     * @readOnly
+     */
     temperature: {
       get: function () {
         return this._temperature;
@@ -93,6 +129,14 @@
     }
   });
 
+  /**
+   * Start reading data from sensor.
+   *
+   * @method read
+   * @param {Function} [callback] reading callback.
+   * @param {Integer} interval reading interval.
+   * @param {Object} callback.data returned data from sensor, object will be `{humidity: humidity, temperature: temperature}`.
+   */
   proto.read = function (callback, interval) {
     var self = this,
       timer;
@@ -140,6 +184,11 @@
     }
   };
 
+  /**
+   * Stop reading value from sensor.
+   *
+   * @method stopRead
+   */
   proto.stopRead = function () {
     this.removeListener(DhtEvent.READ, this._readCallback);
     this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
