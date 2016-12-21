@@ -13,6 +13,7 @@
   /**
    * The IRLed Class.
    *
+   * IR LED (Infrared LED) is widely used for remote controls and night-vision cameras.
    * @namespace webduino.module
    * @class IRLed
    * @constructor

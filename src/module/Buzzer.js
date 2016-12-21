@@ -205,8 +205,10 @@
    * Play specified note and tempo.
    *
    * @method play 
-   * @param {Array} notes Array of notes. e.g. `["C4","AS7"]`.
-   * @param {Array} tempos Array of tempos. e.g. `["1", "10"]`.
+   * @param {Array} notes Array of notes.
+   * @param {Array} tempos Array of tempos.
+   * @example
+   *     buzzer.play(["C6","D6","E6","F6","G6","A6","B6"], ["8","8","8","8","8","8","8"]);
    */
   proto.play = function (notes, tempos) {
     if (typeof notes !== 'undefined') {

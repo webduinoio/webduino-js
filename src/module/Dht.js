@@ -34,8 +34,9 @@
   };
 
   /**
-   * The Dht(Digital Humidity and Temperature meter) Class.
+   * The Dht Class.
    *
+   * DHT is sensor for measuring temperature and humidity.
    * @namespace webduino.module
    * @class Dht
    * @constructor
@@ -135,7 +136,16 @@
    * @method read
    * @param {Function} [callback] reading callback.
    * @param {Integer} interval reading interval.
-   * @param {Object} callback.data returned data from sensor, object will be `{humidity: humidity, temperature: temperature}`.
+   * @param {Object} callback.data returned data from sensor,
+   *                 humidity and temperature will be passed into callback function as parameters.
+   *
+   *     callback()
+   *
+   * will be transformed to
+   *
+   *      callback({humidity: humidity, temperature: temperature})
+   *
+   * automatically.
    */
   proto.read = function (callback, interval) {
     var self = this,

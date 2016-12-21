@@ -15,6 +15,10 @@
   /**
    * The Max7219 Class.
    *
+   * MAX7219 is compact, serial input/output
+   * common-cathode display drivers that interface
+   * microprocessors (µPs) to 7-segment numeric LED displays
+   * of up to 8 digits, bar-graph displays, or 64 individual LEDs.
    * @namespace webduino.module
    * @class Max7219
    * @constructor
@@ -66,7 +70,9 @@
    * Show pattern LED matrix.
    *
    * @method on
-   * @param {String} data Pattern to display, e.g. `"0102040810204080"`.
+   * @param {String} data Pattern to display.
+   * @example
+   *     matrix.on("0000000000000000");
    */
   proto.on = function (data) {
     if (data) {
@@ -104,10 +110,14 @@
    * Display animated pattern.
    *
    * @method animate
-   * @param {Array} data Array of patterns, e.g. `["080c0effff0e0c08", "0808080808080800", "0102040810204000"]`.
+   * @param {Array} data Array of patterns.
    * @param {Integer} times Delay time (in microsecond) between patterns.
    * @param {Integer} duration Duration of animation.
    * @param {Function} callback Callback after animation.
+   * @example
+   *     var data = ["080c0effff0e0c08", "387cfefe82443800", "40e0e0e07f030604"];
+   *         matrix.on("0000000000000000");
+   *         matrix.animate(data, 100);
    */
   proto.animate = function(data, times, duration, callback) {
     var p = 0;

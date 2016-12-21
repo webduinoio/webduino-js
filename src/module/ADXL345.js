@@ -23,7 +23,8 @@
 
   /**
    * The ADXL345 class.
-   *
+   * 
+   * ADXL345 is a small, thin, ultralow power, 3-axis accelerometer.
    * @namespace webduino.module
    * @class ADXL345
    * @constructor
@@ -125,7 +126,7 @@
      * The state indicating whether the accelerometer is detecting.
      * 
      * @attribute state
-     * @type {String} 'on' or 'off
+     * @type {String} `on` or `off`
      */
     state: {
       get: function () {
@@ -219,7 +220,7 @@
    * Set the base axis for calculation.
    *
    * @method setBaseAxis 
-   * @param {String} axis Axis to be set to, either 'x', 'y', or 'z'.
+   * @param {String} axis Axis to be set to, either `x`, `y`, or `z`.
    */
   proto.setBaseAxis = function (val) {
     this._baseAxis = val;

@@ -82,7 +82,7 @@
      * The state indicating whether the IRLed is receiving.
      * 
      * @attribute state
-     * @type {String} 'on' or 'off
+     * @type {String} `on` or `off`
      */
     state: {
       get: function () {

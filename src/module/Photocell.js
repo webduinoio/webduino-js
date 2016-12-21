@@ -24,6 +24,7 @@
   /**
    * The Photocell class.
    *
+   * Photocell is small, inexpensive, low-power sensor that allow you to detect light.
    * @namespace webduino.module
    * @class Photocell
    * @constructor
@@ -56,7 +57,7 @@
      * The state indicating whether the module is scanning.
      * 
      * @attribute state
-     * @type {String} 'on' or 'off'
+     * @type {String} `on` or `off`
      */
     state: {
       get: function() {
