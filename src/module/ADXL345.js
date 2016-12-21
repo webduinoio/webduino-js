@@ -27,7 +27,7 @@
    * @namespace webduino.module
    * @class ADXL345
    * @constructor
-   * @param {webduino.Board} board The board the ADXL345 accelerometer is attached to.
+   * @param {webduino.Board} board The board that the ADXL345 accelerometer is attached to.
    * @extends {webduino.Module}
    */
   function ADXL345(board) {
