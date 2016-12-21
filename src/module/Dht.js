@@ -40,7 +40,7 @@
    * @class Dht
    * @constructor
    * @param {webduino.Board} board The board that the DHT is attached to.
-   * @param {webduino.pin} pin The pin that the DHT is connected to.
+   * @param {Integer} pin The pin that the DHT is connected to.
    * @extends {webduino.Module}
    */
   function Dht(board, pin) {

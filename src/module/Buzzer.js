@@ -123,7 +123,7 @@
    * @class Buzzer
    * @constructor
    * @param {webduino.Board} board The board that the buzzer is attached to.
-   * @param {webduino.pin} pin The pin that the buzzer is connected to.
+   * @param {Integer} pin The pin that the buzzer is connected to.
    * @extends {webduino.Module}
    */
   function Buzzer(board, pin) {

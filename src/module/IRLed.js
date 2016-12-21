@@ -16,8 +16,8 @@
    * @namespace webduino.module
    * @class IRLed
    * @constructor
-   * @param {webduino.Board} board The board that the buzzer is attached to.
-   * @param {webduino.encode} encode The pin that the buzzer is connected to.
+   * @param {webduino.Board} board The board that the IRLed is attached to.
+   * @param {String} encode Encode which IRLed used.
    * @extends {webduino.Module}
    */
   function IRLed(board, encode) {
