@@ -12,6 +12,18 @@
     BoardEvent = scope.BoardEvent,
     proto;
 
+  /**
+   * The Max7219 Class.
+   *
+   * @namespace webduino.module
+   * @class Max7219
+   * @constructor
+   * @param {webduino.Board} board The board that the Max7219 is attached to.
+   * @param {Integer} din Pin number of DIn (Data In).
+   * @param {Integer} cs Pin number of LOAD/CS.
+   * @param {Integer} clk Pin number of CLK.
+   * @extends {webduino.Module}
+   */
   function Max7219(board, din, cs, clk) {
     Module.call(this);
     this._board = board;
@@ -30,6 +42,13 @@
     constructor: {
       value: Max7219
     },
+
+    /**
+     * The intensity indicating brightness of Max7219.
+     * 
+     * @attribute intensity
+     * @type {Integer} Value of brightness (0~15).
+     */
     intensity: {
       get: function () {
         return this._intensity;
@@ -43,6 +62,12 @@
     }
   });
 
+  /**
+   * Show pattern LED matrix.
+   *
+   * @method on
+   * @param {String} data Pattern to display, e.g. `"0102040810204080"`.
+   */
   proto.on = function (data) {
     if (data) {
       this._data = data;
@@ -66,10 +91,24 @@
     this._board.send(sendData);
   };
 
+  /**
+   * Clear pattern on LED matrix.
+   *
+   * @method off
+   */
   proto.off = function () {
     this._board.send([0xf0, 4, 8, 2, 0xf7]);
   };
 
+  /**
+   * Display animated pattern.
+   *
+   * @method animate
+   * @param {Array} data Array of patterns, e.g. `["080c0effff0e0c08", "0808080808080800", "0102040810204000"]`.
+   * @param {Integer} times Delay time (in microsecond) between patterns.
+   * @param {Integer} duration Duration of animation.
+   * @param {Function} callback Callback after animation.
+   */
   proto.animate = function(data, times, duration, callback) {
     var p = 0;
 
@@ -98,6 +137,11 @@
     }
   };
 
+  /**
+   * Stop displaying animated pattern.
+   *
+   * @method animateStop
+   */
   proto.animateStop = function() {
     clearTimeout(this._timer);
     clearTimeout(this._timerDuration);
