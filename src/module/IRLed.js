@@ -1,10 +1,10 @@
-+(function(factory) {
++(function (factory) {
   if (typeof exports === 'undefined') {
     factory(webduino || {});
   } else {
     module.exports = factory;
   }
-}(function(scope) {
+}(function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -14,12 +14,13 @@
    * The IRLed Class.
    *
    * IR LED (Infrared LED) is widely used for remote controls and night-vision cameras.
+   * 
    * @namespace webduino.module
    * @class IRLed
    * @constructor
    * @param {webduino.Board} board The board that the IRLed is attached to.
    * @param {String} encode Encode which IRLed used.
-   * @extends {webduino.Module}
+   * @extends webduino.Module
    */
   function IRLed(board, encode) {
     Module.call(this);
@@ -40,23 +41,23 @@
    * @method send 
    * @param {String} code Hexadecimal String to send.
    */
-  proto.send = function(code) {
+  proto.send = function (code) {
     var aryCode = [0x09, 0x04];
     var ary;
     code = code || this._encode;
-    
+
     if (code) {
       ary = code.match(/\w{2}/g);
 
       // data length
       aryCode.push(ary.length * 8);
 
-      ary.forEach(function(val) {
+      ary.forEach(function (val) {
         for (var i = 0, len = val.length; i < len; i++) {
           aryCode.push(val.charCodeAt(i));
         }
       });
-      
+
       this._board.sendSysex(0x04, aryCode);
     }
   };
@@ -67,7 +68,7 @@
    * @method updateEncode 
    * @param {String} code Hexadecimal to update.
    */
-  proto.updateEncode = function(code) {
+  proto.updateEncode = function (code) {
     this._encode = code;
   };
 

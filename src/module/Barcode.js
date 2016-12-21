@@ -30,9 +30,9 @@
    * @class Barcode
    * @constructor
    * @param {webduino.Board} board The board the barcode scanner is attached to.
-   * @param {webduino.Pin} rxPin Receivin pin the barcode scanner is connected to.
-   * @param {webduino.Pin} txPin Transmitting pin the barcode scanner is connected to.
-   * @extends {webduino.Module}
+   * @param {webduino.Pin | Number} rxPin Receivin pin (number) the barcode scanner is connected to.
+   * @param {webduino.Pin | Number} txPin Transmitting pin (number) the barcode scanner is connected to.
+   * @extends webduino.Module
    */
   function Barcode(board, rxPin, txPin) {
     Module.call(this);

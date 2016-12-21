@@ -18,6 +18,15 @@
     STATUS: '/STATUS'
   };
 
+  /**
+   * Conveying messages over MQTT protocol.
+   *
+   * @namespace webduino.transport
+   * @class MqttTransport
+   * @constructor
+   * @param {Object} options Options to build a proper transport
+   * @extends webduino.Transport
+   */
   function MqttTransport(options) {
     Transport.call(this, options);
 
@@ -159,12 +168,40 @@
     }
   };
 
+  /**
+   * Reconnect period when MQTT connection goes down. Measured in seconds.
+   *
+   * @property RECONNECT_PERIOD
+   * @type {Number}
+   * @static
+   */
   MqttTransport.RECONNECT_PERIOD = 1;
 
+  /**
+   * MQTT keepalive interval. Measured in seconds.
+   *
+   * @property KEEPALIVE_INTERVAL
+   * @type {Number}
+   * @static
+   */
   MqttTransport.KEEPALIVE_INTERVAL = 15;
 
+  /**
+   * Time to wait before throwing connection timeout exception. Measured in seconds.
+   *
+   * @property CONNECT_TIMEOUT
+   * @type {Number}
+   * @static
+   */
   MqttTransport.CONNECT_TIMEOUT = 30;
 
+  /**
+   * Maximum packet size in KB.
+   *
+   * @property MAX_PACKET_SIZE
+   * @type {Number}
+   * @static
+   */
   MqttTransport.MAX_PACKET_SIZE = 128;
 
   scope.transport.mqtt = MqttTransport;

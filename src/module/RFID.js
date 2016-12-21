@@ -32,11 +32,12 @@
    * The RFID class.
    *
    * RFID reader is used to track nearby tags by wirelessly reading a tag's unique ID.
+   * 
    * @namespace webduino.module
    * @class RFID
    * @constructor
    * @param {webduino.Board} board Board that the RFID is attached to.
-   * @extends {webduino.Module}
+   * @extends webduino.Module
    */
   function RFID(board) {
     Module.call(this);

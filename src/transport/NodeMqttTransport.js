@@ -27,6 +27,15 @@ var MQTT_EVENTS = {
   ERROR: 'error'
 };
 
+/**
+ * Conveying messages over MQTT protocol, in Node.JS.
+ *
+ * @namespace webduino.transport
+ * @class NodeMqttTransport
+ * @constructor
+ * @param {Object} options Options to build a proper transport
+ * @extends webduino.Transport
+ */
 function NodeMqttTransport(options) {
   Transport.call(this, options);
 
@@ -167,12 +176,40 @@ proto.flush = function () {
   }
 };
 
+/**
+ * Reconnect period when MQTT connection goes down. Measured in seconds.
+ *
+ * @property RECONNECT_PERIOD
+ * @type {Number}
+ * @static
+ */
 NodeMqttTransport.RECONNECT_PERIOD = 1;
 
+/**
+ * MQTT keepalive interval. Measured in seconds.
+ *
+ * @property KEEPALIVE_INTERVAL
+ * @type {Number}
+ * @static
+ */
 NodeMqttTransport.KEEPALIVE_INTERVAL = 15;
 
+/**
+ * Time to wait before throwing connection timeout exception. Measured in seconds.
+ *
+ * @property CONNECT_TIMEOUT
+ * @type {Number}
+ * @static
+ */
 NodeMqttTransport.CONNECT_TIMEOUT = 30;
 
+/**
+ * Maximum packet size in KB.
+ *
+ * @property MAX_PACKET_SIZE
+ * @type {Number}
+ * @static
+ */
 NodeMqttTransport.MAX_PACKET_SIZE = 128;
 
 module.exports = NodeMqttTransport;

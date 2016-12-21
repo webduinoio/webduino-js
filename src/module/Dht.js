@@ -37,12 +37,13 @@
    * The Dht Class.
    *
    * DHT is sensor for measuring temperature and humidity.
+   * 
    * @namespace webduino.module
    * @class Dht
    * @constructor
    * @param {webduino.Board} board The board that the DHT is attached to.
    * @param {Integer} pin The pin that the DHT is connected to.
-   * @extends {webduino.Module}
+   * @extends webduino.Module
    */
   function Dht(board, pin) {
     Module.call(this);

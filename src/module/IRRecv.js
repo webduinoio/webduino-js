@@ -36,7 +36,7 @@
    * @constructor
    * @param {webduino.Board} board The board that the IRLed is attached to.
    * @param {Integer} pin The pin that the IRLed is connected to.
-   * @extends {webduino.Module}
+   * @extends webduino.Module
    */
   function IRRecv(board, pin) {
     Module.call(this);

@@ -21,7 +21,7 @@
    * @param {webduino.Board} board The board the LED is attached to.
    * @param {webduino.Pin} pin The pin the LED is connected to.
    * @param {Number} [driveMode] Drive mode the LED is operating at, either Led.SOURCE_DRIVE or Led.SYNC_DRIVE.
-   * @extends {webduino.Module}
+   * @extends webduino.Module
    */
   function Led(board, pin, driveMode) {
     Module.call(this);

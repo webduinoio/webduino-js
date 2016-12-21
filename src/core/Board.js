@@ -61,12 +61,13 @@
     SYSEX_REALTIME = 0x7F;
 
   /**
-   * The Board class.
+   * An abstract development board.
    *
    * @namespace webduino
    * @class Board
    * @constructor
-   * @param {Object} options Constructor options for this board.
+   * @param {Object} options Options to build the board instance.
+   * @extends webduino.EventEmitter
    */
   function Board(options) {
     EventEmitter.call(this);

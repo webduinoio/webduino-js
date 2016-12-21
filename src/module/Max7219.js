@@ -19,6 +19,7 @@
    * common-cathode display drivers that interface
    * microprocessors (µPs) to 7-segment numeric LED displays
    * of up to 8 digits, bar-graph displays, or 64 individual LEDs.
+   * 
    * @namespace webduino.module
    * @class Max7219
    * @constructor
@@ -26,7 +27,7 @@
    * @param {Integer} din Pin number of DIn (Data In).
    * @param {Integer} cs Pin number of LOAD/CS.
    * @param {Integer} clk Pin number of CLK.
-   * @extends {webduino.Module}
+   * @extends webduino.Module
    */
   function Max7219(board, din, cs, clk) {
     Module.call(this);
@@ -119,21 +120,21 @@
    *         matrix.on("0000000000000000");
    *         matrix.animate(data, 100);
    */
-  proto.animate = function(data, times, duration, callback) {
+  proto.animate = function (data, times, duration, callback) {
     var p = 0;
 
     if (typeof arguments[arguments.length - 1] === 'function') {
       callback = arguments[arguments.length - 1];
     } else {
-      callback = function() {};
+      callback = function () {};
     }
 
-    var run = function() {
+    var run = function () {
       this.on(data[p++ % data.length]);
       this._timer = setTimeout(run, times);
     }.bind(this);
 
-    var stop = function() {
+    var stop = function () {
       clearTimeout(this._timer);
       callback();
     }.bind(this);
@@ -152,7 +153,7 @@
    *
    * @method animateStop
    */
-  proto.animateStop = function() {
+  proto.animateStop = function () {
     clearTimeout(this._timer);
     clearTimeout(this._timerDuration);
   };
