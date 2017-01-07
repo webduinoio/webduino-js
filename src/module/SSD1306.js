@@ -47,6 +47,22 @@
         this._board.send([0xF0, 0x04, 0x01, 0x03, val, 0xF7]);
         _textSize = val;
       }
+    },
+    cursorX: {
+      get: function () {
+        return _cursorX;
+      },
+      set: function (val) {
+        _cursorX = val;
+      }
+    },
+    cursorY: {
+      get: function () {
+        return _cursorY;
+      },
+      set: function (val) {
+        _cursorY = val;
+      }
     }
   });
 
