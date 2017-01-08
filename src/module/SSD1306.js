@@ -32,7 +32,7 @@
         var m = event.message;
         sending = false;
       });
-    startQueue();
+    startQueue(board);
   }
 
   SSD1306.prototype = proto = Object.create(Module.prototype, {
@@ -108,7 +108,7 @@
   }
 
 
-  function startQueue() {
+  function startQueue(board) {
     setInterval(function () {
       if (sending || sendArray.length == 0) {
         return;
@@ -117,7 +117,7 @@
       var sendObj = sendArray.shift();
       sendAck = sendObj.ack;
       if (sendAck > 0) {
-        this._board.send(sendObj.obj);
+        board.send(sendObj.obj);
       } else {
         sending = false;
         sendCallback();
