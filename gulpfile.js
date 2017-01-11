@@ -33,6 +33,7 @@ var base = [
     'src/board/Smart.js'
   ],
   modules = [
+    'src/module/DFPlayer.js',
     'src/module/LCD1602.js',
     'src/module/Led.js',
     'src/module/RGBLed.js',
