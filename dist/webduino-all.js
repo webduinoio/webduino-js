@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.10'
+  version: '0.4.12'
 };
 
 if (typeof exports !== 'undefined') {
@@ -5288,6 +5288,226 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 }(function (scope) {
   'use strict';
 
+  var self;
+  var proto;
+  var sendLength = 50;
+  var sendArray = [];
+  var sending = false;
+  var sendAck = '';
+  var sendCallback;
+  var Module = scope.Module;
+  var sendAndAckCount = 0;
+  var waitAckAndSend = [];
+  var _play;
+
+  function DFPlayer(board, RX, TX) {
+    Module.call(this);
+    this._board = board;
+    this._rx = RX;
+    this._tx = TX;
+    self = this;
+    board.on(webduino.BoardEvent.SYSEX_MESSAGE,
+      function (event) {
+        sendAndAckCount--;
+        var m = event.message;
+        var resp = m[2];
+        sending = false;
+        if (waitAckAndSend.length > 0) {
+          var cmd = waitAckAndSend.shift();
+          self._board.send(cmd);
+        }
+      });
+    startQueue(board);
+  }
+
+  DFPlayer.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: DFPlayer
+    },
+    play: {
+      get: function () {
+        return _play;
+      },
+      set: function (val) {
+        _play = val;
+      }
+    }
+  });
+
+  proto.init = function () {
+    var cmd = [0xF0, 0x04, 0x19, 0x0 /*init*/ , this._rx, this._tx, 0xF7];
+    sendAndAckCount++;
+    this._board.send(cmd);
+  }
+
+  proto.play = function (num) {
+    var cmd = [0xF0, 0x04, 0x19, 0x01, num, 0xF7];
+    sendAndAckCount++;
+    waitAckAndSend.push(cmd);
+  }
+
+  proto.start = function () {
+    sendAndAckCount++;
+    waitAckAndSend.push([0xF0, 0x04, 0x19, 0x02 /*Start*/ , 0xF7]);
+  }
+
+  proto.stop = function () {
+    sendAndAckCount++;
+    waitAckAndSend.push([0xF0, 0x04, 0x19, 0x03 /*Stop*/ , 0xF7]);
+  }
+
+  proto.pause = function () {
+    sendAndAckCount++;
+    waitAckAndSend.push([0xF0, 0x04, 0x19, 0x04 /*Pause*/ , 0xF7]);
+  }
+
+  proto.volume = function (volume) {
+    sendAndAckCount++;
+    waitAckAndSend.push([0xF0, 0x04, 0x19, 0x05, volume, 0xF7]);
+  }
+
+  proto.previous = function () {
+    sendAndAckCount++;
+    waitAckAndSend.push([0xF0, 0x04, 0x19, 0x06 /*Previous*/ , 0xF7]);
+  }
+
+  proto.next = function () {
+    sendAndAckCount++;
+    waitAckAndSend.push([0xF0, 0x04, 0x19, 0x07 /*Next*/ , 0xF7]);
+  }
+
+  proto.loop = function (num) {
+    sendAndAckCount++;
+    waitAckAndSend.push([0xF0, 0x04, 0x19, 0x08, num, 0xF7]);
+  }
+
+  function startQueue(board) {
+    setInterval(function () {
+      if (sendAndAckCount == waitAckAndSend.length && waitAckAndSend.length > 0) {
+        var cmd = waitAckAndSend.shift();
+        board.send(cmd);
+      }
+      if (sending || sendArray.length == 0) {
+        return;
+      }
+      sending = true;
+      var sendObj = sendArray.shift();
+      sendAck = sendObj.ack;
+      if (sendAck > 0) {
+        board.send(sendObj.obj);
+      } else {
+        sending = false;
+        sendCallback();
+      }
+    }, 0);
+  }
+
+  scope.module.DFPlayer = DFPlayer;
+}));
++(function (factory) {
+  if (typeof exports === 'undefined') {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
+  'use strict';
+
+  var self;
+  var proto;
+  var sendLength = 50;
+  var sendArray = [];
+  var sending = false;
+  var sendAck = '';
+  var sendCallback;
+  var Module = scope.Module;
+  var _backlight;
+
+  function LCD1602(board) {
+    Module.call(this);
+    this._board = board;
+    self = this;
+    board.send([0xF0, 0x04, 0x18, 0x0 /*init*/ , 0xF7]);
+    board.on(webduino.BoardEvent.SYSEX_MESSAGE,
+      function (event) {
+        var m = event.message;
+        sending = false;
+      });
+    startQueue(board);
+  }
+
+  LCD1602.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: LCD1602
+    },
+    backlight: {
+      get: function () {
+        return _backlight;
+      },
+      set: function (val) {
+        _backlight = val;
+      }
+    }
+  });
+
+  proto.print = function (txt) {
+    var cmd = [0xF0, 0x04, 0x18, 0x02];
+    cmd = cmd.concat(toASCII(txt));
+    cmd.push(0xF7);
+    this._board.send(cmd);
+  }
+
+  proto.cursor = function (col, row) {
+    this._board.send([0xF0, 0x04, 0x18, 0x01, col, row, 0xF7]);
+  }
+
+  proto.clear = function () {
+    this._board.send([0xF0, 0x04, 0x18, 0x03, 0xF7]);
+  }
+
+  function toASCII(str) {
+    var data = [];
+    for (var i = 0; i < str.length; i++) {
+      var charCode = str.charCodeAt(i).toString(16);
+      if (charCode.length == 1) {
+        charCode = '0' + charCode;
+      }
+      var highChar = charCode.charAt(0);
+      var lowChar = charCode.charAt(1);
+      data.push(highChar.charCodeAt(0));
+      data.push(lowChar.charCodeAt(0));
+    }
+    return data;
+  }
+
+  function startQueue(board) {
+    setInterval(function () {
+      if (sending || sendArray.length == 0) {
+        return;
+      }
+      sending = true;
+      var sendObj = sendArray.shift();
+      sendAck = sendObj.ack;
+      if (sendAck > 0) {
+        board.send(sendObj.obj);
+      } else {
+        sending = false;
+        sendCallback();
+      }
+    }, 0);
+  }
+
+  scope.module.LCD1602 = LCD1602;
+}));
++(function (factory) {
+  if (typeof exports === 'undefined') {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
+  'use strict';
+
   var Pin = scope.Pin,
     Module = scope.Module,
     BoardEvent = scope.BoardEvent,
@@ -6901,6 +7121,152 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     };
 
     scope.module.HX711 = HX711;
+}));
++(function (factory) {
+  if (typeof exports === 'undefined') {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
+  'use strict';
+
+  var self;
+  var proto;
+  var _textSize = 2;
+  var _cursorX = 0;
+  var _cursorY = 0;
+  var sendLength = 50;
+  var sendArray = [];
+  var sending = false;
+  var sendAck = '';
+  var sendCallback;
+  var Module = scope.Module;
+
+  function SSD1306(board) {
+    Module.call(this);
+    this._board = board;
+    self = this;
+    board.send([0xF0, 0x04, 0x01, 0x0, 0xF7]);
+    board.send([0xF0, 0x04, 0x01, 0x02, _cursorX, _cursorY, 0xF7]);
+    board.send([0xF0, 0x04, 0x01, 0x03, _textSize, 0xF7]);
+    board.send([0xF0, 0x04, 0x01, 0x01, 0xF7]);
+    board.on(webduino.BoardEvent.SYSEX_MESSAGE,
+      function (event) {
+        var m = event.message;
+        sending = false;
+      });
+    startQueue(board);
+  }
+
+  SSD1306.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: SSD1306
+    },
+    textSize: {
+      get: function () {
+        return _textSize;
+      },
+      set: function (val) {
+        this._board.send([0xF0, 0x04, 0x01, 0x03, val, 0xF7]);
+        _textSize = val;
+      }
+    },
+    cursorX: {
+      get: function () {
+        return _cursorX;
+      },
+      set: function (val) {
+        _cursorX = val;
+      }
+    },
+    cursorY: {
+      get: function () {
+        return _cursorY;
+      },
+      set: function (val) {
+        _cursorY = val;
+      }
+    }
+  });
+
+  proto.clear = function () {
+    this._board.send([0xF0, 0x04, 0x01, 0x01, 0xF7]);
+  }
+
+  proto.drawImage = function (num) {
+    this._board.send([0xF0, 0x04, 0x01, 0x05, num, 0xF7]);
+  }
+
+  proto.render = function () {
+    this._board.send([0xF0, 0x04, 0x01, 0x06, 0xF7]);
+  }
+
+  proto.save = function (data, callback) {
+    sendCallback = callback;
+    for (var i = 0; i < data.length; i = i + sendLength) {
+      var chunk = data.substring(i, i + sendLength);
+      saveChunk(i / 2, chunk);
+    }
+    sendArray.push({ 'obj': {}, 'ack': 0 });
+  }
+
+  function saveChunk(startPos, data) {
+    var CMD = [0xf0, 0x04, 0x01, 0x0A];
+    var raw = [];
+    raw = raw.concat(CMD);
+    var n = '0000' + startPos.toString(16);
+    n = n.substring(n.length - 4);
+    for (var i = 0; i < 4; i++) {
+      raw.push(n.charCodeAt(i));
+    }
+    raw.push(0xf7);
+    // send Data //  
+    CMD = [0xf0, 0x04, 0x01, 0x0B];
+    raw = raw.concat(CMD);
+    for (i = 0; i < data.length; i++) {
+      raw.push(data.charCodeAt(i));
+    }
+    raw.push(0xf7);
+    sendArray.push({ 'obj': raw, 'ack': 0x0B });
+  }
+
+
+  function startQueue(board) {
+    setInterval(function () {
+      if (sending || sendArray.length == 0) {
+        return;
+      }
+      sending = true;
+      var sendObj = sendArray.shift();
+      sendAck = sendObj.ack;
+      if (sendAck > 0) {
+        board.send(sendObj.obj);
+      } else {
+        sending = false;
+        sendCallback();
+      }
+    }, 0);
+  }
+
+  proto.print = function (cursorX, cursorY, str) {
+    var len = arguments.length;
+    if (len == 3) {
+      _cursorX = cursorX;
+      _cursorY = cursorY;
+      this._board.send([0xF0, 0x04, 0x01, 0x02, cursorX, cursorY, 0xF7]);
+    } else {
+      str = cursorX;
+      this._board.send([0xF0, 0x04, 0x01, 0x02, _cursorX, _cursorY, 0xF7]);
+    }
+    var strCMD = [0xF0, 0x04, 0x01, 0x04];
+    for (var i = 0; i < str.length; i++) {
+      strCMD.push(str.charCodeAt(i));
+    }
+    strCMD.push(0xF7);
+    this._board.send(strCMD);
+  }
+  scope.module.SSD1306 = SSD1306;
 }));
 +(function(factory) {
     if (typeof exports === 'undefined') {
