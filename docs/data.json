@@ -2,7 +2,7 @@
     "project": {
         "name": "webduino-js",
         "description": "The Webduino Javascript Core, for Browser and Node.js",
-        "version": "0.4.12",
+        "version": "0.4.14",
         "url": "https://webduino.io/"
     },
     "files": {

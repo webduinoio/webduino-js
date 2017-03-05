@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.12'
+  version: '0.4.14'
 };
 
 if (typeof exports !== 'undefined') {
@@ -5279,6 +5279,242 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.board.Smart = Smart;
 }));
 
++(function (factory) {
+  if (typeof exports === 'undefined') {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
+  'use strict';
+
+  var self;
+  var proto;
+  var sendLength = 50;
+  var sendArray = [];
+  var sending = false;
+  var sendAck = '';
+  var sendCallback;
+  var Module = scope.Module;
+  var _callback;
+  var _dataString;
+
+  function toArray(str) {
+    var data = [];
+    for (var i = 0; i < str.length; i++) {
+      data.push(str.charCodeAt(i));
+    }
+    return data;
+  }
+
+
+  function DataTransfer(board) {
+    Module.call(this);
+    this._board = board;
+    self = this;
+    //board.send([0xF0, 0x04, 0x20, dataType /*init*/ , 0xF7]);
+    board.on(webduino.BoardEvent.SYSEX_MESSAGE,
+      function (event) {
+        var data = event.message;
+        sending = false;
+        if (data[0] == 0x20) {
+          switch (data[1] /*dataType*/ ) {
+            case 0: //String
+              var str = "";
+              for (var i = 2; i < data.length; i++) {
+                str += String.fromCharCode(data[i]);
+              }
+              _dataString = str;
+              _callback(0, str);
+              break;
+          }
+        }
+      });
+    startQueue(board);
+  }
+
+  DataTransfer.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: DataTransfer
+    }
+  });
+
+  proto.sendString = function (msg, callback) {
+    var cmdArray = [0xF0, 0x04, 0x20, 0x0];
+    cmdArray = cmdArray.concat(toArray(msg));
+    cmdArray.push(0xF7);
+    this._board.send(cmdArray);
+    if (callback !== undefined) {
+      _callback = callback;
+    }
+  }
+
+  proto.onMessage = function (callback) {
+    if (callback !== undefined) {
+      _callback = callback;
+    }
+  }
+
+  proto.getDataString = function () {
+    return _dataString;
+  }
+
+  function startQueue(board) {
+    setInterval(function () {
+      if (sending || sendArray.length == 0) {
+        return;
+      }
+      sending = true;
+      var sendObj = sendArray.shift();
+      sendAck = sendObj.ack;
+      if (sendAck > 0) {
+        board.send(sendObj.obj);
+      } else {
+        sending = false;
+        sendCallback();
+      }
+    }, 0);
+  }
+
+  scope.module.DataTransfer = DataTransfer;
+}));
++(function (factory) {
+  if (typeof exports === 'undefined') {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
+  'use strict';
+
+  var Module = scope.Module,
+    BoardEvent = scope.BoardEvent;
+  var self;
+  var proto;
+  var sendLen = 32;
+  var lastSendIR = false;
+  var debugFlag = false;
+
+  function log(obj) {
+    if (debugFlag) {
+      console.log(obj);
+    }
+  }
+
+  function IRRAW(board, pinMapping) {
+    Module.call(this);
+    this._board = board;
+    this.pinSendIR = this.pinRecvIR = -1;
+    self = this;
+    if (typeof pinMapping === 'object') {
+      if (pinMapping['send']) {
+        this.pinSendIR = pinMapping['send'];
+      }
+      if (pinMapping['recv']) {
+        this.pinRecvIR = pinMapping['recv'];
+      }
+    }
+    onMessage();
+  }
+
+  function onMessage() {
+    self._board.on(webduino.BoardEvent.SYSEX_MESSAGE, function (event) {
+      var m = event.message;
+      //send IR data to Board
+      if (m[0] == 0x04 && m[1] == 0x09 && m[2] == 0x0B) {
+        log("send IR data to Board callback");
+        if (lastSendIR) {
+          //store OK
+          lastSendIR = false;
+          log("send pin:" + self.pinSendIR);
+          self._board.send([0xf0, 0x04, 0x09, 0x0C, self.pinSendIR, 0xF7]);
+        }
+      }
+      //trigger IR send
+      else if (m[0] == 0x04 && m[1] == 0x09 && m[2] == 0x0C) {
+        log("trigger IR send callback...");
+        self.irSendCallback();
+      }
+      //record IR data
+      else if (m[0] == 0x04 && m[1] == 0x09 && m[2] == 0x0D) {
+        log("record IR callback...");
+        var strInfo = '';
+        for (var i = 3; i < m.length; i++) {
+          strInfo += String.fromCharCode(m[i]);
+        }
+        self.irData = strInfo.substring(4);
+        self.irRecvCallback(self.irData);
+      } else {
+        log(event);
+      }
+    });
+  }
+
+
+  function send(startPos, data) {
+    var CMD = [0xf0, 0x04, 0x09, 0x0A];
+    var raw = [];
+    raw = raw.concat(CMD);
+    var n = '0000' + startPos.toString(16);
+    n = n.substring(n.length - 4);
+    for (var i = 0; i < 4; i++) {
+      raw.push(n.charCodeAt(i));
+    }
+    raw.push(0xf7);
+    // send Data //  
+    CMD = [0xf0, 0x04, 0x09, 0x0B];
+    raw = raw.concat(CMD);
+    for (i = 0; i < data.length; i++) {
+      raw.push(data.charCodeAt(i));
+    }
+    raw.push(0xf7);
+    self._board.send(raw);
+  }
+
+  function sendIRCmd(cmd, len) {
+    for (var i = 0; i < cmd.length; i = i + len) {
+      var data = cmd.substring(i, i + len);
+      send(i / 8, data);
+    }
+    lastSendIR = true;
+  }
+
+  IRRAW.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: IRRAW
+    }
+  });
+
+  proto.recv = function (callback) {
+    self.irRecvCallback = callback;
+    if (self.pinRecvIR > 0) {
+      self._board.send([0xF0, 0x04, 0x09, 0x0D, self.pinRecvIR, 0xF7]);
+      log("wait recv...");
+    }
+  };
+
+  proto.send = function (data, callback) {
+    if (self.pinSendIR > 0) {
+      sendIRCmd(data, sendLen);
+      self.irSendCallback = callback;
+    }
+  }
+
+  proto.debug = function (val) {
+    if (typeof val == 'boolean') {
+      self.isDebug = val;
+    }
+  }
+
+  proto.sendPin = function (pin) {
+    this.pinSendIR = pin;
+  }
+  proto.recvPin = function (pin) {
+    this.pinRecvIR = pin;
+  }
+
+  scope.module.IRRAW = IRRAW;
+}));
 +(function (factory) {
   if (typeof exports === 'undefined') {
     factory(webduino || {});
