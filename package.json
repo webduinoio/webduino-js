@@ -17,7 +17,7 @@
     "gulp": "3.x",
     "gulp-concat": "2.x",
     "gulp-expect-file": "0.x",
-    "gulp-shell": "0.x",
+    "gulp-shell": "0.5.2",
     "gulp-uglify": "2.x",
     "yuidocjs": "0.x"
   },
