@@ -14,6 +14,8 @@ require('./src/core/Arduino')(webduino);
 
 require('./src/board/Smart')(webduino);
 
+require('./src/module/DataTransfer')(webduino);
+require('./src/module/IRRAW')(webduino);
 require('./src/module/DFPlayer')(webduino);
 require('./src/module/LCD1602')(webduino);
 require('./src/module/Led')(webduino);
