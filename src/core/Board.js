@@ -436,9 +436,12 @@
   };
 
   proto.startup = function () {
-    this._isReady = true;
-    this.emit(BoardEvent.READY, this);
     this.enableDigitalPins();
+
+    setTimeout(function () {
+      this._isReady = true;
+      this.emit(BoardEvent.READY, this);
+    }.bind(this), 2000);
   };
 
   proto.systemReset = function () {
