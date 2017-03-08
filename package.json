@@ -26,6 +26,6 @@
     "minimatch": "3.x",
     "mqtt": "2.x",
     "setimmediate": "1.x",
-    "ws": "2.x"
+    "ws": "1.x"
   }
 }
