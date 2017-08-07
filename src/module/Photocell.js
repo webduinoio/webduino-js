@@ -55,7 +55,7 @@
     },
 
     /**
-     * The state indicating whether the module is scanning.
+     * The state indicating whether the module is measuring.
      * 
      * @attribute state
      * @type {String} `on` or `off`
@@ -73,8 +73,9 @@
   /**
    * Start detection.
    *
-   * @method on
+   * @method measure
    * @param {Function} [callback] Callback after starting detection.
+   * @deprecated `on()` is deprecated, use `measure()` instead.
    */
   proto.measure = proto.on = function(callback) {
     var _this = this;

@@ -97,9 +97,10 @@
   /**
    * Start detection.
    *
-   * @method on
+   * @method receive
    * @param {Function} [callback] Detection callback.
    * @param {Function} [errorCallback] Error callback while Detection.
+   * @deprecated `on()` is deprecated, use `receive()` instead.
    */
   proto.receive = proto.on = function (callback, errorCallback) {
     var aryCode = [0xf0, 0x04, 0x0A, 0x00];

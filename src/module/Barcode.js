@@ -80,8 +80,9 @@
   /**
    * Start scanning.
    *
-   * @method on
+   * @method scan
    * @param {Function} [callback] Scanning callback.
+   * @deprecated `on()` is deprecated, use `scan()` instead.
    */
   proto.scan = proto.on = function(callback) {
     var _this = this;
