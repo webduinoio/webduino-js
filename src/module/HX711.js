@@ -53,7 +53,7 @@
         }
     });
 
-    proto.on = function(callback) {
+    proto.measure = proto.on = function(callback) {
         var _this = this;
         this._board.send([0xf0, 0x04, 0x15, 0x01, 0xf7]);
         if (typeof callback !== 'function') {

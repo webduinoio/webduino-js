@@ -45,7 +45,7 @@
     }
   });
 
-  proto.on = function(callback) {
+  proto.measure = proto.on = function(callback) {
     var _this = this;
 
     this._board.enableAnalogPin(this._pinNumber);
