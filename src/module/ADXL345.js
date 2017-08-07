@@ -145,7 +145,7 @@
    * @method on
    * @param {Function} [callback] Detection callback.
    */
-  proto.on = function (callback) {
+  proto.detect = proto.on = function(callback) {
     var _this = this;
 
     this._board.send([0xf0, 0x04, 0x0b, 0x01, 0xf7]);

@@ -33,6 +33,10 @@ var base = [
     'src/board/Smart.js'
   ],
   modules = [
+    'src/module/DataTransfer.js',
+    'src/module/IRRAW.js',
+    'src/module/DFPlayer.js',
+    'src/module/LCD1602.js',
     'src/module/Led.js',
     'src/module/RGBLed.js',
     'src/module/Button.js',
@@ -48,6 +52,7 @@ var base = [
     'src/module/Max7219.js',
     'src/module/ADXL345.js',
     'src/module/HX711.js',
+    'src/module/SSD1306.js',
     'src/module/Barcode.js',
     'src/module/IRLed.js',
     'src/module/IRRecv.js',

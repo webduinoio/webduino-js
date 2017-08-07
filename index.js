@@ -14,6 +14,10 @@ require('./src/core/Arduino')(webduino);
 
 require('./src/board/Smart')(webduino);
 
+require('./src/module/DataTransfer')(webduino);
+require('./src/module/IRRAW')(webduino);
+require('./src/module/DFPlayer')(webduino);
+require('./src/module/LCD1602')(webduino);
 require('./src/module/Led')(webduino);
 require('./src/module/RGBLed')(webduino);
 require('./src/module/Button')(webduino);
@@ -29,6 +33,7 @@ require('./src/module/Buzzer')(webduino);
 require('./src/module/Max7219')(webduino);
 require('./src/module/ADXL345')(webduino);
 require('./src/module/HX711')(webduino);
+require('./src/module/SSD1306')(webduino);
 require('./src/module/Barcode')(webduino);
 require('./src/module/IRLed')(webduino);
 require('./src/module/IRRecv')(webduino);

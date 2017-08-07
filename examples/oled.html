@@ -1,0 +1,25 @@
+<html>
+
+<head>
+  <script src="../dist/webduino-all.js"></script>
+  <script src="../src/module/SSD1306.js"></script>
+  <script>
+  var board, display;
+  board = new webduino.WebArduino('10X417v3');
+  board.on(webduino.BoardEvent.READY, function() {
+    console.log("board Ready...");
+    display = new webduino.module.SSD1306(board);
+    display.clear();
+    display.textSize = 2;
+    display.print(0, 0, "OLED Test");
+    display.textSize = 4;
+    display.cursorY = 30;
+    display.print("OK!");
+  });
+  </script>
+</head>
+
+<body>
+</body>
+
+</html>

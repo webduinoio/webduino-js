@@ -101,7 +101,7 @@
    * @param {Function} [callback] Detection callback.
    * @param {Function} [errorCallback] Error callback while Detection.
    */
-  proto.on = function (callback, errorCallback) {
+  proto.receive = proto.on = function (callback, errorCallback) {
     var aryCode = [0xf0, 0x04, 0x0A, 0x00];
 
     if (typeof callback !== 'function') {
