@@ -82,6 +82,13 @@
    *
    * @method scan
    * @param {Function} [callback] Scanning callback.
+   */
+  
+  /**
+   * Start scanning.
+   *
+   * @method on
+   * @param {Function} [callback] Scanning callback.
    * @deprecated `on()` is deprecated, use `scan()` instead.
    */
   proto.scan = proto.on = function(callback) {

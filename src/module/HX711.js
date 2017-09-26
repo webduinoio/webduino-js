@@ -84,6 +84,13 @@
    *
    * @method measure
    * @param {Function} [callback] Callback after starting detection.
+   */
+  
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Callback after starting detection.
    * @deprecated `on()` is deprecated, use `measure()` instead.
    */
     proto.measure = proto.on = function(callback) {

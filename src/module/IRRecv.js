@@ -100,6 +100,14 @@
    * @method receive
    * @param {Function} [callback] Detection callback.
    * @param {Function} [errorCallback] Error callback while Detection.
+   */
+  
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Detection callback.
+   * @param {Function} [errorCallback] Error callback while Detection.
    * @deprecated `on()` is deprecated, use `receive()` instead.
    */
   proto.receive = proto.on = function (callback, errorCallback) {

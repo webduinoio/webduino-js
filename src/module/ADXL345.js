@@ -144,6 +144,13 @@
    *
    * @method detect
    * @param {Function} [callback] Detection callback.
+   */
+  
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Detection callback.
    * @deprecated `on()` is deprecated, use `detect()` instead.
    */
   proto.detect = proto.on = function(callback) {
