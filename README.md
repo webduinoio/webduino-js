@@ -29,8 +29,7 @@ $ npm install webduino-js
 **webduino-js** provides isomorphic APIs:
 
 ```javascript
-// need to acquire 'webduino' in Node.js:
-// var webduino = require('webduino-js');
+var webduino = require('webduino-js');
 
 var board, led;
 
