@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.14'
+  version: '0.4.16'
 };
 
 if (typeof exports !== 'undefined') {
@@ -2516,6 +2516,13 @@ if (typeof exports !== 'undefined') {
   // https://raw.githubusercontent.com/Gozala/events/master/events.js
   var proto;
 
+  /**
+   * An event emitter in browser.
+   *
+   * @namespace webduino
+   * @class EventEmitter
+   * @constructor
+   */
   function EventEmitter() {
     this._events = this._events || {};
     this._maxListeners = this._maxListeners || undefined;
@@ -2527,10 +2534,25 @@ if (typeof exports !== 'undefined') {
 
   // By default EventEmitters will print a warning if more than 10 listeners are
   // added to it. This is a useful default which helps finding memory leaks.
+
+  /**
+   * Default maximum number of listeners (10).
+   *
+   * @property defaultMaxListeners
+   * @type {Number}
+   * @static
+   */
   EventEmitter.defaultMaxListeners = 10;
 
   // Obviously not all Emitters should be limited to 10. This function allows
   // that to be increased. Set to zero for unlimited.
+
+  /**
+   * Set maximum number of listeners that is allow to bind on an emitter.
+   *
+   * @method setMaxListeners
+   * @param {Number} n Number of listeners.
+   */
   proto.setMaxListeners = function (n) {
     if (!isNumber(n) || n < 0 || isNaN(n))
       throw TypeError('n must be a positive number');
@@ -2538,6 +2560,13 @@ if (typeof exports !== 'undefined') {
     return this;
   };
 
+  /**
+   * Emit an event of certain type.
+   *
+   * @method emit
+   * @param {String} type Event type.
+   * @param {Object} [object,...] Event object(s).
+   */
   proto.emit = function (type) {
     var er, handler, len, args, i, listeners;
 
@@ -2590,6 +2619,13 @@ if (typeof exports !== 'undefined') {
     return true;
   };
 
+  /**
+   * Add a listener for a certain type of event.
+   *
+   * @method addListener
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
   proto.addListener = function (type, listener) {
     var m;
 
@@ -2640,8 +2676,22 @@ if (typeof exports !== 'undefined') {
     return this;
   };
 
+  /**
+   * Alias for EventEmitter.addListener(type, listener)
+   *
+   * @method on
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
   proto.on = proto.addListener;
 
+  /**
+   * Add a one-time listener for a certain type of event.
+   *
+   * @method once
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
   proto.once = function (type, listener) {
     if (!isFunction(listener))
       throw TypeError('listener must be a function');
@@ -2663,6 +2713,13 @@ if (typeof exports !== 'undefined') {
     return this;
   };
 
+  /**
+   * Remove a listener for certain type of event.
+   *
+   * @method removeListener
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
   // emits a 'removeListener' event iff the listener was removed
   proto.removeListener = function (type, listener) {
     var list, position, length, i;
@@ -2709,6 +2766,12 @@ if (typeof exports !== 'undefined') {
     return this;
   };
 
+  /**
+   * Remove all listeners of certain type.
+   *
+   * @method removeAllListeners
+   * @param {String} type Event type.
+   */
   proto.removeAllListeners = function (type) {
     var key, listeners;
 
@@ -2749,6 +2812,12 @@ if (typeof exports !== 'undefined') {
     return this;
   };
 
+  /**
+   * Return the listener list bound to certain type of event.
+   *
+   * @method listeners
+   * @param {String} type Evnet type.
+   */
   proto.listeners = function (type) {
     var ret;
     if (!this._events || !this._events[type])
@@ -2760,6 +2829,14 @@ if (typeof exports !== 'undefined') {
     return ret;
   };
 
+  /**
+   * Count the number of listeners of an emitter.
+   *
+   * @method  listenerCount
+   * @param  {webduino.EventEmitter} emitter The EventEmitter instance to count.
+   * @param  {String} type Event type.
+   * @static
+   */
   EventEmitter.listenerCount = function (emitter, type) {
     var ret;
     if (!emitter._events || !emitter._events[type])
@@ -2991,12 +3068,45 @@ if (typeof exports !== 'undefined') {
     proto;
 
   var TransportEvent = {
+
+    /**
+     * Fires when a transport is opened.
+     * 
+     * @event TransportEvent.OPEN
+     */
     OPEN: 'open',
+
+    /**
+     * Fires when a transport receives a message.
+     * 
+     * @event TransportEvent.MESSAGE
+     */
     MESSAGE: 'message',
+
+    /**
+     * Fires when a transport get an error.
+     * 
+     * @event TransportEvent.ERROR
+     */
     ERROR: 'error',
+
+    /**
+     * Fires when a transport is closed.
+     * 
+     * @event TransportEvent.CLOSE
+     */
     CLOSE: 'close'
   };
 
+  /**
+   * A messaging mechanism to carry underlying firmata messages. This is an abstract class meant to be extended.
+   *
+   * @namespace webduino
+   * @class Transport
+   * @constructor
+   * @param {Object} options Options to build the transport instance.
+   * @extends webduino.EventEmitter
+   */
   function Transport(options) {
     EventEmitter.call(this);
   }
@@ -3007,20 +3117,43 @@ if (typeof exports !== 'undefined') {
       value: Transport
     },
 
+    /**
+     * Indicates if the state of the transport is open.
+     *
+     * @attribute isOpen
+     * @type {Boolean}
+     * @readOnly
+     */
     isOpen: {
       value: false
     }
 
   });
 
+  /**
+   * Send payload through the transport.
+   *
+   * @method send
+   * @param {Array} payload The actual data to be sent.
+   */
   proto.send = function (payload) {
     throw new Error('direct call on abstract method.');
   };
 
+  /**
+   * Close and terminate the transport.
+   *
+   * @method close
+   */
   proto.close = function () {
     throw new Error('direct call on abstract method.');
   };
 
+  /**
+   * Flush any buffered data of the transport.
+   *
+   * @method flush
+   */
   proto.flush = function () {
     throw new Error('direct call on abstract method.');
   };
@@ -3050,6 +3183,15 @@ if (typeof exports !== 'undefined') {
     STATUS: '/STATUS'
   };
 
+  /**
+   * Conveying messages over MQTT protocol.
+   *
+   * @namespace webduino.transport
+   * @class MqttTransport
+   * @constructor
+   * @param {Object} options Options to build a proper transport
+   * @extends webduino.Transport
+   */
   function MqttTransport(options) {
     Transport.call(this, options);
 
@@ -3191,12 +3333,40 @@ if (typeof exports !== 'undefined') {
     }
   };
 
+  /**
+   * Reconnect period when MQTT connection goes down. Measured in seconds.
+   *
+   * @property RECONNECT_PERIOD
+   * @type {Number}
+   * @static
+   */
   MqttTransport.RECONNECT_PERIOD = 1;
 
+  /**
+   * MQTT keepalive interval. Measured in seconds.
+   *
+   * @property KEEPALIVE_INTERVAL
+   * @type {Number}
+   * @static
+   */
   MqttTransport.KEEPALIVE_INTERVAL = 15;
 
+  /**
+   * Time to wait before throwing connection timeout exception. Measured in seconds.
+   *
+   * @property CONNECT_TIMEOUT
+   * @type {Number}
+   * @static
+   */
   MqttTransport.CONNECT_TIMEOUT = 30;
 
+  /**
+   * Maximum packet size in KB.
+   *
+   * @property MAX_PACKET_SIZE
+   * @type {Number}
+   * @static
+   */
   MqttTransport.MAX_PACKET_SIZE = 128;
 
   scope.transport.mqtt = MqttTransport;
@@ -3709,6 +3879,14 @@ if (typeof exports !== 'undefined') {
 
   var EventEmitter = scope.EventEmitter;
 
+  /**
+   * A component to be attached to a board. This is an abstract class meant to be extended.
+   *
+   * @namespace webduino
+   * @class Module
+   * @constructor
+   * @extends webduino.EventEmitter
+   */
   function Module() {
     EventEmitter.call(this);
   }
@@ -3719,6 +3897,13 @@ if (typeof exports !== 'undefined') {
       value: Module
     },
 
+    /**
+     * Type of the module.
+     *
+     * @attribute type
+     * @type {String}
+     * @readOnly
+     */
     type: {
       get: function () {
         return this._type;
@@ -3793,6 +3978,15 @@ if (typeof exports !== 'undefined') {
     SYSEX_NON_REALTIME = 0x7E,
     SYSEX_REALTIME = 0x7F;
 
+  /**
+   * An abstract development board.
+   *
+   * @namespace webduino
+   * @class Board
+   * @constructor
+   * @param {Object} options Options to build the board instance.
+   * @extends webduino.EventEmitter
+   */
   function Board(options) {
     EventEmitter.call(this);
 
@@ -4169,9 +4363,12 @@ if (typeof exports !== 'undefined') {
   };
 
   proto.startup = function () {
-    this._isReady = true;
-    this.emit(BoardEvent.READY, this);
     this.enableDigitalPins();
+
+    setTimeout(function () {
+      this._isReady = true;
+      this.emit(BoardEvent.READY, this);
+    }.bind(this), 2000);
   };
 
   proto.systemReset = function () {
@@ -5749,6 +5946,17 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     BoardEvent = scope.BoardEvent,
     proto;
 
+  /**
+   * The Led class.
+   *
+   * @namespace webduino.module
+   * @class Led
+   * @constructor
+   * @param {webduino.Board} board The board the LED is attached to.
+   * @param {webduino.Pin} pin The pin the LED is connected to.
+   * @param {Number} [driveMode] Drive mode the LED is operating at, either Led.SOURCE_DRIVE or Led.SYNC_DRIVE.
+   * @extends webduino.Module
+   */
   function Led(board, pin, driveMode) {
     Module.call(this);
 
@@ -5794,6 +6002,12 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       value: Led
     },
 
+    /**
+     * Intensity of the LED.
+     *
+     * @attribute intensity
+     * @type {Number}
+     */
     intensity: {
       get: function () {
         return this._pin.value;
@@ -5818,8 +6032,10 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   });
 
   /**
-   * Set led to on.
-   * @param {Function} [callback] - Led state changed callback.
+   * Light up the LED.
+   *
+   * @method on
+   * @param {Function} [callback] LED state changed callback.
    */
   proto.on = function (callback) {
     this._clearBlinkTimer();
@@ -5830,8 +6046,10 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   };
 
   /**
-   * Set led to off.
-   * @param {Function} [callback] - Led state changed callback.
+   * Dim the LED.
+   *
+   * @method off
+   * @param {Function} [callback] LED state changed callback.
    */
   proto.off = function (callback) {
     this._clearBlinkTimer();
@@ -5842,8 +6060,10 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   };
 
   /**
-   * Toggle led between on/off.
-   * @param {Function} [callback] - Led state changed callback.
+   * Toggle LED state between on/off.
+   *
+   * @method toggle
+   * @param {Function} [callback] State changed callback.
    */
   proto.toggle = function (callback) {
     if (this._blinkTimer) {
@@ -5857,31 +6077,32 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   };
 
   /**
-   * Set led blinking. Both msec and callback are optional
-   * and can be passed as the only one parameter.
-   * @param {number} [msec=1000] - Led blinking interval.
-   * @param {Function} [callback] - Led state changed callback.
+   * Blink the LED.
+   *
+   * @method blink
+   * @param {Number} [interval=1000] Led blinking interval.
+   * @param {Function} [callback] Led state changed callback.
    */
-  proto.blink = function (msec, callback) {
+  proto.blink = function (interval, callback) {
     if (arguments.length === 1 && typeof arguments[0] === 'function') {
       callback = arguments[0];
     }
-    msec = parseInt(msec);
-    msec = isNaN(msec) || msec <= 0 ? 1000 : msec;
+    interval = parseInt(interval);
+    interval = isNaN(interval) || interval <= 0 ? 1000 : interval;
 
     this._clearBlinkTimer();
-    this._blinkTimer = this._blink(msec, callback);
+    this._blinkTimer = this._blink(interval, callback);
   };
 
-  proto._blink = function (msec, callback) {
+  proto._blink = function (interval, callback) {
     var self = this;
     return setTimeout(function () {
       self._pin.value = 1 - self._pin.value;
       if (typeof callback === 'function') {
         checkPinState(self, self._pin, self._pin.value, callback);
       }
-      self._blinkTimer = self._blink(msec, callback);
-    }, msec);
+      self._blinkTimer = self._blink(interval, callback);
+    }, interval);
   };
 
   proto._clearBlinkTimer = function () {
@@ -5891,7 +6112,24 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   };
 
+  /**
+   * Indicates the source LED drive mode.
+   *
+   * @property SOURCE_DRIVE
+   * @type Number
+   * @static
+   * @final
+   */
   Led.SOURCE_DRIVE = 0;
+
+  /**
+   * Indicates the synchronous LED drive mode.
+   *
+   * @property SYNC_DRIVE
+   * @type Number
+   * @static
+   * @final
+   */
   Led.SYNC_DRIVE = 1;
 
   scope.module.Led = Led;
@@ -5910,6 +6148,19 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     Module = scope.Module,
     proto;
 
+  /**
+   * The RGBLed Class.
+   *
+   * @namespace webduino.module
+   * @class RGBLed
+   * @constructor
+   * @param {webduino.Board} board The board the RGB LED is attached to.
+   * @param {webduino.Pin} redLedPin The pin the red LED is connected to.
+   * @param {webduino.Pin} greenLedPin The pin the green LED is connected to.
+   * @param {webduino.Pin} blueLedPin The pin the blue LED is connected to.
+   * @param {Number} [driveMode] Drive mode the RGB LED is operating at, either RGBLed.COMMON_ANODE or RGBLed.COMMON_CATHODE.
+   * @extends webduino.Module
+   */
   function RGBLed(board, redLedPin, greenLedPin, blueLedPin, driveMode) {
     Module.call(this);
 
@@ -5947,6 +6198,15 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   });
 
+  /**
+   * Light up and mix colors with the LEDs.
+   *
+   * @method setColor
+   * @param {Number} red The brightness of the red LED.
+   * @param {Number} green The brightness of the green LED.
+   * @param {Number} blue The brightness of the blue LED.
+   * @param {Function} [callback] Function to call when the color is set.
+   */
   proto.setColor = function (red, green, blue, callback) {
     if (typeof green === 'undefined' || typeof green === 'function') {
       var color = cutHex(red);
@@ -5980,7 +6240,24 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   };
 
+  /**
+   * Indicates the common anode drive mode.
+   *
+   * @property COMMON_ANODE
+   * @type {Number}
+   * @static
+   * @final
+   */
   RGBLed.COMMON_ANODE = Led.SYNC_DRIVE;
+
+  /**
+   * Indicates the common cathode drive mode.
+   *
+   * @property COMMON_CATHODE
+   * @type {Number}
+   * @static
+   * @final
+   */
   RGBLed.COMMON_CATHODE = Led.SOURCE_DRIVE;
 
   scope.module.RGBLed = RGBLed;
@@ -6000,12 +6277,48 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     Module = scope.Module;
 
   var ButtonEvent = {
+
+    /**
+     * Fires when a button is pressed.
+     *
+     * @event ButtonEvent.PRESS
+     */
     PRESS: "pressed",
+
+    /**
+     * Fires when a button is released.
+     *
+     * @event ButtonEvent.RELEASE
+     */
     RELEASE: "released",
+
+    /**
+     * Fires when a button is long-pressed.
+     *
+     * @event ButtonEvent.LONG_PRESS
+     */
     LONG_PRESS: "longPress",
+
+    /**
+     * Fires when a button is sustained-pressed.
+     *
+     * @event ButtonEvent.SUSTAINED_PRESS
+     */
     SUSTAINED_PRESS: "sustainedPress"
   };
 
+  /**
+   * The Button Class.
+   *
+   * @namespace webduino.module
+   * @class Button
+   * @constructor
+   * @param {webduino.Board} board The board the button is attached to.
+   * @param {webduino.pin} pin The pin the button is connected to.
+   * @param {Number} [buttonMode] Type of resistor the button is connected to, either Button.PULL_DOWN or Button.PULL_UP.
+   * @param {Number} [sustainedPressInterval] A period of time when the button is pressed and hold for that long, it would be considered a "sustained press." Measured in ms.
+   * @extends webduino.Module
+   */
   function Button(board, pin, buttonMode, sustainedPressInterval) {
     Module.call(this);
 
@@ -6091,12 +6404,25 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       value: Button
     },
 
+    /**
+     * Return the button mode.
+     *
+     * @attribute buttonMode
+     * @type {Number} buttonMode
+     * @readOnly
+     */
     buttonMode: {
       get: function () {
         return this._buttonMode;
       }
     },
 
+    /**
+     * Return the sustained-press interval.
+     *
+     * @attribute sustainedPressInterval
+     * @type {Number}
+     */
     sustainedPressInterval: {
       get: function () {
         return this._sustainedPressInterval;
@@ -6108,8 +6434,34 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
   });
 
+  /**
+   * Indicates the pull-down resistor type.
+   * 
+   * @property PULL_DOWN
+   * @type {Number}
+   * @static
+   * @final
+   */
   Button.PULL_DOWN = 0;
+
+  /**
+   * Indicates the pull-up resistor type.
+   * 
+   * @property PULL_UP
+   * @type {Number}
+   * @static
+   * @final
+   */
   Button.PULL_UP = 1;
+
+  /**
+   * Indicates the internal-pull-up resistor type.
+   * 
+   * @property INTERNAL_PULL_UP
+   * @type {Number}
+   * @static
+   * @final
+   */
   Button.INTERNAL_PULL_UP = 2;
 
   scope.module.ButtonEvent = ButtonEvent;
@@ -6135,10 +6487,33 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     RETRY_INTERVAL = 5000;
 
   var UltrasonicEvent = {
+
+    /**
+     * Fires when receiving a ping response.
+     * 
+     * @event UltrasonicEvent.PING
+     */
     PING: 'ping',
+
+    /**
+     * Fires when receiving a ping-error response.
+     * 
+     * @event UltrasonicEvent.PING_ERROR
+     */
     PING_ERROR: 'pingError'
   };
 
+  /**
+   * The Ultrasonic class.
+   *
+   * @namespace webduino.module
+   * @class Ultrasonic
+   * @constructor
+   * @param {webduino.Board} board The board the ultrasonic sensor is attached to.
+   * @param {webduino.Pin} trigger The trigger pin the sensor is connected to.
+   * @param {webduino.Pin} echo The echo pin the sensor is connected to.
+   * @extends webduino.Module
+   */
   function Ultrasonic(board, trigger, echo) {
     Module.call(this);
 
@@ -6191,6 +6566,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       value: Ultrasonic
     },
 
+    /**
+     * Distance returned from the previous transmission.
+     *
+     * @attribute distance
+     * @type {Number}
+     * @readOnly
+     */
     distance: {
       get: function () {
         return this._distance;
@@ -6198,6 +6580,14 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   });
 
+  /**
+   * Transmit an ultrasonic to sense the distance at a (optional) given interval.
+   *
+   * @method ping
+   * @param {Function} [callback] Callback when a response is returned.
+   * @param {Number} [interval] Interval between each transmission. If omitted the ultrasonic will be transmitted once.
+   * @return {Promise} A promise when the ping response is returned. Will not return anything if a callback function is given.
+   */
   proto.ping = function (callback, interval) {
     var self = this,
       timer;
@@ -6239,6 +6629,11 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   };
 
+  /**
+   * Stop transmitting any ultrasonic.
+   *
+   * @method stopPing
+   */
   proto.stopPing = function () {
     this.removeListener(UltrasonicEvent.PING, this._pingCallback);
     this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
@@ -6587,10 +6982,34 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     RETRY_INTERVAL = 6000;
 
   var DhtEvent = {
+
+    /**
+     * Fires when reading value.
+     * 
+     * @event DhtEvent.READ
+     */
     READ: 'read',
+
+    /**
+     * Fires when error occured while reading value.
+     * 
+     * @event DhtEvent.READ_ERROR
+     */
     READ_ERROR: 'readError'
   };
 
+  /**
+   * The Dht Class.
+   *
+   * DHT is sensor for measuring temperature and humidity.
+   * 
+   * @namespace webduino.module
+   * @class Dht
+   * @constructor
+   * @param {webduino.Board} board The board that the DHT is attached to.
+   * @param {Integer} pin The pin that the DHT is connected to.
+   * @extends webduino.Module
+   */
   function Dht(board, pin) {
     Module.call(this);
 
@@ -6650,12 +7069,26 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       value: Dht
     },
 
+    /**
+     * Return the humidity.
+     *
+     * @attribute humidity
+     * @type {Number} humidity
+     * @readOnly
+     */
     humidity: {
       get: function () {
         return this._humidity;
       }
     },
 
+    /**
+     * Return the temperature.
+     *
+     * @attribute temperature
+     * @type {Number} temperature
+     * @readOnly
+     */
     temperature: {
       get: function () {
         return this._temperature;
@@ -6663,6 +7096,23 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   });
 
+  /**
+   * Start reading data from sensor.
+   *
+   * @method read
+   * @param {Function} [callback] reading callback.
+   * @param {Integer} interval reading interval.
+   * @param {Object} callback.data returned data from sensor,
+   *                 humidity and temperature will be passed into callback function as parameters.
+   *
+   *     callback()
+   *
+   * will be transformed to
+   *
+   *      callback({humidity: humidity, temperature: temperature})
+   *
+   * automatically.
+   */
   proto.read = function (callback, interval) {
     var self = this,
       timer;
@@ -6710,6 +7160,11 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   };
 
+  /**
+   * Stop reading value from sensor.
+   *
+   * @method stopRead
+   */
   proto.stopRead = function () {
     this.removeListener(DhtEvent.READ, this._readCallback);
     this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
@@ -6843,6 +7298,16 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     DS8: 4978
   };
 
+  /**
+   * The Buzzer Class.
+   *
+   * @namespace webduino.module
+   * @class Buzzer
+   * @constructor
+   * @param {webduino.Board} board The board that the buzzer is attached to.
+   * @param {Integer} pin The pin that the buzzer is connected to.
+   * @extends webduino.Module
+   */
   function Buzzer(board, pin) {
     Module.call(this);
 
@@ -6896,6 +7361,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   });
 
+  /**
+   * Set Buzzer tone.
+   *
+   * @method tone 
+   * @param {Integer} freq Frequency of tone.
+   * @param {Integer} duration Duration of tone.
+   */
   proto.tone = function (freq, duration) {
     var freqData = [];
 
@@ -6911,6 +7383,15 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       .concat(freqData).concat(duration));
   };
 
+  /**
+   * Play specified note and tempo.
+   *
+   * @method play 
+   * @param {Array} notes Array of notes.
+   * @param {Array} tempos Array of tempos.
+   * @example
+   *     buzzer.play(["C6","D6","E6","F6","G6","A6","B6"], ["8","8","8","8","8","8","8"]);
+   */
   proto.play = function (notes, tempos) {
     if (typeof notes !== 'undefined') {
       var len = notes.length,
@@ -6938,6 +7419,11 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     playNext(this);
   };
 
+  /**
+   * Pause the playback.
+   *
+   * @method pause 
+   */
   proto.pause = function () {
     if (this._state !== BUZZER_STATE.PLAYING) {
       return;
@@ -6951,6 +7437,11 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     this._state = BUZZER_STATE.PAUSED;
   };
 
+  /**
+   * Stop the plaback.
+   *
+   * @method stop 
+   */
   proto.stop = function () {
     if (this._timer) {
       clearTimeout(this._timer);
@@ -6961,8 +7452,24 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     this._state = BUZZER_STATE.STOPPED;
   };
 
+  /**
+   * Indicates the frequency of tone.
+   * 
+   * @property FREQUENCY
+   * @type {Number}
+   * @static
+   * @final
+   */
   Buzzer.FREQUENCY = FREQUENCY;
 
+  /**
+   * Indicates the delay of tone.
+   * 
+   * @property TONE_DELAY
+   * @type {Number}
+   * @static
+   * @final
+   */
   Buzzer.TONE_DELAY = 60;
 
   scope.module.Buzzer = Buzzer;
@@ -6982,6 +7489,23 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     BoardEvent = scope.BoardEvent,
     proto;
 
+  /**
+   * The Max7219 Class.
+   *
+   * MAX7219 is compact, serial input/output
+   * common-cathode display drivers that interface
+   * microprocessors (µPs) to 7-segment numeric LED displays
+   * of up to 8 digits, bar-graph displays, or 64 individual LEDs.
+   * 
+   * @namespace webduino.module
+   * @class Max7219
+   * @constructor
+   * @param {webduino.Board} board The board that the Max7219 is attached to.
+   * @param {Integer} din Pin number of DIn (Data In).
+   * @param {Integer} cs Pin number of LOAD/CS.
+   * @param {Integer} clk Pin number of CLK.
+   * @extends webduino.Module
+   */
   function Max7219(board, din, cs, clk) {
     Module.call(this);
     this._board = board;
@@ -7000,6 +7524,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     constructor: {
       value: Max7219
     },
+
+    /**
+     * The intensity indicating brightness of Max7219.
+     * 
+     * @attribute intensity
+     * @type {Integer} Value of brightness (0~15).
+     */
     intensity: {
       get: function () {
         return this._intensity;
@@ -7013,6 +7544,14 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   });
 
+  /**
+   * Show pattern LED matrix.
+   *
+   * @method on
+   * @param {String} data Pattern to display.
+   * @example
+   *     matrix.on("0000000000000000");
+   */
   proto.on = function (data) {
     if (data) {
       this._data = data;
@@ -7036,25 +7575,43 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     this._board.send(sendData);
   };
 
+  /**
+   * Clear pattern on LED matrix.
+   *
+   * @method off
+   */
   proto.off = function () {
     this._board.send([0xf0, 4, 8, 2, 0xf7]);
   };
 
-  proto.animate = function(data, times, duration, callback) {
+  /**
+   * Display animated pattern.
+   *
+   * @method animate
+   * @param {Array} data Array of patterns.
+   * @param {Integer} times Delay time (in microsecond) between patterns.
+   * @param {Integer} duration Duration of animation.
+   * @param {Function} callback Callback after animation.
+   * @example
+   *     var data = ["080c0effff0e0c08", "387cfefe82443800", "40e0e0e07f030604"];
+   *         matrix.on("0000000000000000");
+   *         matrix.animate(data, 100);
+   */
+  proto.animate = function (data, times, duration, callback) {
     var p = 0;
 
     if (typeof arguments[arguments.length - 1] === 'function') {
       callback = arguments[arguments.length - 1];
     } else {
-      callback = function() {};
+      callback = function () {};
     }
 
-    var run = function() {
+    var run = function () {
       this.on(data[p++ % data.length]);
       this._timer = setTimeout(run, times);
     }.bind(this);
 
-    var stop = function() {
+    var stop = function () {
       clearTimeout(this._timer);
       callback();
     }.bind(this);
@@ -7068,20 +7625,26 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   };
 
-  proto.animateStop = function() {
+  /**
+   * Stop displaying animated pattern.
+   *
+   * @method animateStop
+   */
+  proto.animateStop = function () {
     clearTimeout(this._timer);
     clearTimeout(this._timerDuration);
   };
 
   scope.module.Max7219 = Max7219;
 }));
-+(function(factory) {
+
++(function (factory) {
   if (typeof exports === 'undefined') {
     factory(webduino || {});
   } else {
     module.exports = factory;
   }
-}(function(scope) {
+}(function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -7089,9 +7652,26 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     proto;
 
   var ADXL345Event = {
+
+    /**
+     * Fires when the accelerometer senses a value change.
+     * 
+     * @event ADXL234Event.MESSAGE
+     */
     MESSAGE: 'message'
   };
 
+  /**
+   * The ADXL345 class.
+   * 
+   * ADXL345 is a small, thin, ultralow power, 3-axis accelerometer.
+   * 
+   * @namespace webduino.module
+   * @class ADXL345
+   * @constructor
+   * @param {webduino.Board} board The board that the ADXL345 accelerometer is attached to.
+   * @extends webduino.Module
+   */
   function ADXL345(board) {
     Module.call(this);
     this._board = board;
@@ -7108,7 +7688,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       fYg: 0,
       fZg: 0
     };
-    this._callback = function() {};
+    this._callback = function () {};
     this._board.send([0xf0, 0x04, 0x0b, 0x00, 0xf7]);
   }
 
@@ -7123,7 +7703,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       return false;
     }
 
-    msgPort.forEach(function(val, idx, ary) {
+    msgPort.forEach(function (val, idx, ary) {
       if (val !== msg[idx]) {
         stus = false;
       }
@@ -7141,7 +7721,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   }
 
   function calcFixed(base, data, fixedInfo) {
-    Object.getOwnPropertyNames(data).forEach(function(key, idx, ary) {
+    Object.getOwnPropertyNames(data).forEach(function (key, idx, ary) {
       fixedInfo[key] = data[key];
 
       if (key === base) {
@@ -7164,7 +7744,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     fZg = z * alpha + (fZg * (1.0 - alpha));
 
     // Roll & Pitch Equations
-    roll  = (Math.atan2(-fYg, fZg) * 180.0) / Math.PI;
+    roll = (Math.atan2(-fYg, fZg) * 180.0) / Math.PI;
     pitch = (Math.atan2(fXg, Math.sqrt(fYg * fYg + fZg * fZg)) * 180.0) / Math.PI;
     roll = roll.toFixed(2);
     pitch = pitch.toFixed(2);
@@ -7182,32 +7762,53 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     constructor: {
       value: ADXL345
     },
+
+    /**
+     * The state indicating whether the accelerometer is detecting.
+     * 
+     * @attribute state
+     * @type {String} `on` or `off`
+     */
     state: {
-      get: function() {
+      get: function () {
         return this._state;
       },
-      set: function(val) {
+      set: function (val) {
         this._state = val;
       }
     }
   });
 
-  proto.on = function(callback) {
+  /**
+   * Start detection.
+   *
+   * @method detect
+   * @param {Function} [callback] Detection callback.
+   */
+  
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Detection callback.
+   * @deprecated `on()` is deprecated, use `detect()` instead.
+   */
+  proto.detect = proto.on = function(callback) {
     var _this = this;
 
     this._board.send([0xf0, 0x04, 0x0b, 0x01, 0xf7]);
 
     if (typeof callback !== 'function') {
-      callback = function() {};
+      callback = function () {};
     }
 
-    this._callback = function(x, y, z) {
+    this._callback = function (x, y, z) {
       var info = _this._info;
       var rt;
 
       if (!_this._init) {
         _this._init = true;
-        calcFixed(this._baseAxis, {x:x, y:y, z:z}, info);
+        calcFixed(this._baseAxis, { x: x, y: y, z: z }, info);
       }
 
       x -= info.x;
@@ -7215,7 +7816,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       z -= info.z;
 
       rt = estimateRollandPitch(x, y, z, info.fXg, info.fYg, info.fZg);
-      ['fXg', 'fYg', 'fZg'].forEach(function(val, idx, ary) {
+      ['fXg', 'fYg', 'fZg'].forEach(function (val, idx, ary) {
         info[val] = rt[val];
       });
 
@@ -7232,7 +7833,12 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     this.addListener(ADXL345Event.MESSAGE, this._callback);
   };
 
-  proto.off = function() {
+  /**
+   * Stop detection.
+   *
+   * @method off
+   */
+  proto.off = function () {
     this._state = 'off';
     this._board.send([0xf0, 0x04, 0x0b, 0x02, 0xf7]);
     this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
@@ -7240,7 +7846,12 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     this._callback = null;
   };
 
-  proto.refresh = function() {
+  /**
+   * Reset detection value.
+   *
+   * @method refresh
+   */
+  proto.refresh = function () {
     this._init = false;
     if (this._init === true) {
       this._info = {
@@ -7254,18 +7865,36 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   };
 
-  proto.setBaseAxis = function(val) {
+  /**
+   * Set the base axis for calculation.
+   *
+   * @method setBaseAxis 
+   * @param {String} axis Axis to be set to, either `x`, `y`, or `z`.
+   */
+  proto.setBaseAxis = function (val) {
     this._baseAxis = val;
   };
 
-  proto.setSensitivity = function(sensitive) {
+  /**
+   * Set detection sensitivity.
+   *
+   * @method setSensitivity
+   * @param {Number} sensitivity Detection sensitivity.
+   */
+  proto.setSensitivity = function (sensitive) {
     if (sensitive !== this._sensitive) {
       this._sensitive = sensitive;
       this._board.send([0xf0, 0x04, 0x0b, 0x03, sensitive, 0xf7]);
     }
   };
 
-  proto.setDetectTime = function(detectTime) {
+  /**
+   * Set detecting time period.
+   *
+   * @method setDetectTime
+   * @param {Number} detectTime The time period for detecting, in ms.
+   */
+  proto.setDetectTime = function (detectTime) {
     if (detectTime !== this._detectTime) {
       this._detectTime = detectTime;
       this._board.send([0xf0, 0x04, 0x0b, 0x04, detectTime, 0xf7]);
@@ -7274,6 +7903,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
   scope.module.ADXL345 = ADXL345;
 }));
+
 +(function(factory) {
     if (typeof exports === 'undefined') {
         factory(webduino || {});
@@ -7290,9 +7920,28 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     var HX711_MESSAGE = [0x04, 0x15];
 
     var HX711Event = {
+
+        /**
+         * Fires when the value of weight has changed.
+         * 
+         * @event HX711.MESSAGE
+         */
         MESSAGE: 'message'
     };
 
+  /**
+   * The HX711 Class.
+   *
+   * HX711 is a precision 24-bit analogto-digital converter (ADC) designed for weigh scales.
+   *
+   * @namespace webduino.module
+   * @class HX711
+   * @constructor
+   * @param {webduino.Board} board The board that the IRLed is attached to.
+   * @param {Integer} sckPin The pin that Serial Clock Input is attached to.
+   * @param {Integer} dtPin The pin that Data Output is attached to.
+   * @extends webduino.Module
+   */
     function HX711(board, sckPin, dtPin) {
         Module.call(this);
         this._board = board;
@@ -7319,6 +7968,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
         constructor: {
             value: HX711
         },
+
+        /**
+         * The state indicating whether the module is measuring.
+         * 
+         * @attribute state
+         * @type {String} `on` or `off`
+         */
         state: {
             get: function() {
                 return this._state;
@@ -7329,7 +7985,21 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
         }
     });
 
-    proto.on = function(callback) {
+   /**
+   * Start detection.
+   *
+   * @method measure
+   * @param {Function} [callback] Callback after starting detection.
+   */
+  
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Callback after starting detection.
+   * @deprecated `on()` is deprecated, use `measure()` instead.
+   */
+    proto.measure = proto.on = function(callback) {
         var _this = this;
         this._board.send([0xf0, 0x04, 0x15, 0x01, 0xf7]);
         if (typeof callback !== 'function') {
@@ -7348,6 +8018,11 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
         this.addListener(HX711Event.MESSAGE, this._callback);
     };
 
+   /**
+   * Stop detection.
+   *
+   * @method off
+   */
     proto.off = function() {
         this._state = 'off';
         this._board.send([0xf0, 0x04, 0x15, 0x02, 0xf7]);
@@ -7504,102 +8179,158 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   }
   scope.module.SSD1306 = SSD1306;
 }));
-+(function(factory) {
-    if (typeof exports === 'undefined') {
-        factory(webduino || {});
-    } else {
-        module.exports = factory;
-    }
-}(function(scope) {
-    'use strict';
-
-    var Module = scope.Module,
-        BoardEvent = scope.BoardEvent,
-        proto;
-
-    var BARCODE_MESSAGE = [0x04, 0x16];
-
-    var BarcodeEvent = {
-        MESSAGE: 'message'
-    };
-
-    function Barcode(board, rxPin, txPin) {
-        Module.call(this);
-        this._board = board;
-        this._rx = !isNaN(rxPin) ? board.getDigitalPin(rxPin) : rxPin;
-        this._tx = !isNaN(txPin) ? board.getDigitalPin(txPin) : txPin;
-
-        this._init = false;
-        this._scanData = '';
-        this._callback = function() {};
-        this._messageHandler = onMessage.bind(this);
-        this._board.send([0xf0, 0x04, 0x16, 0x00,
-            this._rx._number, this._tx._number, 0xf7
-        ]);
-    }
-
-    function onMessage(event) {
-        var msg = event.message;
-        if (msg[0] == BARCODE_MESSAGE[0] && msg[1] == BARCODE_MESSAGE[1]) {
-            this.emit(BarcodeEvent.MESSAGE, msg.slice(2));
-        }
-    }
-
-    Barcode.prototype = proto = Object.create(Module.prototype, {
-        constructor: {
-            value: Barcode
-        },
-        state: {
-            get: function() {
-                return this._state;
-            },
-            set: function(val) {
-                this._state = val;
-            }
-        }
-    });
-
-    proto.on = function(callback) {
-        var _this = this;
-        this._board.send([0xf0, 0x04, 0x16, 0x01, 0xf7]);
-        if (typeof callback !== 'function') {
-            callback = function() {};
-        }
-        this._callback = function(rawData) {
-            var scanData = '';
-            for (var i = 0; i < rawData.length; i++) {
-                scanData += String.fromCharCode(rawData[i]);
-            }
-            _this._scanData = scanData;
-            callback(_this._scanData);
-        };
-        this._state = 'on';
-        this._board.on(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
-        this.addListener(BarcodeEvent.MESSAGE, this._callback);
-    };
-
-    proto.off = function() {
-        this._state = 'off';
-        this._board.send([0xf0, 0x04, 0x16, 0x02, 0xf7]);
-        this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
-        this.removeListener(BarcodeEvent.MESSAGE, this._callback);
-        this._callback = null;
-    };
-
-    scope.module.Barcode = Barcode;
-}));
-+(function(factory) {
++(function (factory) {
   if (typeof exports === 'undefined') {
     factory(webduino || {});
   } else {
     module.exports = factory;
   }
-}(function(scope) {
+}(function (scope) {
+  'use strict';
+
+  var Module = scope.Module,
+    BoardEvent = scope.BoardEvent,
+    proto;
+
+  var BARCODE_MESSAGE = [0x04, 0x16];
+
+  var BarcodeEvent = {
+
+    /**
+     * Fires when the barcode scanner scans a code.
+     *
+     * @event BarcodeEvent.MESSAGE
+     */
+    MESSAGE: 'message'
+  };
+
+  /**
+   * The Barcode class.
+   *
+   * @namespace webduino.module
+   * @class Barcode
+   * @constructor
+   * @param {webduino.Board} board The board the barcode scanner is attached to.
+   * @param {webduino.Pin | Number} rxPin Receivin pin (number) the barcode scanner is connected to.
+   * @param {webduino.Pin | Number} txPin Transmitting pin (number) the barcode scanner is connected to.
+   * @extends webduino.Module
+   */
+  function Barcode(board, rxPin, txPin) {
+    Module.call(this);
+    this._board = board;
+    this._rx = !isNaN(rxPin) ? board.getDigitalPin(rxPin) : rxPin;
+    this._tx = !isNaN(txPin) ? board.getDigitalPin(txPin) : txPin;
+
+    this._init = false;
+    this._scanData = '';
+    this._callback = function () {};
+    this._messageHandler = onMessage.bind(this);
+    this._board.send([0xf0, 0x04, 0x16, 0x00,
+      this._rx._number, this._tx._number, 0xf7
+    ]);
+  }
+
+  function onMessage(event) {
+    var msg = event.message;
+    if (msg[0] == BARCODE_MESSAGE[0] && msg[1] == BARCODE_MESSAGE[1]) {
+      this.emit(BarcodeEvent.MESSAGE, msg.slice(2));
+    }
+  }
+
+  Barcode.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: Barcode
+    },
+
+    /**
+     * The state indicating whether the module is scanning.
+     * 
+     * @attribute state
+     * @type {String} 'on' or 'off'
+     */
+    state: {
+      get: function () {
+        return this._state;
+      },
+      set: function (val) {
+        this._state = val;
+      }
+    }
+  });
+
+  /**
+   * Start scanning.
+   *
+   * @method scan
+   * @param {Function} [callback] Scanning callback.
+   */
+  
+  /**
+   * Start scanning.
+   *
+   * @method on
+   * @param {Function} [callback] Scanning callback.
+   * @deprecated `on()` is deprecated, use `scan()` instead.
+   */
+  proto.scan = proto.on = function(callback) {
+    var _this = this;
+    this._board.send([0xf0, 0x04, 0x16, 0x01, 0xf7]);
+    if (typeof callback !== 'function') {
+      callback = function () {};
+    }
+    this._callback = function (rawData) {
+      var scanData = '';
+      for (var i = 0; i < rawData.length; i++) {
+        scanData += String.fromCharCode(rawData[i]);
+      }
+      _this._scanData = scanData;
+      callback(_this._scanData);
+    };
+    this._state = 'on';
+    this._board.on(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
+    this.addListener(BarcodeEvent.MESSAGE, this._callback);
+  };
+
+  /**
+   * Stop scanning.
+   *
+   * @method off
+   */
+  proto.off = function () {
+    this._state = 'off';
+    this._board.send([0xf0, 0x04, 0x16, 0x02, 0xf7]);
+    this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
+    this.removeListener(BarcodeEvent.MESSAGE, this._callback);
+    this._callback = null;
+  };
+
+  scope.module.Barcode = Barcode;
+}));
+
++(function (factory) {
+  if (typeof exports === 'undefined') {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
   'use strict';
 
   var Module = scope.Module,
     proto;
 
+  /**
+   * The IRLed Class.
+   *
+   * IR LED (Infrared LED) is widely used for remote controls and night-vision cameras.
+   * 
+   * @namespace webduino.module
+   * @class IRLed
+   * @constructor
+   * @param {webduino.Board} board The board that the IRLed is attached to.
+   * @param {String} encode Encode which IRLed used.
+   * @extends webduino.Module
+   */
   function IRLed(board, encode) {
     Module.call(this);
     this._board = board;
@@ -7613,28 +8344,40 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   });
 
-  proto.send = function(code) {
+  /**
+   * Send IR code.
+   *
+   * @method send 
+   * @param {String} code Hexadecimal String to send.
+   */
+  proto.send = function (code) {
     var aryCode = [0x09, 0x04];
     var ary;
     code = code || this._encode;
-    
+
     if (code) {
       ary = code.match(/\w{2}/g);
 
       // data length
       aryCode.push(ary.length * 8);
 
-      ary.forEach(function(val) {
+      ary.forEach(function (val) {
         for (var i = 0, len = val.length; i < len; i++) {
           aryCode.push(val.charCodeAt(i));
         }
       });
-      
+
       this._board.sendSysex(0x04, aryCode);
     }
   };
 
-  proto.updateEncode = function(code) {
+  /**
+   * Update code.
+   *
+   * @method updateEncode 
+   * @param {String} code Hexadecimal to update.
+   */
+  proto.updateEncode = function (code) {
     this._encode = code;
   };
 
@@ -7655,10 +8398,32 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     proto;
 
   var IRRecvEvent = {
+
+    /**
+     * Fires when receiving data.
+     * 
+     * @event IRRecvEvent.MESSAGE
+     */
     MESSAGE: 'message',
+
+    /**
+     * Fires when error occured while receiving data.
+     * 
+     * @event IRRecvEvent.MESSAGE_ERROR
+     */
     MESSAGE_ERROR: 'messageError'
   };
 
+  /**
+   * The IRRecv Class.
+   *
+   * @namespace webduino.module
+   * @class IRRecv
+   * @constructor
+   * @param {webduino.Board} board The board that the IRLed is attached to.
+   * @param {Integer} pin The pin that the IRLed is connected to.
+   * @extends webduino.Module
+   */
   function IRRecv(board, pin) {
     Module.call(this);
     this._board = board;
@@ -7698,6 +8463,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     constructor: {
       value: IRRecv
     },
+
+    /**
+     * The state indicating whether the IRLed is receiving.
+     * 
+     * @attribute state
+     * @type {String} `on` or `off`
+     */
     state: {
       get: function () {
         return this._state;
@@ -7708,7 +8480,23 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   });
 
-  proto.on = function (callback, errorCallback) {
+  /**
+   * Start detection.
+   *
+   * @method receive
+   * @param {Function} [callback] Detection callback.
+   * @param {Function} [errorCallback] Error callback while Detection.
+   */
+  
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Detection callback.
+   * @param {Function} [errorCallback] Error callback while Detection.
+   * @deprecated `on()` is deprecated, use `receive()` instead.
+   */
+  proto.receive = proto.on = function (callback, errorCallback) {
     var aryCode = [0xf0, 0x04, 0x0A, 0x00];
 
     if (typeof callback !== 'function') {
@@ -7738,6 +8526,11 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   };
 
+  /**
+   * Stop detection.
+   *
+   * @method off
+   */
   proto.off = function () {
     this._board.send([0xf0, 0x04, 0x0A, 0x01, 0xf7]);
     this._state = 'off';
@@ -7751,6 +8544,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
   scope.module.IRRecv = IRRecv;
 }));
+
 +(function(factory) {
   if (typeof exports === 'undefined') {
     factory(webduino || {});
@@ -7929,13 +8723,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.MQ2 = MQ2;
 }));
 
-+(function(factory) {
++(function (factory) {
   if (typeof exports === 'undefined') {
     factory(webduino || {});
   } else {
     module.exports = factory;
   }
-}(function(scope) {
+}(function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -7943,9 +8737,27 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     proto;
 
   var PhotocellEvent = {
+
+    /**
+     * Fires when the value of brightness has changed.
+     * 
+     * @event PhotocellEvent.MESSAGE
+     */
     MESSAGE: 'message'
   };
 
+  /**
+   * The Photocell class.
+   *
+   * Photocell is small, inexpensive, low-power sensor that allow you to detect light.
+   * 
+   * @namespace webduino.module
+   * @class Photocell
+   * @constructor
+   * @param {webduino.Board} board Board that the photocell is attached to.
+   * @param {Integer} analogPinNumber The pin that the photocell is connected to.
+   * @extends webduino.Module
+   */
   function Photocell(board, analogPinNumber) {
     Module.call(this);
     this._board = board;
@@ -7966,26 +8778,47 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     constructor: {
       value: Photocell
     },
+
+    /**
+     * The state indicating whether the module is measuring.
+     * 
+     * @attribute state
+     * @type {String} `on` or `off`
+     */
     state: {
-      get: function() {
+      get: function () {
         return this._state;
       },
-      set: function(val) {
+      set: function (val) {
         this._state = val;
       }
     }
   });
 
-  proto.on = function(callback) {
+  /**
+   * Start detection.
+   *
+   * @method measure
+   * @param {Function} [callback] Callback after starting detection.
+   */
+  
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Callback after starting detection.
+   * @deprecated `on()` is deprecated, use `measure()` instead.
+   */
+  proto.measure = proto.on = function(callback) {
     var _this = this;
 
     this._board.enableAnalogPin(this._pinNumber);
 
     if (typeof callback !== 'function') {
-      callback = function() {};
+      callback = function () {};
     }
 
-    this._callback = function(val) {
+    this._callback = function (val) {
       callback(val);
     };
 
@@ -7994,7 +8827,12 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     this.addListener(PhotocellEvent.MESSAGE, this._callback);
   };
 
-  proto.off = function() {
+  /**
+   * Stop detection.
+   *
+   * @method off
+   */
+  proto.off = function () {
     this._state = 'off';
     this._board.disableAnalogPin(this._pinNumber);
     this._board.removeListener(BoardEvent.ANALOG_DATA, this._messageHandler);
@@ -8095,10 +8933,33 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     proto;
 
   var RFIDEvent = {
+
+    /**
+     * Fires when the RFID entered.
+     * 
+     * @event RFIDEvent.ENTER
+     */
     ENTER: 'enter',
+
+    /**
+     * Fires when the RFID leaved.
+     * 
+     * @event RFIDEvent.LEAVE
+     */
     LEAVE: 'leave'
   };
 
+  /**
+   * The RFID class.
+   *
+   * RFID reader is used to track nearby tags by wirelessly reading a tag's unique ID.
+   * 
+   * @namespace webduino.module
+   * @class RFID
+   * @constructor
+   * @param {webduino.Board} board Board that the RFID is attached to.
+   * @extends webduino.Module
+   */
   function RFID(board) {
     Module.call(this);
 
@@ -8142,6 +9003,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       value: RFID
     },
 
+    /**
+     * The state indicating whether the module is reading.
+     * 
+     * @attribute isReading
+     * @type {Boolean} isReading
+     * @readOnly
+     */
     isReading: {
       get: function () {
         return this._isReading;
@@ -8149,6 +9017,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   });
 
+  /**
+   * Start reading RFID.
+   *
+   * @method read
+   * @param {Function} [enterHandler] Callback when RFID entered.
+   * @param {Function} [leaveHandler] Callback when RFID leaved.
+   */
   proto.read = function (enterHandler, leaveHandler) {
     if (!this._isReading) {
       this._board.send([0xf0, 0x04, 0x0f, 0x01, 0xf7]);
@@ -8165,6 +9040,11 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   };
 
+  /**
+   * Stop reading RFID.
+   *
+   * @method stopRead
+   */
   proto.stopRead = function () {
     if (this._isReading) {
       this._board.send([0xf0, 0x04, 0x0f, 0x02, 0xf7]);
@@ -8175,10 +9055,22 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   };
 
+  /**
+   * Remove listener.
+   *
+   * @method off
+   * @param {String} evtType Type of event.
+   * @param {Function} handler Callback function.
+   */
   proto.off = function (evtType, handler) {
     this.removeListener(evtType, handler);
   };
 
+  /**
+   * Stop reading RFID and remove all listeners.
+   *
+   * @method destroy
+   */
   proto.destroy = function () {
     this.stopRead();
     this.removeAllListeners(RFIDEvent.ENTER);
@@ -8203,9 +9095,24 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     proto;
 
   var SoilEvent = {
+    /**
+     * Fires when the value of humidity has changed.
+     * 
+     * @event PhotocellEvent.MESSAGE
+     */
     MESSAGE: 'message'
   };
 
+  /**
+   * The Soil class.
+   * 
+   * @namespace webduino.module
+   * @class Soil
+   * @constructor
+   * @param {webduino.Board} board Board that the soil is attached to.
+   * @param {Integer} analogPinNumber The pin that soil is attached to.
+   * @extends webduino.Module
+   */
   function Soil(board, analogPinNumber) {
     Module.call(this);
     this._board = board;
@@ -8232,6 +9139,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     constructor: {
       value: Soil
     },
+
+    /**
+     * The state indicating whether the module is scanning.
+     * 
+     * @attribute state
+     * @type {String} `on` or `off`
+     */
     state: {
       get: function() {
         return this._state;
@@ -8242,7 +9156,21 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
   });
 
-  proto.on = function(callback) {
+  /**
+   * Start detection.
+   *
+   * @method measure
+   * @param {Function} [callback] Callback after starting detection.
+   */
+  
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Callback after starting detection.
+   * @deprecated `on()` is deprecated, use `measure()` instead.
+   */
+  proto.measure = proto.on = function(callback) {
     var _this = this;
 
     this._board.enableAnalogPin(this._pinNumber);
@@ -8260,6 +9188,11 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     this.addListener(SoilEvent.MESSAGE, this._callback);
   };
 
+  /**
+   * Stop detection.
+   *
+   * @method off
+   */
   proto.off = function() {
     this._state = 'off';
     this._board.disableAnalogPin(this._pinNumber);

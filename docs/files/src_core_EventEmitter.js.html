@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/core/EventEmitter.js - webduino-js</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            webduino-js
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.4.16</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/webduino.Board", "classes/webduino.EventEmitter", "classes/webduino.Module", "classes/webduino.module.ADXL345", "classes/webduino.module.Barcode", "classes/webduino.module.Button", "classes/webduino.module.Buzzer", "classes/webduino.module.Dht", "classes/webduino.module.HX711", "classes/webduino.module.IRLed", "classes/webduino.module.IRRecv", "classes/webduino.module.Led", "classes/webduino.module.Max7219", "classes/webduino.module.Photocell", "classes/webduino.module.RFID", "classes/webduino.module.RGBLed", "classes/webduino.module.Soil", "classes/webduino.module.Ultrasonic", "classes/webduino.Transport", "classes/webduino.transport.MqttTransport", "classes/webduino.transport.NodeMqttTransport"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/webduino.Board.html">webduino.Board</a></li>
+                <li><a href="../classes/webduino.EventEmitter.html">webduino.EventEmitter</a></li>
+                <li><a href="../classes/webduino.Module.html">webduino.Module</a></li>
+                <li><a href="../classes/webduino.module.ADXL345.html">webduino.module.ADXL345</a></li>
+                <li><a href="../classes/webduino.module.Barcode.html">webduino.module.Barcode</a></li>
+                <li><a href="../classes/webduino.module.Button.html">webduino.module.Button</a></li>
+                <li><a href="../classes/webduino.module.Buzzer.html">webduino.module.Buzzer</a></li>
+                <li><a href="../classes/webduino.module.Dht.html">webduino.module.Dht</a></li>
+                <li><a href="../classes/webduino.module.HX711.html">webduino.module.HX711</a></li>
+                <li><a href="../classes/webduino.module.IRLed.html">webduino.module.IRLed</a></li>
+                <li><a href="../classes/webduino.module.IRRecv.html">webduino.module.IRRecv</a></li>
+                <li><a href="../classes/webduino.module.Led.html">webduino.module.Led</a></li>
+                <li><a href="../classes/webduino.module.Max7219.html">webduino.module.Max7219</a></li>
+                <li><a href="../classes/webduino.module.Photocell.html">webduino.module.Photocell</a></li>
+                <li><a href="../classes/webduino.module.RFID.html">webduino.module.RFID</a></li>
+                <li><a href="../classes/webduino.module.RGBLed.html">webduino.module.RGBLed</a></li>
+                <li><a href="../classes/webduino.module.Soil.html">webduino.module.Soil</a></li>
+                <li><a href="../classes/webduino.module.Ultrasonic.html">webduino.module.Ultrasonic</a></li>
+                <li><a href="../classes/webduino.Transport.html">webduino.Transport</a></li>
+                <li><a href="../classes/webduino.transport.MqttTransport.html">webduino.transport.MqttTransport</a></li>
+                <li><a href="../classes/webduino.transport.NodeMqttTransport.html">webduino.transport.NodeMqttTransport</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<div class="page-header">
+    <h1>src/core/EventEmitter.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
++(function (factory) {
+  if (typeof exports === &#x27;undefined&#x27;) {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
+  &#x27;use strict&#x27;;
+
+  // source:
+  // https://raw.githubusercontent.com/Gozala/events/master/events.js
+  var proto;
+
+  /**
+   * An event emitter in browser.
+   *
+   * @namespace webduino
+   * @class EventEmitter
+   * @constructor
+   */
+  function EventEmitter() {
+    this._events = this._events || {};
+    this._maxListeners = this._maxListeners || undefined;
+  }
+
+  proto = EventEmitter.prototype;
+  proto._events = undefined;
+  proto._maxListeners = undefined;
+
+  // By default EventEmitters will print a warning if more than 10 listeners are
+  // added to it. This is a useful default which helps finding memory leaks.
+
+  /**
+   * Default maximum number of listeners (10).
+   *
+   * @property defaultMaxListeners
+   * @type {Number}
+   * @static
+   */
+  EventEmitter.defaultMaxListeners = 10;
+
+  // Obviously not all Emitters should be limited to 10. This function allows
+  // that to be increased. Set to zero for unlimited.
+
+  /**
+   * Set maximum number of listeners that is allow to bind on an emitter.
+   *
+   * @method setMaxListeners
+   * @param {Number} n Number of listeners.
+   */
+  proto.setMaxListeners = function (n) {
+    if (!isNumber(n) || n &lt; 0 || isNaN(n))
+      throw TypeError(&#x27;n must be a positive number&#x27;);
+    this._maxListeners = n;
+    return this;
+  };
+
+  /**
+   * Emit an event of certain type.
+   *
+   * @method emit
+   * @param {String} type Event type.
+   * @param {Object} [object,...] Event object(s).
+   */
+  proto.emit = function (type) {
+    var er, handler, len, args, i, listeners;
+
+    if (!this._events)
+      this._events = {};
+
+    // If there is no &#x27;error&#x27; event listener then throw.
+    // EDIT: Do not throw unhandled &#x27;error&#x27; in the browser. (mz)
+    // if (type === &#x27;error&#x27;) {
+    //   if (!this._events.error ||
+    //     (isObject(this._events.error) &amp;&amp; !this._events.error.length)) {
+    //     er = arguments[1];
+    //     if (er instanceof Error) {
+    //       throw er; // Unhandled &#x27;error&#x27; event
+    //     }
+    //     throw TypeError(&#x27;Uncaught, unspecified &quot;error&quot; event.&#x27;);
+    //   }
+    // }
+
+    handler = this._events[type];
+
+    if (isUndefined(handler))
+      return false;
+
+    if (isFunction(handler)) {
+      switch (arguments.length) {
+        // fast cases
+      case 1:
+        handler.call(this);
+        break;
+      case 2:
+        handler.call(this, arguments[1]);
+        break;
+      case 3:
+        handler.call(this, arguments[1], arguments[2]);
+        break;
+        // slower
+      default:
+        args = Array.prototype.slice.call(arguments, 1);
+        handler.apply(this, args);
+      }
+    } else if (isObject(handler)) {
+      args = Array.prototype.slice.call(arguments, 1);
+      listeners = handler.slice();
+      len = listeners.length;
+      for (i = 0; i &lt; len; i++)
+        listeners[i].apply(this, args);
+    }
+
+    return true;
+  };
+
+  /**
+   * Add a listener for a certain type of event.
+   *
+   * @method addListener
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
+  proto.addListener = function (type, listener) {
+    var m;
+
+    if (!isFunction(listener))
+      throw TypeError(&#x27;listener must be a function&#x27;);
+
+    if (!this._events)
+      this._events = {};
+
+    // To avoid recursion in the case that type === &quot;newListener&quot;! Before
+    // adding it to the listeners, first emit &quot;newListener&quot;.
+    if (this._events.newListener)
+      this.emit(&#x27;newListener&#x27;, type,
+        isFunction(listener.listener) ?
+        listener.listener : listener);
+
+    if (!this._events[type])
+    // Optimize the case of one listener. Don&#x27;t need the extra array object.
+      this._events[type] = listener;
+    else if (isObject(this._events[type]))
+    // If we&#x27;ve already got an array, just append.
+      this._events[type].push(listener);
+    else
+    // Adding the second element, need to change to array.
+      this._events[type] = [this._events[type], listener];
+
+    // Check for listener leak
+    if (isObject(this._events[type]) &amp;&amp; !this._events[type].warned) {
+      if (!isUndefined(this._maxListeners)) {
+        m = this._maxListeners;
+      } else {
+        m = EventEmitter.defaultMaxListeners;
+      }
+
+      if (m &amp;&amp; m &gt; 0 &amp;&amp; this._events[type].length &gt; m) {
+        this._events[type].warned = true;
+        console.error(&#x27;(node) warning: possible EventEmitter memory &#x27; +
+          &#x27;leak detected. %d listeners added. &#x27; +
+          &#x27;Use emitter.setMaxListeners() to increase limit.&#x27;,
+          this._events[type].length);
+        if (typeof console.trace === &#x27;function&#x27;) {
+          // not supported in IE 10
+          console.trace();
+        }
+      }
+    }
+
+    return this;
+  };
+
+  /**
+   * Alias for EventEmitter.addListener(type, listener)
+   *
+   * @method on
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
+  proto.on = proto.addListener;
+
+  /**
+   * Add a one-time listener for a certain type of event.
+   *
+   * @method once
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
+  proto.once = function (type, listener) {
+    if (!isFunction(listener))
+      throw TypeError(&#x27;listener must be a function&#x27;);
+
+    var fired = false;
+
+    function g() {
+      this.removeListener(type, g);
+
+      if (!fired) {
+        fired = true;
+        listener.apply(this, arguments);
+      }
+    }
+
+    g.listener = listener;
+    this.on(type, g);
+
+    return this;
+  };
+
+  /**
+   * Remove a listener for certain type of event.
+   *
+   * @method removeListener
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
+  // emits a &#x27;removeListener&#x27; event iff the listener was removed
+  proto.removeListener = function (type, listener) {
+    var list, position, length, i;
+
+    if (!isFunction(listener))
+      throw TypeError(&#x27;listener must be a function&#x27;);
+
+    if (!this._events || !this._events[type])
+      return this;
+
+    list = this._events[type];
+    length = list.length;
+    position = -1;
+
+    if (list === listener ||
+      (isFunction(list.listener) &amp;&amp; list.listener === listener)) {
+      delete this._events[type];
+      if (this._events.removeListener)
+        this.emit(&#x27;removeListener&#x27;, type, listener);
+
+    } else if (isObject(list)) {
+      for (i = length; i-- &gt; 0;) {
+        if (list[i] === listener ||
+          (list[i].listener &amp;&amp; list[i].listener === listener)) {
+          position = i;
+          break;
+        }
+      }
+
+      if (position &lt; 0)
+        return this;
+
+      if (list.length === 1) {
+        list.length = 0;
+        delete this._events[type];
+      } else {
+        list.splice(position, 1);
+      }
+
+      if (this._events.removeListener)
+        this.emit(&#x27;removeListener&#x27;, type, listener);
+    }
+
+    return this;
+  };
+
+  /**
+   * Remove all listeners of certain type.
+   *
+   * @method removeAllListeners
+   * @param {String} type Event type.
+   */
+  proto.removeAllListeners = function (type) {
+    var key, listeners;
+
+    if (!this._events)
+      return this;
+
+    // not listening for removeListener, no need to emit
+    if (!this._events.removeListener) {
+      if (arguments.length === 0)
+        this._events = {};
+      else if (this._events[type])
+        delete this._events[type];
+      return this;
+    }
+
+    // emit removeListener for all listeners on all events
+    if (arguments.length === 0) {
+      for (key in this._events) {
+        if (key === &#x27;removeListener&#x27;) continue;
+        this.removeAllListeners(key);
+      }
+      this.removeAllListeners(&#x27;removeListener&#x27;);
+      this._events = {};
+      return this;
+    }
+
+    listeners = this._events[type];
+
+    if (isFunction(listeners)) {
+      this.removeListener(type, listeners);
+    } else if (listeners) {
+      // LIFO order
+      while (listeners.length)
+        this.removeListener(type, listeners[listeners.length - 1]);
+    }
+    delete this._events[type];
+
+    return this;
+  };
+
+  /**
+   * Return the listener list bound to certain type of event.
+   *
+   * @method listeners
+   * @param {String} type Evnet type.
+   */
+  proto.listeners = function (type) {
+    var ret;
+    if (!this._events || !this._events[type])
+      ret = [];
+    else if (isFunction(this._events[type]))
+      ret = [this._events[type]];
+    else
+      ret = this._events[type].slice();
+    return ret;
+  };
+
+  /**
+   * Count the number of listeners of an emitter.
+   *
+   * @method  listenerCount
+   * @param  {webduino.EventEmitter} emitter The EventEmitter instance to count.
+   * @param  {String} type Event type.
+   * @static
+   */
+  EventEmitter.listenerCount = function (emitter, type) {
+    var ret;
+    if (!emitter._events || !emitter._events[type])
+      ret = 0;
+    else if (isFunction(emitter._events[type]))
+      ret = 1;
+    else
+      ret = emitter._events[type].length;
+    return ret;
+  };
+
+  function isFunction(arg) {
+    return typeof arg === &#x27;function&#x27;;
+  }
+
+  function isNumber(arg) {
+    return typeof arg === &#x27;number&#x27;;
+  }
+
+  function isObject(arg) {
+    return typeof arg === &#x27;object&#x27; &amp;&amp; arg !== null;
+  }
+
+  function isUndefined(arg) {
+    return arg === void 0;
+  }
+
+  scope.EventEmitter = EventEmitter;
+}));
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

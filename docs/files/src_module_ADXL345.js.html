@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/module/ADXL345.js - webduino-js</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            webduino-js
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.4.16</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/webduino.Board", "classes/webduino.EventEmitter", "classes/webduino.Module", "classes/webduino.module.ADXL345", "classes/webduino.module.Barcode", "classes/webduino.module.Button", "classes/webduino.module.Buzzer", "classes/webduino.module.Dht", "classes/webduino.module.HX711", "classes/webduino.module.IRLed", "classes/webduino.module.IRRecv", "classes/webduino.module.Led", "classes/webduino.module.Max7219", "classes/webduino.module.Photocell", "classes/webduino.module.RFID", "classes/webduino.module.RGBLed", "classes/webduino.module.Soil", "classes/webduino.module.Ultrasonic", "classes/webduino.Transport", "classes/webduino.transport.MqttTransport", "classes/webduino.transport.NodeMqttTransport"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/webduino.Board.html">webduino.Board</a></li>
+                <li><a href="../classes/webduino.EventEmitter.html">webduino.EventEmitter</a></li>
+                <li><a href="../classes/webduino.Module.html">webduino.Module</a></li>
+                <li><a href="../classes/webduino.module.ADXL345.html">webduino.module.ADXL345</a></li>
+                <li><a href="../classes/webduino.module.Barcode.html">webduino.module.Barcode</a></li>
+                <li><a href="../classes/webduino.module.Button.html">webduino.module.Button</a></li>
+                <li><a href="../classes/webduino.module.Buzzer.html">webduino.module.Buzzer</a></li>
+                <li><a href="../classes/webduino.module.Dht.html">webduino.module.Dht</a></li>
+                <li><a href="../classes/webduino.module.HX711.html">webduino.module.HX711</a></li>
+                <li><a href="../classes/webduino.module.IRLed.html">webduino.module.IRLed</a></li>
+                <li><a href="../classes/webduino.module.IRRecv.html">webduino.module.IRRecv</a></li>
+                <li><a href="../classes/webduino.module.Led.html">webduino.module.Led</a></li>
+                <li><a href="../classes/webduino.module.Max7219.html">webduino.module.Max7219</a></li>
+                <li><a href="../classes/webduino.module.Photocell.html">webduino.module.Photocell</a></li>
+                <li><a href="../classes/webduino.module.RFID.html">webduino.module.RFID</a></li>
+                <li><a href="../classes/webduino.module.RGBLed.html">webduino.module.RGBLed</a></li>
+                <li><a href="../classes/webduino.module.Soil.html">webduino.module.Soil</a></li>
+                <li><a href="../classes/webduino.module.Ultrasonic.html">webduino.module.Ultrasonic</a></li>
+                <li><a href="../classes/webduino.Transport.html">webduino.Transport</a></li>
+                <li><a href="../classes/webduino.transport.MqttTransport.html">webduino.transport.MqttTransport</a></li>
+                <li><a href="../classes/webduino.transport.NodeMqttTransport.html">webduino.transport.NodeMqttTransport</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<div class="page-header">
+    <h1>src/module/ADXL345.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
++(function (factory) {
+  if (typeof exports === &#x27;undefined&#x27;) {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
+  &#x27;use strict&#x27;;
+
+  var Module = scope.Module,
+    BoardEvent = scope.BoardEvent,
+    proto;
+
+  var ADXL345Event = {
+
+    /**
+     * Fires when the accelerometer senses a value change.
+     * 
+     * @event ADXL234Event.MESSAGE
+     */
+    MESSAGE: &#x27;message&#x27;
+  };
+
+  /**
+   * The ADXL345 class.
+   * 
+   * ADXL345 is a small, thin, ultralow power, 3-axis accelerometer.
+   * 
+   * @namespace webduino.module
+   * @class ADXL345
+   * @constructor
+   * @param {webduino.Board} board The board that the ADXL345 accelerometer is attached to.
+   * @extends webduino.Module
+   */
+  function ADXL345(board) {
+    Module.call(this);
+    this._board = board;
+    this._baseAxis = &#x27;z&#x27;;
+    this._sensitive = 10;
+    this._detectTime = 50;
+    this._messageHandler = onMessage.bind(this);
+    this._init = false;
+    this._info = {
+      x: 0,
+      y: 0,
+      z: 0,
+      fXg: 0,
+      fYg: 0,
+      fZg: 0
+    };
+    this._callback = function () {};
+    this._board.send([0xf0, 0x04, 0x0b, 0x00, 0xf7]);
+  }
+
+  function onMessage(event) {
+    var msg = event.message;
+    var msgPort = [0x04, 0x0b, 0x04];
+    var stus = true;
+    var alpha = 0.5;
+    var x, y, z;
+
+    if (msg.length !== 9) {
+      return false;
+    }
+
+    msgPort.forEach(function (val, idx, ary) {
+      if (val !== msg[idx]) {
+        stus = false;
+      }
+    });
+
+    if (!stus) {
+      return false;
+    }
+
+    x = (msg[3] &lt;&lt; 8 | msg[4]) - 1024;
+    y = (msg[5] &lt;&lt; 8 | msg[6]) - 1024;
+    z = (msg[7] &lt;&lt; 8 | msg[8]) - 1024;
+
+    this.emit(ADXL345Event.MESSAGE, x, y, z);
+  }
+
+  function calcFixed(base, data, fixedInfo) {
+    Object.getOwnPropertyNames(data).forEach(function (key, idx, ary) {
+      fixedInfo[key] = data[key];
+
+      if (key === base) {
+        if (data[key] &gt; 0) {
+          fixedInfo[key] = data[key] - 256;
+        } else {
+          fixedInfo[key] = data[key] + 256;
+        }
+      }
+    });
+  }
+
+  function estimateRollandPitch(x, y, z, fXg, fYg, fZg) {
+    var alpha = 0.5;
+    var roll, pitch;
+
+    // Low Pass Filter
+    fXg = x * alpha + (fXg * (1.0 - alpha));
+    fYg = y * alpha + (fYg * (1.0 - alpha));
+    fZg = z * alpha + (fZg * (1.0 - alpha));
+
+    // Roll &amp; Pitch Equations
+    roll = (Math.atan2(-fYg, fZg) * 180.0) / Math.PI;
+    pitch = (Math.atan2(fXg, Math.sqrt(fYg * fYg + fZg * fZg)) * 180.0) / Math.PI;
+    roll = roll.toFixed(2);
+    pitch = pitch.toFixed(2);
+
+    return {
+      roll: roll,
+      pitch: pitch,
+      fXg: fXg,
+      fYg: fYg,
+      fZg: fZg
+    };
+  }
+
+  ADXL345.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: ADXL345
+    },
+
+    /**
+     * The state indicating whether the accelerometer is detecting.
+     * 
+     * @attribute state
+     * @type {String} &#x60;on&#x60; or &#x60;off&#x60;
+     */
+    state: {
+      get: function () {
+        return this._state;
+      },
+      set: function (val) {
+        this._state = val;
+      }
+    }
+  });
+
+  /**
+   * Start detection.
+   *
+   * @method detect
+   * @param {Function} [callback] Detection callback.
+   */
+  
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Detection callback.
+   * @deprecated &#x60;on()&#x60; is deprecated, use &#x60;detect()&#x60; instead.
+   */
+  proto.detect = proto.on = function(callback) {
+    var _this = this;
+
+    this._board.send([0xf0, 0x04, 0x0b, 0x01, 0xf7]);
+
+    if (typeof callback !== &#x27;function&#x27;) {
+      callback = function () {};
+    }
+
+    this._callback = function (x, y, z) {
+      var info = _this._info;
+      var rt;
+
+      if (!_this._init) {
+        _this._init = true;
+        calcFixed(this._baseAxis, { x: x, y: y, z: z }, info);
+      }
+
+      x -= info.x;
+      y -= info.y;
+      z -= info.z;
+
+      rt = estimateRollandPitch(x, y, z, info.fXg, info.fYg, info.fZg);
+      [&#x27;fXg&#x27;, &#x27;fYg&#x27;, &#x27;fZg&#x27;].forEach(function (val, idx, ary) {
+        info[val] = rt[val];
+      });
+
+      // uint : mg -&gt; g
+      x = (x / 256).toFixed(2);
+      y = (y / 256).toFixed(2);
+      z = (z / 256).toFixed(2);
+
+      callback(x, y, z, rt.roll, rt.pitch);
+    };
+
+    this._state = &#x27;on&#x27;;
+    this._board.on(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
+    this.addListener(ADXL345Event.MESSAGE, this._callback);
+  };
+
+  /**
+   * Stop detection.
+   *
+   * @method off
+   */
+  proto.off = function () {
+    this._state = &#x27;off&#x27;;
+    this._board.send([0xf0, 0x04, 0x0b, 0x02, 0xf7]);
+    this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
+    this.removeListener(ADXL345Event.MESSAGE, this._callback);
+    this._callback = null;
+  };
+
+  /**
+   * Reset detection value.
+   *
+   * @method refresh
+   */
+  proto.refresh = function () {
+    this._init = false;
+    if (this._init === true) {
+      this._info = {
+        x: 0,
+        y: 0,
+        z: 0,
+        fXg: 0,
+        fYg: 0,
+        fZg: 0
+      };
+    }
+  };
+
+  /**
+   * Set the base axis for calculation.
+   *
+   * @method setBaseAxis 
+   * @param {String} axis Axis to be set to, either &#x60;x&#x60;, &#x60;y&#x60;, or &#x60;z&#x60;.
+   */
+  proto.setBaseAxis = function (val) {
+    this._baseAxis = val;
+  };
+
+  /**
+   * Set detection sensitivity.
+   *
+   * @method setSensitivity
+   * @param {Number} sensitivity Detection sensitivity.
+   */
+  proto.setSensitivity = function (sensitive) {
+    if (sensitive !== this._sensitive) {
+      this._sensitive = sensitive;
+      this._board.send([0xf0, 0x04, 0x0b, 0x03, sensitive, 0xf7]);
+    }
+  };
+
+  /**
+   * Set detecting time period.
+   *
+   * @method setDetectTime
+   * @param {Number} detectTime The time period for detecting, in ms.
+   */
+  proto.setDetectTime = function (detectTime) {
+    if (detectTime !== this._detectTime) {
+      this._detectTime = detectTime;
+      this._board.send([0xf0, 0x04, 0x0b, 0x04, detectTime, 0xf7]);
+    }
+  };
+
+  scope.module.ADXL345 = ADXL345;
+}));
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

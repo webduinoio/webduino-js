@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/transport/MqttTransport.js - webduino-js</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            webduino-js
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.4.16</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/webduino.Board", "classes/webduino.EventEmitter", "classes/webduino.Module", "classes/webduino.module.ADXL345", "classes/webduino.module.Barcode", "classes/webduino.module.Button", "classes/webduino.module.Buzzer", "classes/webduino.module.Dht", "classes/webduino.module.HX711", "classes/webduino.module.IRLed", "classes/webduino.module.IRRecv", "classes/webduino.module.Led", "classes/webduino.module.Max7219", "classes/webduino.module.Photocell", "classes/webduino.module.RFID", "classes/webduino.module.RGBLed", "classes/webduino.module.Soil", "classes/webduino.module.Ultrasonic", "classes/webduino.Transport", "classes/webduino.transport.MqttTransport", "classes/webduino.transport.NodeMqttTransport"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/webduino.Board.html">webduino.Board</a></li>
+                <li><a href="../classes/webduino.EventEmitter.html">webduino.EventEmitter</a></li>
+                <li><a href="../classes/webduino.Module.html">webduino.Module</a></li>
+                <li><a href="../classes/webduino.module.ADXL345.html">webduino.module.ADXL345</a></li>
+                <li><a href="../classes/webduino.module.Barcode.html">webduino.module.Barcode</a></li>
+                <li><a href="../classes/webduino.module.Button.html">webduino.module.Button</a></li>
+                <li><a href="../classes/webduino.module.Buzzer.html">webduino.module.Buzzer</a></li>
+                <li><a href="../classes/webduino.module.Dht.html">webduino.module.Dht</a></li>
+                <li><a href="../classes/webduino.module.HX711.html">webduino.module.HX711</a></li>
+                <li><a href="../classes/webduino.module.IRLed.html">webduino.module.IRLed</a></li>
+                <li><a href="../classes/webduino.module.IRRecv.html">webduino.module.IRRecv</a></li>
+                <li><a href="../classes/webduino.module.Led.html">webduino.module.Led</a></li>
+                <li><a href="../classes/webduino.module.Max7219.html">webduino.module.Max7219</a></li>
+                <li><a href="../classes/webduino.module.Photocell.html">webduino.module.Photocell</a></li>
+                <li><a href="../classes/webduino.module.RFID.html">webduino.module.RFID</a></li>
+                <li><a href="../classes/webduino.module.RGBLed.html">webduino.module.RGBLed</a></li>
+                <li><a href="../classes/webduino.module.Soil.html">webduino.module.Soil</a></li>
+                <li><a href="../classes/webduino.module.Ultrasonic.html">webduino.module.Ultrasonic</a></li>
+                <li><a href="../classes/webduino.Transport.html">webduino.Transport</a></li>
+                <li><a href="../classes/webduino.transport.MqttTransport.html">webduino.transport.MqttTransport</a></li>
+                <li><a href="../classes/webduino.transport.NodeMqttTransport.html">webduino.transport.NodeMqttTransport</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<div class="page-header">
+    <h1>src/transport/MqttTransport.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
++(function (scope) {
+  &#x27;use strict&#x27;;
+
+  var push = Array.prototype.push;
+
+  var Transport = scope.Transport,
+    TransportEvent = scope.TransportEvent,
+    util = scope.util,
+    proto;
+
+  var STATUS = {
+    OK: &#x27;OK&#x27;
+  };
+
+  var TOPIC = {
+    PING: &#x27;/PING&#x27;,
+    PONG: &#x27;/PONG&#x27;,
+    STATUS: &#x27;/STATUS&#x27;
+  };
+
+  /**
+   * Conveying messages over MQTT protocol.
+   *
+   * @namespace webduino.transport
+   * @class MqttTransport
+   * @constructor
+   * @param {Object} options Options to build a proper transport
+   * @extends webduino.Transport
+   */
+  function MqttTransport(options) {
+    Transport.call(this, options);
+
+    this._options = options;
+    this._client = null;
+    this._timer = null;
+    this._sendTimer = null;
+    this._buf = [];
+
+    this._status = &#x27;&#x27;;
+
+    this._connHandler = onConnect.bind(this);
+    this._connFailedHandler = onConnectFailed.bind(this);
+    this._messageHandler = onMessage.bind(this);
+    this._sendOutHandler = sendOut.bind(this);
+    this._disconnHandler = onDisconnect.bind(this);
+
+    init(this);
+  }
+
+  function init(self) {
+    self._client = new Paho.MQTT.Client(self._options.server,
+      &#x27;_&#x27; + self._options.device + (self._options.multi ? &#x27;.&#x27; + util.randomId() : &#x27;&#x27;)
+    );
+    self._client.onMessageArrived = self._messageHandler;
+    self._client.onConnectionLost = self._disconnHandler;
+    self._client.onConnected = self._connHandler;
+    self._client.connect({
+      userName: self._options.login || &#x27;&#x27;,
+      password: self._options.password || &#x27;&#x27;,
+      timeout: MqttTransport.CONNECT_TIMEOUT,
+      keepAliveInterval: MqttTransport.KEEPALIVE_INTERVAL,
+      onSuccess: self._connHandler,
+      onFailure: self._connFailedHandler,
+      reconnect: !!self._options.autoReconnect,
+      reconnectInterval: MqttTransport.RECONNECT_PERIOD
+    });
+  }
+
+  function onConnect() {
+    this._client.subscribe(this._options.device + TOPIC.PONG);
+    this._client.subscribe(this._options.device + TOPIC.STATUS);
+  }
+
+  function onConnectFailed(respObj) {
+    this.emit(TransportEvent.ERROR, new Error(respObj.errorMessage));
+  }
+
+  function onMessage(message) {
+    var dest = message.destinationName,
+      oldStatus = this._status;
+
+    switch (dest.substr(dest.lastIndexOf(&#x27;/&#x27;) + 1)) {
+
+    case &#x27;STATUS&#x27;:
+      this._status = message.payloadString;
+      detectStatusChange(this, this._status, oldStatus);
+      break;
+
+    default:
+      (this._status === STATUS.OK) &amp;&amp; this.emit(TransportEvent.MESSAGE, message.payloadBytes);
+      break;
+
+    }
+  }
+
+  function detectStatusChange(self, newStatus, oldStatus) {
+    if (newStatus === oldStatus) {
+      return;
+    }
+
+    if (newStatus === STATUS.OK) {
+      self.emit(TransportEvent.OPEN);
+    } else {
+      self.emit(TransportEvent.ERROR, new Error(&#x27;board connection failed.&#x27;));
+    }
+  }
+
+  function onDisconnect(respObj) {
+    if (!respObj.errorCode || !respObj.reconnect) {
+      delete this._client;
+      respObj.errorCode &amp;&amp; this.emit(TransportEvent.ERROR, new Error(respObj.errorMessage));
+      this.emit(TransportEvent.CLOSE);
+    }
+  }
+
+  function sendOut() {
+    var payload = new Paho.MQTT.Message(new Uint8Array(this._buf).buffer);
+    payload.destinationName = this._options.device + TOPIC.PING;
+    payload.qos = 0;
+    this.isOpen &amp;&amp; this._client.send(payload);
+    clearBuf(this);
+  }
+
+  function clearBuf(self) {
+    self._buf = [];
+    clearImmediate(self._sendTimer);
+    self._sendTimer = null;
+  }
+
+  MqttTransport.prototype = proto = Object.create(Transport.prototype, {
+
+    constructor: {
+      value: MqttTransport
+    },
+
+    isOpen: {
+      get: function () {
+        return this._client &amp;&amp; this._client.isConnected();
+      }
+    }
+
+  });
+
+  proto.send = function (payload) {
+    if (this._buf.length + payload.length + this._options.device.length + TOPIC.PING.length + 4 &gt;
+      MqttTransport.MAX_PACKET_SIZE) {
+      this._sendOutHandler();
+    }
+    push.apply(this._buf, payload);
+    if (!this._sendTimer) {
+      this._sendTimer = setImmediate(this._sendOutHandler);
+    }
+  };
+
+  proto.close = function () {
+    if (this._client) {
+      if (this._client.isConnected()) {
+        this._client.disconnect();
+      } else {
+        delete this._client;
+      }
+    }
+  };
+
+  proto.flush = function () {
+    if (this._buf &amp;&amp; this._buf.length) {
+      this._sendOutHandler();
+    }
+  };
+
+  /**
+   * Reconnect period when MQTT connection goes down. Measured in seconds.
+   *
+   * @property RECONNECT_PERIOD
+   * @type {Number}
+   * @static
+   */
+  MqttTransport.RECONNECT_PERIOD = 1;
+
+  /**
+   * MQTT keepalive interval. Measured in seconds.
+   *
+   * @property KEEPALIVE_INTERVAL
+   * @type {Number}
+   * @static
+   */
+  MqttTransport.KEEPALIVE_INTERVAL = 15;
+
+  /**
+   * Time to wait before throwing connection timeout exception. Measured in seconds.
+   *
+   * @property CONNECT_TIMEOUT
+   * @type {Number}
+   * @static
+   */
+  MqttTransport.CONNECT_TIMEOUT = 30;
+
+  /**
+   * Maximum packet size in KB.
+   *
+   * @property MAX_PACKET_SIZE
+   * @type {Number}
+   * @static
+   */
+  MqttTransport.MAX_PACKET_SIZE = 128;
+
+  scope.transport.mqtt = MqttTransport;
+}(webduino));
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

@@ -9,6 +9,14 @@
 
   var EventEmitter = scope.EventEmitter;
 
+  /**
+   * A component to be attached to a board. This is an abstract class meant to be extended.
+   *
+   * @namespace webduino
+   * @class Module
+   * @constructor
+   * @extends webduino.EventEmitter
+   */
   function Module() {
     EventEmitter.call(this);
   }
@@ -19,6 +27,13 @@
       value: Module
     },
 
+    /**
+     * Type of the module.
+     *
+     * @attribute type
+     * @type {String}
+     * @readOnly
+     */
     type: {
       get: function () {
         return this._type;

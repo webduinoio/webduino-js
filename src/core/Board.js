@@ -60,6 +60,15 @@
     SYSEX_NON_REALTIME = 0x7E,
     SYSEX_REALTIME = 0x7F;
 
+  /**
+   * An abstract development board.
+   *
+   * @namespace webduino
+   * @class Board
+   * @constructor
+   * @param {Object} options Options to build the board instance.
+   * @extends webduino.EventEmitter
+   */
   function Board(options) {
     EventEmitter.call(this);
 
@@ -436,9 +445,12 @@
   };
 
   proto.startup = function () {
-    this._isReady = true;
-    this.emit(BoardEvent.READY, this);
     this.enableDigitalPins();
+
+    setTimeout(function () {
+      this._isReady = true;
+      this.emit(BoardEvent.READY, this);
+    }.bind(this), 2000);
   };
 
   proto.systemReset = function () {

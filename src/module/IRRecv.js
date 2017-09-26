@@ -12,10 +12,32 @@
     proto;
 
   var IRRecvEvent = {
+
+    /**
+     * Fires when receiving data.
+     * 
+     * @event IRRecvEvent.MESSAGE
+     */
     MESSAGE: 'message',
+
+    /**
+     * Fires when error occured while receiving data.
+     * 
+     * @event IRRecvEvent.MESSAGE_ERROR
+     */
     MESSAGE_ERROR: 'messageError'
   };
 
+  /**
+   * The IRRecv Class.
+   *
+   * @namespace webduino.module
+   * @class IRRecv
+   * @constructor
+   * @param {webduino.Board} board The board that the IRLed is attached to.
+   * @param {Integer} pin The pin that the IRLed is connected to.
+   * @extends webduino.Module
+   */
   function IRRecv(board, pin) {
     Module.call(this);
     this._board = board;
@@ -55,6 +77,13 @@
     constructor: {
       value: IRRecv
     },
+
+    /**
+     * The state indicating whether the IRLed is receiving.
+     * 
+     * @attribute state
+     * @type {String} `on` or `off`
+     */
     state: {
       get: function () {
         return this._state;
@@ -65,7 +94,23 @@
     }
   });
 
-  proto.on = function (callback, errorCallback) {
+  /**
+   * Start detection.
+   *
+   * @method receive
+   * @param {Function} [callback] Detection callback.
+   * @param {Function} [errorCallback] Error callback while Detection.
+   */
+  
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Detection callback.
+   * @param {Function} [errorCallback] Error callback while Detection.
+   * @deprecated `on()` is deprecated, use `receive()` instead.
+   */
+  proto.receive = proto.on = function (callback, errorCallback) {
     var aryCode = [0xf0, 0x04, 0x0A, 0x00];
 
     if (typeof callback !== 'function') {
@@ -95,6 +140,11 @@
     }
   };
 
+  /**
+   * Stop detection.
+   *
+   * @method off
+   */
   proto.off = function () {
     this._board.send([0xf0, 0x04, 0x0A, 0x01, 0xf7]);
     this._state = 'off';

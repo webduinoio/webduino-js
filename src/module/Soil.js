@@ -12,9 +12,24 @@
     proto;
 
   var SoilEvent = {
+    /**
+     * Fires when the value of humidity has changed.
+     * 
+     * @event PhotocellEvent.MESSAGE
+     */
     MESSAGE: 'message'
   };
 
+  /**
+   * The Soil class.
+   * 
+   * @namespace webduino.module
+   * @class Soil
+   * @constructor
+   * @param {webduino.Board} board Board that the soil is attached to.
+   * @param {Integer} analogPinNumber The pin that soil is attached to.
+   * @extends webduino.Module
+   */
   function Soil(board, analogPinNumber) {
     Module.call(this);
     this._board = board;
@@ -41,6 +56,13 @@
     constructor: {
       value: Soil
     },
+
+    /**
+     * The state indicating whether the module is scanning.
+     * 
+     * @attribute state
+     * @type {String} `on` or `off`
+     */
     state: {
       get: function() {
         return this._state;
@@ -51,7 +73,21 @@
     }
   });
 
-  proto.on = function(callback) {
+  /**
+   * Start detection.
+   *
+   * @method measure
+   * @param {Function} [callback] Callback after starting detection.
+   */
+  
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Callback after starting detection.
+   * @deprecated `on()` is deprecated, use `measure()` instead.
+   */
+  proto.measure = proto.on = function(callback) {
     var _this = this;
 
     this._board.enableAnalogPin(this._pinNumber);
@@ -69,6 +105,11 @@
     this.addListener(SoilEvent.MESSAGE, this._callback);
   };
 
+  /**
+   * Stop detection.
+   *
+   * @method off
+   */
   proto.off = function() {
     this._state = 'off';
     this._board.disableAnalogPin(this._pinNumber);

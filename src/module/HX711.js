@@ -14,9 +14,28 @@
     var HX711_MESSAGE = [0x04, 0x15];
 
     var HX711Event = {
+
+        /**
+         * Fires when the value of weight has changed.
+         * 
+         * @event HX711.MESSAGE
+         */
         MESSAGE: 'message'
     };
 
+  /**
+   * The HX711 Class.
+   *
+   * HX711 is a precision 24-bit analogto-digital converter (ADC) designed for weigh scales.
+   *
+   * @namespace webduino.module
+   * @class HX711
+   * @constructor
+   * @param {webduino.Board} board The board that the IRLed is attached to.
+   * @param {Integer} sckPin The pin that Serial Clock Input is attached to.
+   * @param {Integer} dtPin The pin that Data Output is attached to.
+   * @extends webduino.Module
+   */
     function HX711(board, sckPin, dtPin) {
         Module.call(this);
         this._board = board;
@@ -43,6 +62,13 @@
         constructor: {
             value: HX711
         },
+
+        /**
+         * The state indicating whether the module is measuring.
+         * 
+         * @attribute state
+         * @type {String} `on` or `off`
+         */
         state: {
             get: function() {
                 return this._state;
@@ -53,7 +79,21 @@
         }
     });
 
-    proto.on = function(callback) {
+   /**
+   * Start detection.
+   *
+   * @method measure
+   * @param {Function} [callback] Callback after starting detection.
+   */
+  
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Callback after starting detection.
+   * @deprecated `on()` is deprecated, use `measure()` instead.
+   */
+    proto.measure = proto.on = function(callback) {
         var _this = this;
         this._board.send([0xf0, 0x04, 0x15, 0x01, 0xf7]);
         if (typeof callback !== 'function') {
@@ -72,6 +112,11 @@
         this.addListener(HX711Event.MESSAGE, this._callback);
     };
 
+   /**
+   * Stop detection.
+   *
+   * @method off
+   */
     proto.off = function() {
         this._state = 'off';
         this._board.send([0xf0, 0x04, 0x15, 0x02, 0xf7]);

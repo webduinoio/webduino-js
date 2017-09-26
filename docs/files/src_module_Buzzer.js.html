@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/module/Buzzer.js - webduino-js</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            webduino-js
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.4.16</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/webduino.Board", "classes/webduino.EventEmitter", "classes/webduino.Module", "classes/webduino.module.ADXL345", "classes/webduino.module.Barcode", "classes/webduino.module.Button", "classes/webduino.module.Buzzer", "classes/webduino.module.Dht", "classes/webduino.module.HX711", "classes/webduino.module.IRLed", "classes/webduino.module.IRRecv", "classes/webduino.module.Led", "classes/webduino.module.Max7219", "classes/webduino.module.Photocell", "classes/webduino.module.RFID", "classes/webduino.module.RGBLed", "classes/webduino.module.Soil", "classes/webduino.module.Ultrasonic", "classes/webduino.Transport", "classes/webduino.transport.MqttTransport", "classes/webduino.transport.NodeMqttTransport"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/webduino.Board.html">webduino.Board</a></li>
+                <li><a href="../classes/webduino.EventEmitter.html">webduino.EventEmitter</a></li>
+                <li><a href="../classes/webduino.Module.html">webduino.Module</a></li>
+                <li><a href="../classes/webduino.module.ADXL345.html">webduino.module.ADXL345</a></li>
+                <li><a href="../classes/webduino.module.Barcode.html">webduino.module.Barcode</a></li>
+                <li><a href="../classes/webduino.module.Button.html">webduino.module.Button</a></li>
+                <li><a href="../classes/webduino.module.Buzzer.html">webduino.module.Buzzer</a></li>
+                <li><a href="../classes/webduino.module.Dht.html">webduino.module.Dht</a></li>
+                <li><a href="../classes/webduino.module.HX711.html">webduino.module.HX711</a></li>
+                <li><a href="../classes/webduino.module.IRLed.html">webduino.module.IRLed</a></li>
+                <li><a href="../classes/webduino.module.IRRecv.html">webduino.module.IRRecv</a></li>
+                <li><a href="../classes/webduino.module.Led.html">webduino.module.Led</a></li>
+                <li><a href="../classes/webduino.module.Max7219.html">webduino.module.Max7219</a></li>
+                <li><a href="../classes/webduino.module.Photocell.html">webduino.module.Photocell</a></li>
+                <li><a href="../classes/webduino.module.RFID.html">webduino.module.RFID</a></li>
+                <li><a href="../classes/webduino.module.RGBLed.html">webduino.module.RGBLed</a></li>
+                <li><a href="../classes/webduino.module.Soil.html">webduino.module.Soil</a></li>
+                <li><a href="../classes/webduino.module.Ultrasonic.html">webduino.module.Ultrasonic</a></li>
+                <li><a href="../classes/webduino.Transport.html">webduino.Transport</a></li>
+                <li><a href="../classes/webduino.transport.MqttTransport.html">webduino.transport.MqttTransport</a></li>
+                <li><a href="../classes/webduino.transport.NodeMqttTransport.html">webduino.transport.NodeMqttTransport</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<div class="page-header">
+    <h1>src/module/Buzzer.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
++(function (factory) {
+  if (typeof exports === &#x27;undefined&#x27;) {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
+  &#x27;use strict&#x27;;
+
+  var push = Array.prototype.push;
+
+  var util = scope.util,
+    Module = scope.Module,
+    BoardEvent = scope.BoardEvent,
+    proto;
+
+  var BUZZER_MESSAGE = [0x04, 0x07],
+    TONE_MIN_LENGTH = 100;
+
+  var BUZZER_STATE = {
+    PLAYING: &#x27;playing&#x27;,
+    STOPPED: &#x27;stopped&#x27;,
+    PAUSED: &#x27;paused&#x27;
+  };
+
+  var FREQUENCY = {
+    REST: 0,
+    B0: 31,
+    C1: 33,
+    CS1: 35,
+    D1: 37,
+    DS1: 39,
+    E1: 41,
+    F1: 44,
+    FS1: 46,
+    G1: 49,
+    GS1: 52,
+    A1: 55,
+    AS1: 58,
+    B1: 62,
+    C2: 65,
+    CS2: 69,
+    D2: 73,
+    DS2: 78,
+    E2: 82,
+    F2: 87,
+    FS2: 93,
+    G2: 98,
+    GS2: 104,
+    A2: 110,
+    AS2: 117,
+    B2: 123,
+    C3: 131,
+    CS3: 139,
+    D3: 147,
+    DS3: 156,
+    E3: 165,
+    F3: 175,
+    FS3: 185,
+    G3: 196,
+    GS3: 208,
+    A3: 220,
+    AS3: 233,
+    B3: 247,
+    C4: 262,
+    CS4: 277,
+    D4: 294,
+    DS4: 311,
+    E4: 330,
+    F4: 349,
+    FS4: 370,
+    G4: 392,
+    GS4: 415,
+    A4: 440,
+    AS4: 466,
+    B4: 494,
+    C5: 523,
+    CS5: 554,
+    D5: 587,
+    DS5: 622,
+    E5: 659,
+    F5: 698,
+    FS5: 740,
+    G5: 784,
+    GS5: 831,
+    A5: 880,
+    AS5: 932,
+    B5: 988,
+    C6: 1047,
+    CS6: 1109,
+    D6: 1175,
+    DS6: 1245,
+    E6: 1319,
+    F6: 1397,
+    FS6: 1480,
+    G6: 1568,
+    GS6: 1661,
+    A6: 1760,
+    AS6: 1865,
+    B6: 1976,
+    C7: 2093,
+    CS7: 2217,
+    D7: 2349,
+    DS7: 2489,
+    E7: 2637,
+    F7: 2794,
+    FS7: 2960,
+    G7: 3136,
+    GS7: 3322,
+    A7: 3520,
+    AS7: 3729,
+    B7: 3951,
+    C8: 4186,
+    CS8: 4435,
+    D8: 4699,
+    DS8: 4978
+  };
+
+  /**
+   * The Buzzer Class.
+   *
+   * @namespace webduino.module
+   * @class Buzzer
+   * @constructor
+   * @param {webduino.Board} board The board that the buzzer is attached to.
+   * @param {Integer} pin The pin that the buzzer is connected to.
+   * @extends webduino.Module
+   */
+  function Buzzer(board, pin) {
+    Module.call(this);
+
+    this._board = board;
+    this._pin = pin;
+    this._timer = null;
+    this._sequence = null;
+    this._state = BUZZER_STATE.STOPPED;
+
+    this._board.on(BoardEvent.BEFOREDISCONNECT, this.stop.bind(this));
+    this._board.on(BoardEvent.ERROR, this.stop.bind(this));
+  }
+
+  function getDuration(duration) {
+    duration = isNaN(duration = parseInt(duration)) ? TONE_MIN_LENGTH : duration;
+    return Math.max(duration, TONE_MIN_LENGTH);
+  }
+
+  function padDurations(durations, len) {
+    var durLen = durations.length,
+      dur = durLen ? durations[durLen - 1] : TONE_MIN_LENGTH;
+
+    if (durLen &lt; len) {
+      push.apply(durations, new Array(len - durLen));
+      for (var i = durLen; i &lt; durations.length; i++) {
+        durations[i] = dur;
+      }
+    }
+
+    return durations;
+  }
+
+  function playNext(self) {
+    var seq = self._sequence,
+      note;
+
+    if (seq &amp;&amp; seq.length &gt; 0) {
+      note = seq.pop();
+      self.tone(note.frequency, note.duration);
+      self._timer = setTimeout(function () {
+        playNext(self);
+      }, note.duration + Buzzer.TONE_DELAY);
+    } else {
+      self.stop();
+    }
+  }
+
+  Buzzer.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: Buzzer
+    }
+  });
+
+  /**
+   * Set Buzzer tone.
+   *
+   * @method tone 
+   * @param {Integer} freq Frequency of tone.
+   * @param {Integer} duration Duration of tone.
+   */
+  proto.tone = function (freq, duration) {
+    var freqData = [];
+
+    if (isNaN(freq = parseInt(freq)) || freq &lt;= 0 || freq &gt; 9999) {
+      return;
+    }
+
+    freq = (&#x27;0000&#x27; + freq).substr(-4, 4);
+    freqData[0] = parseInt(&#x27;0x&#x27; + freq[0] + freq[1]);
+    freqData[1] = parseInt(&#x27;0x&#x27; + freq[2] + freq[3]);
+    duration = Math.round(getDuration(duration) / TONE_MIN_LENGTH);
+    this._board.sendSysex(BUZZER_MESSAGE[0], [BUZZER_MESSAGE[1], this._pin.number]
+      .concat(freqData).concat(duration));
+  };
+
+  /**
+   * Play specified note and tempo.
+   *
+   * @method play 
+   * @param {Array} notes Array of notes.
+   * @param {Array} tempos Array of tempos.
+   * @example
+   *     buzzer.play([&quot;C6&quot;,&quot;D6&quot;,&quot;E6&quot;,&quot;F6&quot;,&quot;G6&quot;,&quot;A6&quot;,&quot;B6&quot;], [&quot;8&quot;,&quot;8&quot;,&quot;8&quot;,&quot;8&quot;,&quot;8&quot;,&quot;8&quot;,&quot;8&quot;]);
+   */
+  proto.play = function (notes, tempos) {
+    if (typeof notes !== &#x27;undefined&#x27;) {
+      var len = notes.length,
+        durations = padDurations(
+          (util.isArray(tempos) ? tempos : []).map(function (t) {
+            return getDuration(1000 / t);
+          }), len
+        );
+
+      this.stop();
+      this._sequence = [];
+      for (var i = len - 1; i &gt;= 0; i--) {
+        this._sequence.push({
+          frequency: FREQUENCY[notes[i].toUpperCase()],
+          duration: durations[i]
+        });
+      }
+    } else {
+      if (this._state === BUZZER_STATE.PLAYING) {
+        return;
+      }
+    }
+
+    this._state = BUZZER_STATE.PLAYING;
+    playNext(this);
+  };
+
+  /**
+   * Pause the playback.
+   *
+   * @method pause 
+   */
+  proto.pause = function () {
+    if (this._state !== BUZZER_STATE.PLAYING) {
+      return;
+    }
+
+    if (this._timer) {
+      clearTimeout(this._timer);
+      delete this._timer;
+    }
+
+    this._state = BUZZER_STATE.PAUSED;
+  };
+
+  /**
+   * Stop the plaback.
+   *
+   * @method stop 
+   */
+  proto.stop = function () {
+    if (this._timer) {
+      clearTimeout(this._timer);
+      delete this._timer;
+    }
+
+    delete this._sequence;
+    this._state = BUZZER_STATE.STOPPED;
+  };
+
+  /**
+   * Indicates the frequency of tone.
+   * 
+   * @property FREQUENCY
+   * @type {Number}
+   * @static
+   * @final
+   */
+  Buzzer.FREQUENCY = FREQUENCY;
+
+  /**
+   * Indicates the delay of tone.
+   * 
+   * @property TONE_DELAY
+   * @type {Number}
+   * @static
+   * @final
+   */
+  Buzzer.TONE_DELAY = 60;
+
+  scope.module.Buzzer = Buzzer;
+}));
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

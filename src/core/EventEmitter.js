@@ -11,6 +11,13 @@
   // https://raw.githubusercontent.com/Gozala/events/master/events.js
   var proto;
 
+  /**
+   * An event emitter in browser.
+   *
+   * @namespace webduino
+   * @class EventEmitter
+   * @constructor
+   */
   function EventEmitter() {
     this._events = this._events || {};
     this._maxListeners = this._maxListeners || undefined;
@@ -22,10 +29,25 @@
 
   // By default EventEmitters will print a warning if more than 10 listeners are
   // added to it. This is a useful default which helps finding memory leaks.
+
+  /**
+   * Default maximum number of listeners (10).
+   *
+   * @property defaultMaxListeners
+   * @type {Number}
+   * @static
+   */
   EventEmitter.defaultMaxListeners = 10;
 
   // Obviously not all Emitters should be limited to 10. This function allows
   // that to be increased. Set to zero for unlimited.
+
+  /**
+   * Set maximum number of listeners that is allow to bind on an emitter.
+   *
+   * @method setMaxListeners
+   * @param {Number} n Number of listeners.
+   */
   proto.setMaxListeners = function (n) {
     if (!isNumber(n) || n < 0 || isNaN(n))
       throw TypeError('n must be a positive number');
@@ -33,6 +55,13 @@
     return this;
   };
 
+  /**
+   * Emit an event of certain type.
+   *
+   * @method emit
+   * @param {String} type Event type.
+   * @param {Object} [object,...] Event object(s).
+   */
   proto.emit = function (type) {
     var er, handler, len, args, i, listeners;
 
@@ -85,6 +114,13 @@
     return true;
   };
 
+  /**
+   * Add a listener for a certain type of event.
+   *
+   * @method addListener
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
   proto.addListener = function (type, listener) {
     var m;
 
@@ -135,8 +171,22 @@
     return this;
   };
 
+  /**
+   * Alias for EventEmitter.addListener(type, listener)
+   *
+   * @method on
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
   proto.on = proto.addListener;
 
+  /**
+   * Add a one-time listener for a certain type of event.
+   *
+   * @method once
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
   proto.once = function (type, listener) {
     if (!isFunction(listener))
       throw TypeError('listener must be a function');
@@ -158,6 +208,13 @@
     return this;
   };
 
+  /**
+   * Remove a listener for certain type of event.
+   *
+   * @method removeListener
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
   // emits a 'removeListener' event iff the listener was removed
   proto.removeListener = function (type, listener) {
     var list, position, length, i;
@@ -204,6 +261,12 @@
     return this;
   };
 
+  /**
+   * Remove all listeners of certain type.
+   *
+   * @method removeAllListeners
+   * @param {String} type Event type.
+   */
   proto.removeAllListeners = function (type) {
     var key, listeners;
 
@@ -244,6 +307,12 @@
     return this;
   };
 
+  /**
+   * Return the listener list bound to certain type of event.
+   *
+   * @method listeners
+   * @param {String} type Evnet type.
+   */
   proto.listeners = function (type) {
     var ret;
     if (!this._events || !this._events[type])
@@ -255,6 +324,14 @@
     return ret;
   };
 
+  /**
+   * Count the number of listeners of an emitter.
+   *
+   * @method  listenerCount
+   * @param  {webduino.EventEmitter} emitter The EventEmitter instance to count.
+   * @param  {String} type Event type.
+   * @static
+   */
   EventEmitter.listenerCount = function (emitter, type) {
     var ret;
     if (!emitter._events || !emitter._events[type])

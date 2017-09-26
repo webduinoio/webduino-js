@@ -2,102 +2,2339 @@
     "project": {
         "name": "webduino-js",
         "description": "The Webduino Javascript Core, for Browser and Node.js",
-        "version": "0.4.14",
+        "version": "0.4.16",
         "url": "https://webduino.io/"
     },
     "files": {
+        "src/core/Board.js": {
+            "name": "src/core/Board.js",
+            "modules": {},
+            "classes": {
+                "webduino.Board": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino": 1
+            }
+        },
+        "src/core/EventEmitter.js": {
+            "name": "src/core/EventEmitter.js",
+            "modules": {},
+            "classes": {
+                "webduino.EventEmitter": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino": 1
+            }
+        },
+        "src/core/Module.js": {
+            "name": "src/core/Module.js",
+            "modules": {},
+            "classes": {
+                "webduino.Module": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino": 1
+            }
+        },
+        "src/core/Transport.js": {
+            "name": "src/core/Transport.js",
+            "modules": {},
+            "classes": {
+                "webduino.Transport": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino": 1
+            }
+        },
+        "src/module/ADXL345.js": {
+            "name": "src/module/ADXL345.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.ADXL345": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/module/Barcode.js": {
+            "name": "src/module/Barcode.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.Barcode": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/module/Button.js": {
+            "name": "src/module/Button.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.Button": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/module/Buzzer.js": {
+            "name": "src/module/Buzzer.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.Buzzer": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/module/Dht.js": {
+            "name": "src/module/Dht.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.Dht": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/module/HX711.js": {
+            "name": "src/module/HX711.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.HX711": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/module/IRLed.js": {
+            "name": "src/module/IRLed.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.IRLed": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/module/IRRecv.js": {
+            "name": "src/module/IRRecv.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.IRRecv": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
         "src/module/Led.js": {
             "name": "src/module/Led.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "webduino.module.Led": 1
+            },
             "fors": {},
-            "namespaces": {}
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/module/Max7219.js": {
+            "name": "src/module/Max7219.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.Max7219": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/module/Photocell.js": {
+            "name": "src/module/Photocell.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.Photocell": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/module/RFID.js": {
+            "name": "src/module/RFID.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.RFID": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/module/RGBLed.js": {
+            "name": "src/module/RGBLed.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.RGBLed": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/module/Soil.js": {
+            "name": "src/module/Soil.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.Soil": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/module/Ultrasonic.js": {
+            "name": "src/module/Ultrasonic.js",
+            "modules": {},
+            "classes": {
+                "webduino.module.Ultrasonic": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.module": 1
+            }
+        },
+        "src/transport/MqttTransport.js": {
+            "name": "src/transport/MqttTransport.js",
+            "modules": {},
+            "classes": {
+                "webduino.transport.MqttTransport": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.transport": 1
+            }
+        },
+        "src/transport/NodeMqttTransport.js": {
+            "name": "src/transport/NodeMqttTransport.js",
+            "modules": {},
+            "classes": {
+                "webduino.transport.NodeMqttTransport": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "webduino.transport": 1
+            }
         }
     },
     "modules": {},
-    "classes": {},
+    "classes": {
+        "webduino.Board": {
+            "name": "webduino.Board",
+            "shortname": "webduino.Board",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino",
+            "file": "src/core/Board.js",
+            "line": 63,
+            "description": "An abstract development board.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to build the board instance.",
+                    "type": "Object"
+                }
+            ],
+            "extends": "webduino.EventEmitter"
+        },
+        "webduino.EventEmitter": {
+            "name": "webduino.EventEmitter",
+            "shortname": "webduino.EventEmitter",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino",
+            "file": "src/core/EventEmitter.js",
+            "line": 14,
+            "description": "An event emitter in browser.",
+            "is_constructor": 1
+        },
+        "webduino.Module": {
+            "name": "webduino.Module",
+            "shortname": "webduino.Module",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino",
+            "file": "src/core/Module.js",
+            "line": 12,
+            "description": "A component to be attached to a board. This is an abstract class meant to be extended.",
+            "is_constructor": 1,
+            "extends": "webduino.EventEmitter"
+        },
+        "webduino.Transport": {
+            "name": "webduino.Transport",
+            "shortname": "webduino.Transport",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino",
+            "file": "src/core/Transport.js",
+            "line": 44,
+            "description": "A messaging mechanism to carry underlying firmata messages. This is an abstract class meant to be extended.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to build the transport instance.",
+                    "type": "Object"
+                }
+            ],
+            "extends": "webduino.EventEmitter"
+        },
+        "webduino.module.ADXL345": {
+            "name": "webduino.module.ADXL345",
+            "shortname": "webduino.module.ADXL345",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/ADXL345.js",
+            "line": 24,
+            "description": "The ADXL345 class.\n\nADXL345 is a small, thin, ultralow power, 3-axis accelerometer.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "The board that the ADXL345 accelerometer is attached to.",
+                    "type": "webduino.Board"
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.Barcode": {
+            "name": "webduino.module.Barcode",
+            "shortname": "webduino.module.Barcode",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/Barcode.js",
+            "line": 26,
+            "description": "The Barcode class.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "The board the barcode scanner is attached to.",
+                    "type": "webduino.Board"
+                },
+                {
+                    "name": "rxPin",
+                    "description": "Receivin pin (number) the barcode scanner is connected to.",
+                    "type": "webduino.Pin | Number"
+                },
+                {
+                    "name": "txPin",
+                    "description": "Transmitting pin (number) the barcode scanner is connected to.",
+                    "type": "webduino.Pin | Number"
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.Button": {
+            "name": "webduino.module.Button",
+            "shortname": "webduino.module.Button",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/Button.js",
+            "line": 45,
+            "description": "The Button Class.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "The board the button is attached to.",
+                    "type": "webduino.Board"
+                },
+                {
+                    "name": "pin",
+                    "description": "The pin the button is connected to.",
+                    "type": "webduino.pin"
+                },
+                {
+                    "name": "buttonMode",
+                    "description": "Type of resistor the button is connected to, either Button.PULL_DOWN or Button.PULL_UP.",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "sustainedPressInterval",
+                    "description": "A period of time when the button is pressed and hold for that long, it would be considered a \"sustained press.\" Measured in ms.",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.Buzzer": {
+            "name": "webduino.module.Buzzer",
+            "shortname": "webduino.module.Buzzer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/Buzzer.js",
+            "line": 119,
+            "description": "The Buzzer Class.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "The board that the buzzer is attached to.",
+                    "type": "webduino.Board"
+                },
+                {
+                    "name": "pin",
+                    "description": "The pin that the buzzer is connected to.",
+                    "type": "Integer"
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.Dht": {
+            "name": "webduino.module.Dht",
+            "shortname": "webduino.module.Dht",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/Dht.js",
+            "line": 36,
+            "description": "The Dht Class.\n\nDHT is sensor for measuring temperature and humidity.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "The board that the DHT is attached to.",
+                    "type": "webduino.Board"
+                },
+                {
+                    "name": "pin",
+                    "description": "The pin that the DHT is connected to.",
+                    "type": "Integer"
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.HX711": {
+            "name": "webduino.module.HX711",
+            "shortname": "webduino.module.HX711",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/HX711.js",
+            "line": 26,
+            "description": "The HX711 Class.\n\nHX711 is a precision 24-bit analogto-digital converter (ADC) designed for weigh scales.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "The board that the IRLed is attached to.",
+                    "type": "webduino.Board"
+                },
+                {
+                    "name": "sckPin",
+                    "description": "The pin that Serial Clock Input is attached to.",
+                    "type": "Integer"
+                },
+                {
+                    "name": "dtPin",
+                    "description": "The pin that Data Output is attached to.",
+                    "type": "Integer"
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.IRLed": {
+            "name": "webduino.module.IRLed",
+            "shortname": "webduino.module.IRLed",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/IRLed.js",
+            "line": 13,
+            "description": "The IRLed Class.\n\nIR LED (Infrared LED) is widely used for remote controls and night-vision cameras.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "The board that the IRLed is attached to.",
+                    "type": "webduino.Board"
+                },
+                {
+                    "name": "encode",
+                    "description": "Encode which IRLed used.",
+                    "type": "String"
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.IRRecv": {
+            "name": "webduino.module.IRRecv",
+            "shortname": "webduino.module.IRRecv",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/IRRecv.js",
+            "line": 31,
+            "description": "The IRRecv Class.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "The board that the IRLed is attached to.",
+                    "type": "webduino.Board"
+                },
+                {
+                    "name": "pin",
+                    "description": "The pin that the IRLed is connected to.",
+                    "type": "Integer"
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.Led": {
+            "name": "webduino.module.Led",
+            "shortname": "webduino.module.Led",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/Led.js",
+            "line": 15,
+            "description": "The Led class.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "The board the LED is attached to.",
+                    "type": "webduino.Board"
+                },
+                {
+                    "name": "pin",
+                    "description": "The pin the LED is connected to.",
+                    "type": "webduino.Pin"
+                },
+                {
+                    "name": "driveMode",
+                    "description": "Drive mode the LED is operating at, either Led.SOURCE_DRIVE or Led.SYNC_DRIVE.",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.Max7219": {
+            "name": "webduino.module.Max7219",
+            "shortname": "webduino.module.Max7219",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/Max7219.js",
+            "line": 15,
+            "description": "The Max7219 Class.\n\nMAX7219 is compact, serial input/output\ncommon-cathode display drivers that interface\nmicroprocessors (µPs) to 7-segment numeric LED displays\nof up to 8 digits, bar-graph displays, or 64 individual LEDs.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "The board that the Max7219 is attached to.",
+                    "type": "webduino.Board"
+                },
+                {
+                    "name": "din",
+                    "description": "Pin number of DIn (Data In).",
+                    "type": "Integer"
+                },
+                {
+                    "name": "cs",
+                    "description": "Pin number of LOAD/CS.",
+                    "type": "Integer"
+                },
+                {
+                    "name": "clk",
+                    "description": "Pin number of CLK.",
+                    "type": "Integer"
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.Photocell": {
+            "name": "webduino.module.Photocell",
+            "shortname": "webduino.module.Photocell",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/Photocell.js",
+            "line": 24,
+            "description": "The Photocell class.\n\nPhotocell is small, inexpensive, low-power sensor that allow you to detect light.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "Board that the photocell is attached to.",
+                    "type": "webduino.Board"
+                },
+                {
+                    "name": "analogPinNumber",
+                    "description": "The pin that the photocell is connected to.",
+                    "type": "Integer"
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.RFID": {
+            "name": "webduino.module.RFID",
+            "shortname": "webduino.module.RFID",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/RFID.js",
+            "line": 31,
+            "description": "The RFID class.\n\nRFID reader is used to track nearby tags by wirelessly reading a tag's unique ID.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "Board that the RFID is attached to.",
+                    "type": "webduino.Board"
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.RGBLed": {
+            "name": "webduino.module.RGBLed",
+            "shortname": "webduino.module.RGBLed",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/RGBLed.js",
+            "line": 14,
+            "description": "The RGBLed Class.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "The board the RGB LED is attached to.",
+                    "type": "webduino.Board"
+                },
+                {
+                    "name": "redLedPin",
+                    "description": "The pin the red LED is connected to.",
+                    "type": "webduino.Pin"
+                },
+                {
+                    "name": "greenLedPin",
+                    "description": "The pin the green LED is connected to.",
+                    "type": "webduino.Pin"
+                },
+                {
+                    "name": "blueLedPin",
+                    "description": "The pin the blue LED is connected to.",
+                    "type": "webduino.Pin"
+                },
+                {
+                    "name": "driveMode",
+                    "description": "Drive mode the RGB LED is operating at, either RGBLed.COMMON_ANODE or RGBLed.COMMON_CATHODE.",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.Soil": {
+            "name": "webduino.module.Soil",
+            "shortname": "webduino.module.Soil",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/Soil.js",
+            "line": 23,
+            "description": "The Soil class.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "Board that the soil is attached to.",
+                    "type": "webduino.Board"
+                },
+                {
+                    "name": "analogPinNumber",
+                    "description": "The pin that soil is attached to.",
+                    "type": "Integer"
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.module.Ultrasonic": {
+            "name": "webduino.module.Ultrasonic",
+            "shortname": "webduino.module.Ultrasonic",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.module",
+            "file": "src/module/Ultrasonic.js",
+            "line": 36,
+            "description": "The Ultrasonic class.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "board",
+                    "description": "The board the ultrasonic sensor is attached to.",
+                    "type": "webduino.Board"
+                },
+                {
+                    "name": "trigger",
+                    "description": "The trigger pin the sensor is connected to.",
+                    "type": "webduino.Pin"
+                },
+                {
+                    "name": "echo",
+                    "description": "The echo pin the sensor is connected to.",
+                    "type": "webduino.Pin"
+                }
+            ],
+            "extends": "webduino.Module"
+        },
+        "webduino.transport.MqttTransport": {
+            "name": "webduino.transport.MqttTransport",
+            "shortname": "webduino.transport.MqttTransport",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.transport",
+            "file": "src/transport/MqttTransport.js",
+            "line": 21,
+            "description": "Conveying messages over MQTT protocol.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to build a proper transport",
+                    "type": "Object"
+                }
+            ],
+            "extends": "webduino.Transport"
+        },
+        "webduino.transport.NodeMqttTransport": {
+            "name": "webduino.transport.NodeMqttTransport",
+            "shortname": "webduino.transport.NodeMqttTransport",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "webduino.transport",
+            "file": "src/transport/NodeMqttTransport.js",
+            "line": 30,
+            "description": "Conveying messages over MQTT protocol, in Node.JS.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to build a proper transport",
+                    "type": "Object"
+                }
+            ],
+            "extends": "webduino.Transport"
+        }
+    },
     "elements": {},
     "classitems": [
         {
-            "file": "src/module/Led.js",
-            "line": 83,
-            "description": "Set led to on.",
+            "file": "src/core/EventEmitter.js",
+            "line": 33,
+            "description": "Default maximum number of listeners (10).",
+            "itemtype": "property",
+            "name": "defaultMaxListeners",
+            "type": "{Number}",
+            "static": 1,
+            "class": "webduino.EventEmitter",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/EventEmitter.js",
+            "line": 45,
+            "description": "Set maximum number of listeners that is allow to bind on an emitter.",
+            "itemtype": "method",
+            "name": "setMaxListeners",
             "params": [
                 {
-                    "name": "callback",
-                    "description": "- Led state changed callback.",
-                    "type": "Function",
+                    "name": "n",
+                    "description": "Number of listeners.",
+                    "type": "Number"
+                }
+            ],
+            "class": "webduino.EventEmitter",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/EventEmitter.js",
+            "line": 58,
+            "description": "Emit an event of certain type.",
+            "itemtype": "method",
+            "name": "emit",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "Event type.",
+                    "type": "String"
+                },
+                {
+                    "name": "object,...",
+                    "description": "Event object(s).",
+                    "type": "Object",
                     "optional": true
                 }
             ],
-            "class": ""
+            "class": "webduino.EventEmitter",
+            "namespace": "webduino"
         },
         {
-            "file": "src/module/Led.js",
+            "file": "src/core/EventEmitter.js",
+            "line": 117,
+            "description": "Add a listener for a certain type of event.",
+            "itemtype": "method",
+            "name": "addListener",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "Event type.",
+                    "type": "String"
+                },
+                {
+                    "name": "listener",
+                    "description": "Event listener.",
+                    "type": "Function"
+                }
+            ],
+            "class": "webduino.EventEmitter",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/EventEmitter.js",
+            "line": 174,
+            "description": "Alias for EventEmitter.addListener(type, listener)",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "Event type.",
+                    "type": "String"
+                },
+                {
+                    "name": "listener",
+                    "description": "Event listener.",
+                    "type": "Function"
+                }
+            ],
+            "class": "webduino.EventEmitter",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/EventEmitter.js",
+            "line": 183,
+            "description": "Add a one-time listener for a certain type of event.",
+            "itemtype": "method",
+            "name": "once",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "Event type.",
+                    "type": "String"
+                },
+                {
+                    "name": "listener",
+                    "description": "Event listener.",
+                    "type": "Function"
+                }
+            ],
+            "class": "webduino.EventEmitter",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/EventEmitter.js",
+            "line": 211,
+            "description": "Remove a listener for certain type of event.",
+            "itemtype": "method",
+            "name": "removeListener",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "Event type.",
+                    "type": "String"
+                },
+                {
+                    "name": "listener",
+                    "description": "Event listener.",
+                    "type": "Function"
+                }
+            ],
+            "class": "webduino.EventEmitter",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/EventEmitter.js",
+            "line": 264,
+            "description": "Remove all listeners of certain type.",
+            "itemtype": "method",
+            "name": "removeAllListeners",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "Event type.",
+                    "type": "String"
+                }
+            ],
+            "class": "webduino.EventEmitter",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/EventEmitter.js",
+            "line": 310,
+            "description": "Return the listener list bound to certain type of event.",
+            "itemtype": "method",
+            "name": "listeners",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "Evnet type.",
+                    "type": "String"
+                }
+            ],
+            "class": "webduino.EventEmitter",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/EventEmitter.js",
+            "line": 327,
+            "description": "Count the number of listeners of an emitter.",
+            "itemtype": "method",
+            "name": "listenerCount",
+            "params": [
+                {
+                    "name": "emitter",
+                    "description": "The EventEmitter instance to count.",
+                    "type": "webduino.EventEmitter"
+                },
+                {
+                    "name": "type",
+                    "description": "Event type.",
+                    "type": "String"
+                }
+            ],
+            "static": 1,
+            "class": "webduino.EventEmitter",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/Module.js",
+            "line": 30,
+            "description": "Type of the module.",
+            "itemtype": "attribute",
+            "name": "type",
+            "type": "{String}",
+            "readonly": "",
+            "class": "webduino.Module",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/Transport.js",
+            "line": 15,
+            "description": "Fires when a transport is opened.",
+            "itemtype": "event",
+            "name": "TransportEvent.OPEN",
+            "class": "webduino.Transport",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/Transport.js",
+            "line": 22,
+            "description": "Fires when a transport receives a message.",
+            "itemtype": "event",
+            "name": "TransportEvent.MESSAGE",
+            "class": "webduino.Transport",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/Transport.js",
+            "line": 29,
+            "description": "Fires when a transport get an error.",
+            "itemtype": "event",
+            "name": "TransportEvent.ERROR",
+            "class": "webduino.Transport",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/Transport.js",
+            "line": 36,
+            "description": "Fires when a transport is closed.",
+            "itemtype": "event",
+            "name": "TransportEvent.CLOSE",
+            "class": "webduino.Transport",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/Transport.js",
+            "line": 63,
+            "description": "Indicates if the state of the transport is open.",
+            "itemtype": "attribute",
+            "name": "isOpen",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "webduino.Transport",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/Transport.js",
+            "line": 76,
+            "description": "Send payload through the transport.",
+            "itemtype": "method",
+            "name": "send",
+            "params": [
+                {
+                    "name": "payload",
+                    "description": "The actual data to be sent.",
+                    "type": "Array"
+                }
+            ],
+            "class": "webduino.Transport",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/Transport.js",
+            "line": 86,
+            "description": "Close and terminate the transport.",
+            "itemtype": "method",
+            "name": "close",
+            "class": "webduino.Transport",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/core/Transport.js",
             "line": 95,
-            "description": "Set led to off.",
+            "description": "Flush any buffered data of the transport.",
+            "itemtype": "method",
+            "name": "flush",
+            "class": "webduino.Transport",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/module/ADXL345.js",
+            "line": 16,
+            "description": "Fires when the accelerometer senses a value change.",
+            "itemtype": "event",
+            "name": "ADXL234Event.MESSAGE",
+            "class": "webduino.module.ADXL345",
+            "namespace": "webduino"
+        },
+        {
+            "file": "src/module/ADXL345.js",
+            "line": 126,
+            "description": "The state indicating whether the accelerometer is detecting.",
+            "itemtype": "attribute",
+            "name": "state",
+            "type": "{String} `on` or `off`",
+            "class": "webduino.module.ADXL345",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/ADXL345.js",
+            "line": 142,
+            "description": "Start detection.",
+            "itemtype": "method",
+            "name": "detect",
             "params": [
                 {
                     "name": "callback",
-                    "description": "- Led state changed callback.",
+                    "description": "Detection callback.",
                     "type": "Function",
                     "optional": true
                 }
             ],
-            "class": ""
+            "class": "webduino.module.ADXL345",
+            "namespace": "webduino.module"
         },
         {
-            "file": "src/module/Led.js",
+            "file": "src/module/ADXL345.js",
+            "line": 149,
+            "description": "Start detection.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Detection callback.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "`on()` is deprecated, use `detect()` instead.",
+            "class": "webduino.module.ADXL345",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/ADXL345.js",
+            "line": 196,
+            "description": "Stop detection.",
+            "itemtype": "method",
+            "name": "off",
+            "class": "webduino.module.ADXL345",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/ADXL345.js",
+            "line": 209,
+            "description": "Reset detection value.",
+            "itemtype": "method",
+            "name": "refresh",
+            "class": "webduino.module.ADXL345",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/ADXL345.js",
+            "line": 228,
+            "description": "Set the base axis for calculation.",
+            "itemtype": "method",
+            "name": "setBaseAxis",
+            "params": [
+                {
+                    "name": "axis",
+                    "description": "Axis to be set to, either `x`, `y`, or `z`.",
+                    "type": "String"
+                }
+            ],
+            "class": "webduino.module.ADXL345",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/ADXL345.js",
+            "line": 238,
+            "description": "Set detection sensitivity.",
+            "itemtype": "method",
+            "name": "setSensitivity",
+            "params": [
+                {
+                    "name": "sensitivity",
+                    "description": "Detection sensitivity.",
+                    "type": "Number"
+                }
+            ],
+            "class": "webduino.module.ADXL345",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/ADXL345.js",
+            "line": 251,
+            "description": "Set detecting time period.",
+            "itemtype": "method",
+            "name": "setDetectTime",
+            "params": [
+                {
+                    "name": "detectTime",
+                    "description": "The time period for detecting, in ms.",
+                    "type": "Number"
+                }
+            ],
+            "class": "webduino.module.ADXL345",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Barcode.js",
+            "line": 18,
+            "description": "Fires when the barcode scanner scans a code.",
+            "itemtype": "event",
+            "name": "BarcodeEvent.MESSAGE",
+            "class": "webduino.module.Barcode",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Barcode.js",
+            "line": 64,
+            "description": "The state indicating whether the module is scanning.",
+            "itemtype": "attribute",
+            "name": "state",
+            "type": "{String} 'on' or 'off'",
+            "class": "webduino.module.Barcode",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Barcode.js",
+            "line": 80,
+            "description": "Start scanning.",
+            "itemtype": "method",
+            "name": "scan",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Scanning callback.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "webduino.module.Barcode",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Barcode.js",
+            "line": 87,
+            "description": "Start scanning.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Scanning callback.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "`on()` is deprecated, use `scan()` instead.",
+            "class": "webduino.module.Barcode",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Barcode.js",
+            "line": 113,
+            "description": "Stop scanning.",
+            "itemtype": "method",
+            "name": "off",
+            "class": "webduino.module.Barcode",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Button.js",
+            "line": 16,
+            "description": "Fires when a button is pressed.",
+            "itemtype": "event",
+            "name": "ButtonEvent.PRESS",
+            "class": "webduino.module.Button",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Button.js",
+            "line": 23,
+            "description": "Fires when a button is released.",
+            "itemtype": "event",
+            "name": "ButtonEvent.RELEASE",
+            "class": "webduino.module.Button",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Button.js",
+            "line": 30,
+            "description": "Fires when a button is long-pressed.",
+            "itemtype": "event",
+            "name": "ButtonEvent.LONG_PRESS",
+            "class": "webduino.module.Button",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Button.js",
+            "line": 37,
+            "description": "Fires when a button is sustained-pressed.",
+            "itemtype": "event",
+            "name": "ButtonEvent.SUSTAINED_PRESS",
+            "class": "webduino.module.Button",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Button.js",
+            "line": 142,
+            "description": "Return the button mode.",
+            "itemtype": "attribute",
+            "name": "buttonMode",
+            "type": "{Number} buttonMode",
+            "readonly": "",
+            "class": "webduino.module.Button",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Button.js",
+            "line": 155,
+            "description": "Return the sustained-press interval.",
+            "itemtype": "attribute",
+            "name": "sustainedPressInterval",
+            "type": "{Number}",
+            "class": "webduino.module.Button",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Button.js",
+            "line": 172,
+            "description": "Indicates the pull-down resistor type.",
+            "itemtype": "property",
+            "name": "PULL_DOWN",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "webduino.module.Button",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Button.js",
+            "line": 182,
+            "description": "Indicates the pull-up resistor type.",
+            "itemtype": "property",
+            "name": "PULL_UP",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "webduino.module.Button",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Button.js",
+            "line": 192,
+            "description": "Indicates the internal-pull-up resistor type.",
+            "itemtype": "property",
+            "name": "INTERNAL_PULL_UP",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "webduino.module.Button",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Buzzer.js",
+            "line": 182,
+            "description": "Set Buzzer tone.",
+            "itemtype": "method",
+            "name": "tone",
+            "params": [
+                {
+                    "name": "freq",
+                    "description": "Frequency of tone.",
+                    "type": "Integer"
+                },
+                {
+                    "name": "duration",
+                    "description": "Duration of tone.",
+                    "type": "Integer"
+                }
+            ],
+            "class": "webduino.module.Buzzer",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Buzzer.js",
+            "line": 204,
+            "description": "Play specified note and tempo.",
+            "itemtype": "method",
+            "name": "play",
+            "params": [
+                {
+                    "name": "notes",
+                    "description": "Array of notes.",
+                    "type": "Array"
+                },
+                {
+                    "name": "tempos",
+                    "description": "Array of tempos.",
+                    "type": "Array"
+                }
+            ],
+            "example": [
+                "\n    buzzer.play([\"C6\",\"D6\",\"E6\",\"F6\",\"G6\",\"A6\",\"B6\"], [\"8\",\"8\",\"8\",\"8\",\"8\",\"8\",\"8\"]);"
+            ],
+            "class": "webduino.module.Buzzer",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Buzzer.js",
+            "line": 240,
+            "description": "Pause the playback.",
+            "itemtype": "method",
+            "name": "pause",
+            "class": "webduino.module.Buzzer",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Buzzer.js",
+            "line": 258,
+            "description": "Stop the plaback.",
+            "itemtype": "method",
+            "name": "stop",
+            "class": "webduino.module.Buzzer",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Buzzer.js",
+            "line": 273,
+            "description": "Indicates the frequency of tone.",
+            "itemtype": "property",
+            "name": "FREQUENCY",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "webduino.module.Buzzer",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Buzzer.js",
+            "line": 283,
+            "description": "Indicates the delay of tone.",
+            "itemtype": "property",
+            "name": "TONE_DELAY",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "webduino.module.Buzzer",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Dht.js",
+            "line": 21,
+            "description": "Fires when reading value.",
+            "itemtype": "event",
+            "name": "DhtEvent.READ",
+            "class": "webduino.module.Dht",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Dht.js",
+            "line": 28,
+            "description": "Fires when error occured while reading value.",
+            "itemtype": "event",
+            "name": "DhtEvent.READ_ERROR",
+            "class": "webduino.module.Dht",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Dht.js",
             "line": 107,
-            "description": "Toggle led between on/off.",
+            "description": "Return the humidity.",
+            "itemtype": "attribute",
+            "name": "humidity",
+            "type": "{Number} humidity",
+            "readonly": "",
+            "class": "webduino.module.Dht",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Dht.js",
+            "line": 120,
+            "description": "Return the temperature.",
+            "itemtype": "attribute",
+            "name": "temperature",
+            "type": "{Number} temperature",
+            "readonly": "",
+            "class": "webduino.module.Dht",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Dht.js",
+            "line": 134,
+            "description": "Start reading data from sensor.",
+            "itemtype": "method",
+            "name": "read",
             "params": [
                 {
                     "name": "callback",
-                    "description": "- Led state changed callback.",
+                    "description": "reading callback.",
+                    "type": "Function",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "data",
+                            "description": "returned data from sensor,\n                humidity and temperature will be passed into callback function as parameters.\n\n    callback()\n\nwill be transformed to\n\n     callback({humidity: humidity, temperature: temperature})\n\nautomatically.",
+                            "type": "Object"
+                        }
+                    ]
+                },
+                {
+                    "name": "interval",
+                    "description": "reading interval.",
+                    "type": "Integer"
+                }
+            ],
+            "class": "webduino.module.Dht",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Dht.js",
+            "line": 198,
+            "description": "Stop reading value from sensor.",
+            "itemtype": "method",
+            "name": "stopRead",
+            "class": "webduino.module.Dht",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/HX711.js",
+            "line": 18,
+            "description": "Fires when the value of weight has changed.",
+            "itemtype": "event",
+            "name": "HX711.MESSAGE",
+            "class": "webduino.module.HX711",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/HX711.js",
+            "line": 66,
+            "description": "The state indicating whether the module is measuring.",
+            "itemtype": "attribute",
+            "name": "state",
+            "type": "{String} `on` or `off`",
+            "class": "webduino.module.HX711",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/HX711.js",
+            "line": 82,
+            "description": "Start detection.",
+            "itemtype": "method",
+            "name": "measure",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Callback after starting detection.",
                     "type": "Function",
                     "optional": true
                 }
             ],
-            "class": ""
+            "class": "webduino.module.HX711",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/HX711.js",
+            "line": 89,
+            "description": "Start detection.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Callback after starting detection.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "`on()` is deprecated, use `measure()` instead.",
+            "class": "webduino.module.HX711",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/HX711.js",
+            "line": 115,
+            "description": "Stop detection.",
+            "itemtype": "method",
+            "name": "off",
+            "class": "webduino.module.HX711",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/IRLed.js",
+            "line": 38,
+            "description": "Send IR code.",
+            "itemtype": "method",
+            "name": "send",
+            "params": [
+                {
+                    "name": "code",
+                    "description": "Hexadecimal String to send.",
+                    "type": "String"
+                }
+            ],
+            "class": "webduino.module.IRLed",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/IRLed.js",
+            "line": 65,
+            "description": "Update code.",
+            "itemtype": "method",
+            "name": "updateEncode",
+            "params": [
+                {
+                    "name": "code",
+                    "description": "Hexadecimal to update.",
+                    "type": "String"
+                }
+            ],
+            "class": "webduino.module.IRLed",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/IRRecv.js",
+            "line": 16,
+            "description": "Fires when receiving data.",
+            "itemtype": "event",
+            "name": "IRRecvEvent.MESSAGE",
+            "class": "webduino.module.IRRecv",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/IRRecv.js",
+            "line": 23,
+            "description": "Fires when error occured while receiving data.",
+            "itemtype": "event",
+            "name": "IRRecvEvent.MESSAGE_ERROR",
+            "class": "webduino.module.IRRecv",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/IRRecv.js",
+            "line": 81,
+            "description": "The state indicating whether the IRLed is receiving.",
+            "itemtype": "attribute",
+            "name": "state",
+            "type": "{String} `on` or `off`",
+            "class": "webduino.module.IRRecv",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/IRRecv.js",
+            "line": 97,
+            "description": "Start detection.",
+            "itemtype": "method",
+            "name": "receive",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Detection callback.",
+                    "type": "Function",
+                    "optional": true
+                },
+                {
+                    "name": "errorCallback",
+                    "description": "Error callback while Detection.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "webduino.module.IRRecv",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/IRRecv.js",
+            "line": 105,
+            "description": "Start detection.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Detection callback.",
+                    "type": "Function",
+                    "optional": true
+                },
+                {
+                    "name": "errorCallback",
+                    "description": "Error callback while Detection.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "`on()` is deprecated, use `receive()` instead.",
+            "class": "webduino.module.IRRecv",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/IRRecv.js",
+            "line": 143,
+            "description": "Stop detection.",
+            "itemtype": "method",
+            "name": "off",
+            "class": "webduino.module.IRRecv",
+            "namespace": "webduino.module"
         },
         {
             "file": "src/module/Led.js",
-            "line": 122,
-            "description": "Set led blinking. Both msec and callback are optional\nand can be passed as the only one parameter.",
+            "line": 71,
+            "description": "Intensity of the LED.",
+            "itemtype": "attribute",
+            "name": "intensity",
+            "type": "{Number}",
+            "class": "webduino.module.Led",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Led.js",
+            "line": 100,
+            "description": "Light up the LED.",
+            "itemtype": "method",
+            "name": "on",
             "params": [
                 {
-                    "name": "msec",
-                    "description": "- Led blinking interval.",
+                    "name": "callback",
+                    "description": "LED state changed callback.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "webduino.module.Led",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Led.js",
+            "line": 114,
+            "description": "Dim the LED.",
+            "itemtype": "method",
+            "name": "off",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "LED state changed callback.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "webduino.module.Led",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Led.js",
+            "line": 128,
+            "description": "Toggle LED state between on/off.",
+            "itemtype": "method",
+            "name": "toggle",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "State changed callback.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "webduino.module.Led",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Led.js",
+            "line": 145,
+            "description": "Blink the LED.",
+            "itemtype": "method",
+            "name": "blink",
+            "params": [
+                {
+                    "name": "interval",
+                    "description": "Led blinking interval.",
                     "type": "Number",
                     "optional": true,
                     "optdefault": "1000"
                 },
                 {
                     "name": "callback",
-                    "description": "- Led state changed callback.",
+                    "description": "Led state changed callback.",
                     "type": "Function",
                     "optional": true
                 }
             ],
-            "class": ""
+            "class": "webduino.module.Led",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Led.js",
+            "line": 181,
+            "description": "Indicates the source LED drive mode.",
+            "itemtype": "property",
+            "name": "SOURCE_DRIVE",
+            "type": "Number",
+            "static": 1,
+            "final": 1,
+            "class": "webduino.module.Led",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Led.js",
+            "line": 191,
+            "description": "Indicates the synchronous LED drive mode.",
+            "itemtype": "property",
+            "name": "SYNC_DRIVE",
+            "type": "Number",
+            "static": 1,
+            "final": 1,
+            "class": "webduino.module.Led",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Max7219.js",
+            "line": 51,
+            "description": "The intensity indicating brightness of Max7219.",
+            "itemtype": "attribute",
+            "name": "intensity",
+            "type": "{Integer} Value of brightness (0~15).",
+            "class": "webduino.module.Max7219",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Max7219.js",
+            "line": 70,
+            "description": "Show pattern LED matrix.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Pattern to display.",
+                    "type": "String"
+                }
+            ],
+            "example": [
+                "\n    matrix.on(\"0000000000000000\");"
+            ],
+            "class": "webduino.module.Max7219",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Max7219.js",
+            "line": 101,
+            "description": "Clear pattern on LED matrix.",
+            "itemtype": "method",
+            "name": "off",
+            "class": "webduino.module.Max7219",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Max7219.js",
+            "line": 110,
+            "description": "Display animated pattern.",
+            "itemtype": "method",
+            "name": "animate",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Array of patterns.",
+                    "type": "Array"
+                },
+                {
+                    "name": "times",
+                    "description": "Delay time (in microsecond) between patterns.",
+                    "type": "Integer"
+                },
+                {
+                    "name": "duration",
+                    "description": "Duration of animation.",
+                    "type": "Integer"
+                },
+                {
+                    "name": "callback",
+                    "description": "Callback after animation.",
+                    "type": "Function"
+                }
+            ],
+            "example": [
+                "\n    var data = [\"080c0effff0e0c08\", \"387cfefe82443800\", \"40e0e0e07f030604\"];\n        matrix.on(\"0000000000000000\");\n        matrix.animate(data, 100);"
+            ],
+            "class": "webduino.module.Max7219",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Max7219.js",
+            "line": 151,
+            "description": "Stop displaying animated pattern.",
+            "itemtype": "method",
+            "name": "animateStop",
+            "class": "webduino.module.Max7219",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Photocell.js",
+            "line": 16,
+            "description": "Fires when the value of brightness has changed.",
+            "itemtype": "event",
+            "name": "PhotocellEvent.MESSAGE",
+            "class": "webduino.module.Photocell",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Photocell.js",
+            "line": 57,
+            "description": "The state indicating whether the module is measuring.",
+            "itemtype": "attribute",
+            "name": "state",
+            "type": "{String} `on` or `off`",
+            "class": "webduino.module.Photocell",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Photocell.js",
+            "line": 73,
+            "description": "Start detection.",
+            "itemtype": "method",
+            "name": "measure",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Callback after starting detection.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "webduino.module.Photocell",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Photocell.js",
+            "line": 80,
+            "description": "Start detection.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Callback after starting detection.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "`on()` is deprecated, use `measure()` instead.",
+            "class": "webduino.module.Photocell",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Photocell.js",
+            "line": 105,
+            "description": "Stop detection.",
+            "itemtype": "method",
+            "name": "off",
+            "class": "webduino.module.Photocell",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/RFID.js",
+            "line": 16,
+            "description": "Fires when the RFID entered.",
+            "itemtype": "event",
+            "name": "RFIDEvent.ENTER",
+            "class": "webduino.module.RFID",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/RFID.js",
+            "line": 23,
+            "description": "Fires when the RFID leaved.",
+            "itemtype": "event",
+            "name": "RFIDEvent.LEAVE",
+            "class": "webduino.module.RFID",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/RFID.js",
+            "line": 85,
+            "description": "The state indicating whether the module is reading.",
+            "itemtype": "attribute",
+            "name": "isReading",
+            "type": "{Boolean} isReading",
+            "readonly": "",
+            "class": "webduino.module.RFID",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/RFID.js",
+            "line": 99,
+            "description": "Start reading RFID.",
+            "itemtype": "method",
+            "name": "read",
+            "params": [
+                {
+                    "name": "enterHandler",
+                    "description": "Callback when RFID entered.",
+                    "type": "Function",
+                    "optional": true
+                },
+                {
+                    "name": "leaveHandler",
+                    "description": "Callback when RFID leaved.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "webduino.module.RFID",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/RFID.js",
+            "line": 122,
+            "description": "Stop reading RFID.",
+            "itemtype": "method",
+            "name": "stopRead",
+            "class": "webduino.module.RFID",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/RFID.js",
+            "line": 137,
+            "description": "Remove listener.",
+            "itemtype": "method",
+            "name": "off",
+            "params": [
+                {
+                    "name": "evtType",
+                    "description": "Type of event.",
+                    "type": "String"
+                },
+                {
+                    "name": "handler",
+                    "description": "Callback function.",
+                    "type": "Function"
+                }
+            ],
+            "class": "webduino.module.RFID",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/RFID.js",
+            "line": 148,
+            "description": "Stop reading RFID and remove all listeners.",
+            "itemtype": "method",
+            "name": "destroy",
+            "class": "webduino.module.RFID",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/RGBLed.js",
+            "line": 64,
+            "description": "Light up and mix colors with the LEDs.",
+            "itemtype": "method",
+            "name": "setColor",
+            "params": [
+                {
+                    "name": "red",
+                    "description": "The brightness of the red LED.",
+                    "type": "Number"
+                },
+                {
+                    "name": "green",
+                    "description": "The brightness of the green LED.",
+                    "type": "Number"
+                },
+                {
+                    "name": "blue",
+                    "description": "The brightness of the blue LED.",
+                    "type": "Number"
+                },
+                {
+                    "name": "callback",
+                    "description": "Function to call when the color is set.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "webduino.module.RGBLed",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/RGBLed.js",
+            "line": 106,
+            "description": "Indicates the common anode drive mode.",
+            "itemtype": "property",
+            "name": "COMMON_ANODE",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "webduino.module.RGBLed",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/RGBLed.js",
+            "line": 116,
+            "description": "Indicates the common cathode drive mode.",
+            "itemtype": "property",
+            "name": "COMMON_CATHODE",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "webduino.module.RGBLed",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Soil.js",
+            "line": 15,
+            "description": "Fires when the value of humidity has changed.",
+            "itemtype": "event",
+            "name": "PhotocellEvent.MESSAGE",
+            "class": "webduino.module.Soil",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Soil.js",
+            "line": 60,
+            "description": "The state indicating whether the module is scanning.",
+            "itemtype": "attribute",
+            "name": "state",
+            "type": "{String} `on` or `off`",
+            "class": "webduino.module.Soil",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Soil.js",
+            "line": 76,
+            "description": "Start detection.",
+            "itemtype": "method",
+            "name": "measure",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Callback after starting detection.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "webduino.module.Soil",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Soil.js",
+            "line": 83,
+            "description": "Start detection.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Callback after starting detection.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "`on()` is deprecated, use `measure()` instead.",
+            "class": "webduino.module.Soil",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Soil.js",
+            "line": 108,
+            "description": "Stop detection.",
+            "itemtype": "method",
+            "name": "off",
+            "class": "webduino.module.Soil",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Ultrasonic.js",
+            "line": 21,
+            "description": "Fires when receiving a ping response.",
+            "itemtype": "event",
+            "name": "UltrasonicEvent.PING",
+            "class": "webduino.module.Ultrasonic",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Ultrasonic.js",
+            "line": 28,
+            "description": "Fires when receiving a ping-error response.",
+            "itemtype": "event",
+            "name": "UltrasonicEvent.PING_ERROR",
+            "class": "webduino.module.Ultrasonic",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Ultrasonic.js",
+            "line": 99,
+            "description": "Distance returned from the previous transmission.",
+            "itemtype": "attribute",
+            "name": "distance",
+            "type": "{Number}",
+            "readonly": "",
+            "class": "webduino.module.Ultrasonic",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Ultrasonic.js",
+            "line": 113,
+            "description": "Transmit an ultrasonic to sense the distance at a (optional) given interval.",
+            "itemtype": "method",
+            "name": "ping",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Callback when a response is returned.",
+                    "type": "Function",
+                    "optional": true
+                },
+                {
+                    "name": "interval",
+                    "description": "Interval between each transmission. If omitted the ultrasonic will be transmitted once.",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise when the ping response is returned. Will not return anything if a callback function is given.",
+                "type": "Promise"
+            },
+            "class": "webduino.module.Ultrasonic",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/module/Ultrasonic.js",
+            "line": 162,
+            "description": "Stop transmitting any ultrasonic.",
+            "itemtype": "method",
+            "name": "stopPing",
+            "class": "webduino.module.Ultrasonic",
+            "namespace": "webduino.module"
+        },
+        {
+            "file": "src/transport/MqttTransport.js",
+            "line": 171,
+            "description": "Reconnect period when MQTT connection goes down. Measured in seconds.",
+            "itemtype": "property",
+            "name": "RECONNECT_PERIOD",
+            "type": "{Number}",
+            "static": 1,
+            "class": "webduino.transport.MqttTransport",
+            "namespace": "webduino.transport"
+        },
+        {
+            "file": "src/transport/MqttTransport.js",
+            "line": 180,
+            "description": "MQTT keepalive interval. Measured in seconds.",
+            "itemtype": "property",
+            "name": "KEEPALIVE_INTERVAL",
+            "type": "{Number}",
+            "static": 1,
+            "class": "webduino.transport.MqttTransport",
+            "namespace": "webduino.transport"
+        },
+        {
+            "file": "src/transport/MqttTransport.js",
+            "line": 189,
+            "description": "Time to wait before throwing connection timeout exception. Measured in seconds.",
+            "itemtype": "property",
+            "name": "CONNECT_TIMEOUT",
+            "type": "{Number}",
+            "static": 1,
+            "class": "webduino.transport.MqttTransport",
+            "namespace": "webduino.transport"
+        },
+        {
+            "file": "src/transport/MqttTransport.js",
+            "line": 198,
+            "description": "Maximum packet size in KB.",
+            "itemtype": "property",
+            "name": "MAX_PACKET_SIZE",
+            "type": "{Number}",
+            "static": 1,
+            "class": "webduino.transport.MqttTransport",
+            "namespace": "webduino.transport"
+        },
+        {
+            "file": "src/transport/NodeMqttTransport.js",
+            "line": 179,
+            "description": "Reconnect period when MQTT connection goes down. Measured in seconds.",
+            "itemtype": "property",
+            "name": "RECONNECT_PERIOD",
+            "type": "{Number}",
+            "static": 1,
+            "class": "webduino.transport.NodeMqttTransport",
+            "namespace": "webduino.transport"
+        },
+        {
+            "file": "src/transport/NodeMqttTransport.js",
+            "line": 188,
+            "description": "MQTT keepalive interval. Measured in seconds.",
+            "itemtype": "property",
+            "name": "KEEPALIVE_INTERVAL",
+            "type": "{Number}",
+            "static": 1,
+            "class": "webduino.transport.NodeMqttTransport",
+            "namespace": "webduino.transport"
+        },
+        {
+            "file": "src/transport/NodeMqttTransport.js",
+            "line": 197,
+            "description": "Time to wait before throwing connection timeout exception. Measured in seconds.",
+            "itemtype": "property",
+            "name": "CONNECT_TIMEOUT",
+            "type": "{Number}",
+            "static": 1,
+            "class": "webduino.transport.NodeMqttTransport",
+            "namespace": "webduino.transport"
+        },
+        {
+            "file": "src/transport/NodeMqttTransport.js",
+            "line": 206,
+            "description": "Maximum packet size in KB.",
+            "itemtype": "property",
+            "name": "MAX_PACKET_SIZE",
+            "type": "{Number}",
+            "static": 1,
+            "class": "webduino.transport.NodeMqttTransport",
+            "namespace": "webduino.transport"
         }
     ],
-    "warnings": [
-        {
-            "message": "Missing item type\nSet led to on.",
-            "line": " src/module/Led.js:83"
-        },
-        {
-            "message": "Missing item type\nSet led to off.",
-            "line": " src/module/Led.js:95"
-        },
-        {
-            "message": "Missing item type\nToggle led between on/off.",
-            "line": " src/module/Led.js:107"
-        },
-        {
-            "message": "Missing item type\nSet led blinking. Both msec and callback are optional\nand can be passed as the only one parameter.",
-            "line": " src/module/Led.js:122"
-        }
-    ]
+    "warnings": []
 }

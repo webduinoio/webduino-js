@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.14'
+  version: '0.4.16'
 };
 
 if (typeof exports !== 'undefined') {
@@ -2516,6 +2516,13 @@ if (typeof exports !== 'undefined') {
   // https://raw.githubusercontent.com/Gozala/events/master/events.js
   var proto;
 
+  /**
+   * An event emitter in browser.
+   *
+   * @namespace webduino
+   * @class EventEmitter
+   * @constructor
+   */
   function EventEmitter() {
     this._events = this._events || {};
     this._maxListeners = this._maxListeners || undefined;
@@ -2527,10 +2534,25 @@ if (typeof exports !== 'undefined') {
 
   // By default EventEmitters will print a warning if more than 10 listeners are
   // added to it. This is a useful default which helps finding memory leaks.
+
+  /**
+   * Default maximum number of listeners (10).
+   *
+   * @property defaultMaxListeners
+   * @type {Number}
+   * @static
+   */
   EventEmitter.defaultMaxListeners = 10;
 
   // Obviously not all Emitters should be limited to 10. This function allows
   // that to be increased. Set to zero for unlimited.
+
+  /**
+   * Set maximum number of listeners that is allow to bind on an emitter.
+   *
+   * @method setMaxListeners
+   * @param {Number} n Number of listeners.
+   */
   proto.setMaxListeners = function (n) {
     if (!isNumber(n) || n < 0 || isNaN(n))
       throw TypeError('n must be a positive number');
@@ -2538,6 +2560,13 @@ if (typeof exports !== 'undefined') {
     return this;
   };
 
+  /**
+   * Emit an event of certain type.
+   *
+   * @method emit
+   * @param {String} type Event type.
+   * @param {Object} [object,...] Event object(s).
+   */
   proto.emit = function (type) {
     var er, handler, len, args, i, listeners;
 
@@ -2590,6 +2619,13 @@ if (typeof exports !== 'undefined') {
     return true;
   };
 
+  /**
+   * Add a listener for a certain type of event.
+   *
+   * @method addListener
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
   proto.addListener = function (type, listener) {
     var m;
 
@@ -2640,8 +2676,22 @@ if (typeof exports !== 'undefined') {
     return this;
   };
 
+  /**
+   * Alias for EventEmitter.addListener(type, listener)
+   *
+   * @method on
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
   proto.on = proto.addListener;
 
+  /**
+   * Add a one-time listener for a certain type of event.
+   *
+   * @method once
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
   proto.once = function (type, listener) {
     if (!isFunction(listener))
       throw TypeError('listener must be a function');
@@ -2663,6 +2713,13 @@ if (typeof exports !== 'undefined') {
     return this;
   };
 
+  /**
+   * Remove a listener for certain type of event.
+   *
+   * @method removeListener
+   * @param {String} type Event type.
+   * @param {Function} listener Event listener.
+   */
   // emits a 'removeListener' event iff the listener was removed
   proto.removeListener = function (type, listener) {
     var list, position, length, i;
@@ -2709,6 +2766,12 @@ if (typeof exports !== 'undefined') {
     return this;
   };
 
+  /**
+   * Remove all listeners of certain type.
+   *
+   * @method removeAllListeners
+   * @param {String} type Event type.
+   */
   proto.removeAllListeners = function (type) {
     var key, listeners;
 
@@ -2749,6 +2812,12 @@ if (typeof exports !== 'undefined') {
     return this;
   };
 
+  /**
+   * Return the listener list bound to certain type of event.
+   *
+   * @method listeners
+   * @param {String} type Evnet type.
+   */
   proto.listeners = function (type) {
     var ret;
     if (!this._events || !this._events[type])
@@ -2760,6 +2829,14 @@ if (typeof exports !== 'undefined') {
     return ret;
   };
 
+  /**
+   * Count the number of listeners of an emitter.
+   *
+   * @method  listenerCount
+   * @param  {webduino.EventEmitter} emitter The EventEmitter instance to count.
+   * @param  {String} type Event type.
+   * @static
+   */
   EventEmitter.listenerCount = function (emitter, type) {
     var ret;
     if (!emitter._events || !emitter._events[type])
@@ -2991,12 +3068,45 @@ if (typeof exports !== 'undefined') {
     proto;
 
   var TransportEvent = {
+
+    /**
+     * Fires when a transport is opened.
+     * 
+     * @event TransportEvent.OPEN
+     */
     OPEN: 'open',
+
+    /**
+     * Fires when a transport receives a message.
+     * 
+     * @event TransportEvent.MESSAGE
+     */
     MESSAGE: 'message',
+
+    /**
+     * Fires when a transport get an error.
+     * 
+     * @event TransportEvent.ERROR
+     */
     ERROR: 'error',
+
+    /**
+     * Fires when a transport is closed.
+     * 
+     * @event TransportEvent.CLOSE
+     */
     CLOSE: 'close'
   };
 
+  /**
+   * A messaging mechanism to carry underlying firmata messages. This is an abstract class meant to be extended.
+   *
+   * @namespace webduino
+   * @class Transport
+   * @constructor
+   * @param {Object} options Options to build the transport instance.
+   * @extends webduino.EventEmitter
+   */
   function Transport(options) {
     EventEmitter.call(this);
   }
@@ -3007,20 +3117,43 @@ if (typeof exports !== 'undefined') {
       value: Transport
     },
 
+    /**
+     * Indicates if the state of the transport is open.
+     *
+     * @attribute isOpen
+     * @type {Boolean}
+     * @readOnly
+     */
     isOpen: {
       value: false
     }
 
   });
 
+  /**
+   * Send payload through the transport.
+   *
+   * @method send
+   * @param {Array} payload The actual data to be sent.
+   */
   proto.send = function (payload) {
     throw new Error('direct call on abstract method.');
   };
 
+  /**
+   * Close and terminate the transport.
+   *
+   * @method close
+   */
   proto.close = function () {
     throw new Error('direct call on abstract method.');
   };
 
+  /**
+   * Flush any buffered data of the transport.
+   *
+   * @method flush
+   */
   proto.flush = function () {
     throw new Error('direct call on abstract method.');
   };
@@ -3050,6 +3183,15 @@ if (typeof exports !== 'undefined') {
     STATUS: '/STATUS'
   };
 
+  /**
+   * Conveying messages over MQTT protocol.
+   *
+   * @namespace webduino.transport
+   * @class MqttTransport
+   * @constructor
+   * @param {Object} options Options to build a proper transport
+   * @extends webduino.Transport
+   */
   function MqttTransport(options) {
     Transport.call(this, options);
 
@@ -3191,12 +3333,40 @@ if (typeof exports !== 'undefined') {
     }
   };
 
+  /**
+   * Reconnect period when MQTT connection goes down. Measured in seconds.
+   *
+   * @property RECONNECT_PERIOD
+   * @type {Number}
+   * @static
+   */
   MqttTransport.RECONNECT_PERIOD = 1;
 
+  /**
+   * MQTT keepalive interval. Measured in seconds.
+   *
+   * @property KEEPALIVE_INTERVAL
+   * @type {Number}
+   * @static
+   */
   MqttTransport.KEEPALIVE_INTERVAL = 15;
 
+  /**
+   * Time to wait before throwing connection timeout exception. Measured in seconds.
+   *
+   * @property CONNECT_TIMEOUT
+   * @type {Number}
+   * @static
+   */
   MqttTransport.CONNECT_TIMEOUT = 30;
 
+  /**
+   * Maximum packet size in KB.
+   *
+   * @property MAX_PACKET_SIZE
+   * @type {Number}
+   * @static
+   */
   MqttTransport.MAX_PACKET_SIZE = 128;
 
   scope.transport.mqtt = MqttTransport;
@@ -3709,6 +3879,14 @@ if (typeof exports !== 'undefined') {
 
   var EventEmitter = scope.EventEmitter;
 
+  /**
+   * A component to be attached to a board. This is an abstract class meant to be extended.
+   *
+   * @namespace webduino
+   * @class Module
+   * @constructor
+   * @extends webduino.EventEmitter
+   */
   function Module() {
     EventEmitter.call(this);
   }
@@ -3719,6 +3897,13 @@ if (typeof exports !== 'undefined') {
       value: Module
     },
 
+    /**
+     * Type of the module.
+     *
+     * @attribute type
+     * @type {String}
+     * @readOnly
+     */
     type: {
       get: function () {
         return this._type;
@@ -3793,6 +3978,15 @@ if (typeof exports !== 'undefined') {
     SYSEX_NON_REALTIME = 0x7E,
     SYSEX_REALTIME = 0x7F;
 
+  /**
+   * An abstract development board.
+   *
+   * @namespace webduino
+   * @class Board
+   * @constructor
+   * @param {Object} options Options to build the board instance.
+   * @extends webduino.EventEmitter
+   */
   function Board(options) {
     EventEmitter.call(this);
 
@@ -4169,9 +4363,12 @@ if (typeof exports !== 'undefined') {
   };
 
   proto.startup = function () {
-    this._isReady = true;
-    this.emit(BoardEvent.READY, this);
     this.enableDigitalPins();
+
+    setTimeout(function () {
+      this._isReady = true;
+      this.emit(BoardEvent.READY, this);
+    }.bind(this), 2000);
   };
 
   proto.systemReset = function () {
