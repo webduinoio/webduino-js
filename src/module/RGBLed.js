@@ -11,6 +11,19 @@
     Module = scope.Module,
     proto;
 
+  /**
+   * The RGBLed Class.
+   *
+   * @namespace webduino.module
+   * @class RGBLed
+   * @constructor
+   * @param {webduino.Board} board The board the RGB LED is attached to.
+   * @param {webduino.Pin} redLedPin The pin the red LED is connected to.
+   * @param {webduino.Pin} greenLedPin The pin the green LED is connected to.
+   * @param {webduino.Pin} blueLedPin The pin the blue LED is connected to.
+   * @param {Number} [driveMode] Drive mode the RGB LED is operating at, either RGBLed.COMMON_ANODE or RGBLed.COMMON_CATHODE.
+   * @extends webduino.Module
+   */
   function RGBLed(board, redLedPin, greenLedPin, blueLedPin, driveMode) {
     Module.call(this);
 
@@ -48,6 +61,15 @@
     }
   });
 
+  /**
+   * Light up and mix colors with the LEDs.
+   *
+   * @method setColor
+   * @param {Number} red The brightness of the red LED.
+   * @param {Number} green The brightness of the green LED.
+   * @param {Number} blue The brightness of the blue LED.
+   * @param {Function} [callback] Function to call when the color is set.
+   */
   proto.setColor = function (red, green, blue, callback) {
     if (typeof green === 'undefined' || typeof green === 'function') {
       var color = cutHex(red);
@@ -81,7 +103,24 @@
     }
   };
 
+  /**
+   * Indicates the common anode drive mode.
+   *
+   * @property COMMON_ANODE
+   * @type {Number}
+   * @static
+   * @final
+   */
   RGBLed.COMMON_ANODE = Led.SYNC_DRIVE;
+
+  /**
+   * Indicates the common cathode drive mode.
+   *
+   * @property COMMON_CATHODE
+   * @type {Number}
+   * @static
+   * @final
+   */
   RGBLed.COMMON_CATHODE = Led.SOURCE_DRIVE;
 
   scope.module.RGBLed = RGBLed;

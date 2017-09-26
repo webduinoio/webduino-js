@@ -12,12 +12,48 @@
     Module = scope.Module;
 
   var ButtonEvent = {
+
+    /**
+     * Fires when a button is pressed.
+     *
+     * @event ButtonEvent.PRESS
+     */
     PRESS: "pressed",
+
+    /**
+     * Fires when a button is released.
+     *
+     * @event ButtonEvent.RELEASE
+     */
     RELEASE: "released",
+
+    /**
+     * Fires when a button is long-pressed.
+     *
+     * @event ButtonEvent.LONG_PRESS
+     */
     LONG_PRESS: "longPress",
+
+    /**
+     * Fires when a button is sustained-pressed.
+     *
+     * @event ButtonEvent.SUSTAINED_PRESS
+     */
     SUSTAINED_PRESS: "sustainedPress"
   };
 
+  /**
+   * The Button Class.
+   *
+   * @namespace webduino.module
+   * @class Button
+   * @constructor
+   * @param {webduino.Board} board The board the button is attached to.
+   * @param {webduino.pin} pin The pin the button is connected to.
+   * @param {Number} [buttonMode] Type of resistor the button is connected to, either Button.PULL_DOWN or Button.PULL_UP.
+   * @param {Number} [sustainedPressInterval] A period of time when the button is pressed and hold for that long, it would be considered a "sustained press." Measured in ms.
+   * @extends webduino.Module
+   */
   function Button(board, pin, buttonMode, sustainedPressInterval) {
     Module.call(this);
 
@@ -103,12 +139,25 @@
       value: Button
     },
 
+    /**
+     * Return the button mode.
+     *
+     * @attribute buttonMode
+     * @type {Number} buttonMode
+     * @readOnly
+     */
     buttonMode: {
       get: function () {
         return this._buttonMode;
       }
     },
 
+    /**
+     * Return the sustained-press interval.
+     *
+     * @attribute sustainedPressInterval
+     * @type {Number}
+     */
     sustainedPressInterval: {
       get: function () {
         return this._sustainedPressInterval;
@@ -120,8 +169,34 @@
 
   });
 
+  /**
+   * Indicates the pull-down resistor type.
+   * 
+   * @property PULL_DOWN
+   * @type {Number}
+   * @static
+   * @final
+   */
   Button.PULL_DOWN = 0;
+
+  /**
+   * Indicates the pull-up resistor type.
+   * 
+   * @property PULL_UP
+   * @type {Number}
+   * @static
+   * @final
+   */
   Button.PULL_UP = 1;
+
+  /**
+   * Indicates the internal-pull-up resistor type.
+   * 
+   * @property INTERNAL_PULL_UP
+   * @type {Number}
+   * @static
+   * @final
+   */
   Button.INTERNAL_PULL_UP = 2;
 
   scope.module.ButtonEvent = ButtonEvent;

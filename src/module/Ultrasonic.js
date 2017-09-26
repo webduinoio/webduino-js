@@ -17,10 +17,33 @@
     RETRY_INTERVAL = 5000;
 
   var UltrasonicEvent = {
+
+    /**
+     * Fires when receiving a ping response.
+     * 
+     * @event UltrasonicEvent.PING
+     */
     PING: 'ping',
+
+    /**
+     * Fires when receiving a ping-error response.
+     * 
+     * @event UltrasonicEvent.PING_ERROR
+     */
     PING_ERROR: 'pingError'
   };
 
+  /**
+   * The Ultrasonic class.
+   *
+   * @namespace webduino.module
+   * @class Ultrasonic
+   * @constructor
+   * @param {webduino.Board} board The board the ultrasonic sensor is attached to.
+   * @param {webduino.Pin} trigger The trigger pin the sensor is connected to.
+   * @param {webduino.Pin} echo The echo pin the sensor is connected to.
+   * @extends webduino.Module
+   */
   function Ultrasonic(board, trigger, echo) {
     Module.call(this);
 
@@ -73,6 +96,13 @@
       value: Ultrasonic
     },
 
+    /**
+     * Distance returned from the previous transmission.
+     *
+     * @attribute distance
+     * @type {Number}
+     * @readOnly
+     */
     distance: {
       get: function () {
         return this._distance;
@@ -80,6 +110,14 @@
     }
   });
 
+  /**
+   * Transmit an ultrasonic to sense the distance at a (optional) given interval.
+   *
+   * @method ping
+   * @param {Function} [callback] Callback when a response is returned.
+   * @param {Number} [interval] Interval between each transmission. If omitted the ultrasonic will be transmitted once.
+   * @return {Promise} A promise when the ping response is returned. Will not return anything if a callback function is given.
+   */
   proto.ping = function (callback, interval) {
     var self = this,
       timer;
@@ -121,6 +159,11 @@
     }
   };
 
+  /**
+   * Stop transmitting any ultrasonic.
+   *
+   * @method stopPing
+   */
   proto.stopPing = function () {
     this.removeListener(UltrasonicEvent.PING, this._pingCallback);
     this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);

@@ -116,6 +116,16 @@
     DS8: 4978
   };
 
+  /**
+   * The Buzzer Class.
+   *
+   * @namespace webduino.module
+   * @class Buzzer
+   * @constructor
+   * @param {webduino.Board} board The board that the buzzer is attached to.
+   * @param {Integer} pin The pin that the buzzer is connected to.
+   * @extends webduino.Module
+   */
   function Buzzer(board, pin) {
     Module.call(this);
 
@@ -169,6 +179,13 @@
     }
   });
 
+  /**
+   * Set Buzzer tone.
+   *
+   * @method tone 
+   * @param {Integer} freq Frequency of tone.
+   * @param {Integer} duration Duration of tone.
+   */
   proto.tone = function (freq, duration) {
     var freqData = [];
 
@@ -184,6 +201,15 @@
       .concat(freqData).concat(duration));
   };
 
+  /**
+   * Play specified note and tempo.
+   *
+   * @method play 
+   * @param {Array} notes Array of notes.
+   * @param {Array} tempos Array of tempos.
+   * @example
+   *     buzzer.play(["C6","D6","E6","F6","G6","A6","B6"], ["8","8","8","8","8","8","8"]);
+   */
   proto.play = function (notes, tempos) {
     if (typeof notes !== 'undefined') {
       var len = notes.length,
@@ -211,6 +237,11 @@
     playNext(this);
   };
 
+  /**
+   * Pause the playback.
+   *
+   * @method pause 
+   */
   proto.pause = function () {
     if (this._state !== BUZZER_STATE.PLAYING) {
       return;
@@ -224,6 +255,11 @@
     this._state = BUZZER_STATE.PAUSED;
   };
 
+  /**
+   * Stop the plaback.
+   *
+   * @method stop 
+   */
   proto.stop = function () {
     if (this._timer) {
       clearTimeout(this._timer);
@@ -234,8 +270,24 @@
     this._state = BUZZER_STATE.STOPPED;
   };
 
+  /**
+   * Indicates the frequency of tone.
+   * 
+   * @property FREQUENCY
+   * @type {Number}
+   * @static
+   * @final
+   */
   Buzzer.FREQUENCY = FREQUENCY;
 
+  /**
+   * Indicates the delay of tone.
+   * 
+   * @property TONE_DELAY
+   * @type {Number}
+   * @static
+   * @final
+   */
   Buzzer.TONE_DELAY = 60;
 
   scope.module.Buzzer = Buzzer;
