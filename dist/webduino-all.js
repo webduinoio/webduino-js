@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.16'
+  version: '0.4.17'
 };
 
 if (typeof exports !== 'undefined') {
@@ -4363,12 +4363,9 @@ if (typeof exports !== 'undefined') {
   };
 
   proto.startup = function () {
+    this._isReady = true;
+    this.emit(BoardEvent.READY, this);
     this.enableDigitalPins();
-
-    setTimeout(function () {
-      this._isReady = true;
-      this.emit(BoardEvent.READY, this);
-    }.bind(this), 2000);
   };
 
   proto.systemReset = function () {
