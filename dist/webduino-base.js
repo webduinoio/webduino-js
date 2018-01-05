@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.17'
+  version: '0.4.18'
 };
 
 if (typeof exports !== 'undefined') {
@@ -4006,6 +4006,7 @@ if (typeof exports !== 'undefined') {
     this._firmwareVersion = 0;
     this._capabilityQueryResponseReceived = false;
     this._numPinStateRequests = 0;
+    this._numDigitalPortReportRequests = 0;
     this._transport = null;
     this._pinStateEventCenter = new EventEmitter();
 
@@ -4216,6 +4217,13 @@ if (typeof exports !== 'undefined') {
       }
       j++;
     }
+
+    if (!this._isReady) {
+      this._numDigitalPortReportRequests--;
+      if (0 === this._numDigitalPortReportRequests) {
+        this.startup();
+      }
+    }
   };
 
   proto.processAnalogMessage = function (channel, bits0_6, bits7_13) {
@@ -4359,13 +4367,12 @@ if (typeof exports !== 'undefined') {
       }
     }
 
-    this.startup();
+    this.enableDigitalPins();
   };
 
   proto.startup = function () {
     this._isReady = true;
     this.emit(BoardEvent.READY, this);
-    this.enableDigitalPins();
   };
 
   proto.systemReset = function () {
@@ -4528,6 +4535,9 @@ if (typeof exports !== 'undefined') {
   };
 
   proto.sendDigitalPortReporting = function (port, mode) {
+    if (!this._isReady) {
+      this._numDigitalPortReportRequests++;
+    }
     this.send([(REPORT_DIGITAL | port), mode]);
   };
 
