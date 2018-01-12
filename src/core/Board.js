@@ -449,7 +449,10 @@
       }
     }
 
-    this.enableDigitalPins();
+    if (!this._isReady) {
+      this.systemReset();
+      this.enableDigitalPins();
+    }
   };
 
   proto.startup = function () {
