@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>webduino.module.IRRecv - webduino-js</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            webduino-js
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.4.19</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/webduino.Board", "classes/webduino.EventEmitter", "classes/webduino.Module", "classes/webduino.module.ADXL345", "classes/webduino.module.Barcode", "classes/webduino.module.Button", "classes/webduino.module.Buzzer", "classes/webduino.module.Dht", "classes/webduino.module.HX711", "classes/webduino.module.IRLed", "classes/webduino.module.IRRecv", "classes/webduino.module.Led", "classes/webduino.module.Max7219", "classes/webduino.module.Photocell", "classes/webduino.module.RFID", "classes/webduino.module.RGBLed", "classes/webduino.module.Soil", "classes/webduino.module.Ultrasonic", "classes/webduino.Transport", "classes/webduino.transport.MqttTransport", "classes/webduino.transport.NodeMqttTransport"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/webduino.Board.html">webduino.Board</a></li>
+                <li><a href="../classes/webduino.EventEmitter.html">webduino.EventEmitter</a></li>
+                <li><a href="../classes/webduino.Module.html">webduino.Module</a></li>
+                <li><a href="../classes/webduino.module.ADXL345.html">webduino.module.ADXL345</a></li>
+                <li><a href="../classes/webduino.module.Barcode.html">webduino.module.Barcode</a></li>
+                <li><a href="../classes/webduino.module.Button.html">webduino.module.Button</a></li>
+                <li><a href="../classes/webduino.module.Buzzer.html">webduino.module.Buzzer</a></li>
+                <li><a href="../classes/webduino.module.Dht.html">webduino.module.Dht</a></li>
+                <li><a href="../classes/webduino.module.HX711.html">webduino.module.HX711</a></li>
+                <li><a href="../classes/webduino.module.IRLed.html">webduino.module.IRLed</a></li>
+                <li><a href="../classes/webduino.module.IRRecv.html">webduino.module.IRRecv</a></li>
+                <li><a href="../classes/webduino.module.Led.html">webduino.module.Led</a></li>
+                <li><a href="../classes/webduino.module.Max7219.html">webduino.module.Max7219</a></li>
+                <li><a href="../classes/webduino.module.Photocell.html">webduino.module.Photocell</a></li>
+                <li><a href="../classes/webduino.module.RFID.html">webduino.module.RFID</a></li>
+                <li><a href="../classes/webduino.module.RGBLed.html">webduino.module.RGBLed</a></li>
+                <li><a href="../classes/webduino.module.Soil.html">webduino.module.Soil</a></li>
+                <li><a href="../classes/webduino.module.Ultrasonic.html">webduino.module.Ultrasonic</a></li>
+                <li><a href="../classes/webduino.Transport.html">webduino.Transport</a></li>
+                <li><a href="../classes/webduino.transport.MqttTransport.html">webduino.transport.MqttTransport</a></li>
+                <li><a href="../classes/webduino.transport.NodeMqttTransport.html">webduino.transport.NodeMqttTransport</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<div class="page-header">
+    <h1>webduino.module.IRRecv</h1>
+</div>
+
+
+	<div class="well well-small">
+        <div class="extends">
+            Extends <a href="../classes/webduino.Module.html" class="crosslink">webduino.Module</a>
+        </div>
+    </div>
+
+
+
+
+<div class="yuidoc-class-description">
+<p>The IRRecv Class.</p>
+
+</div>
+
+<!-- table of contents -->
+
+<div id="class-toc" class="page-section">
+	<h2>Table of Contents</h2>
+    <ul>
+		<li>
+			<strong>Methods</strong>
+			<ul>
+				<li><a href="#method-addListener"><span class="im">addListener</span>(<span class="ia">type</span><span class="ia">listener</span>)</a></li>
+				<li><a href="#method-emit"><span class="im">emit</span>(<span class="ia">type</span><span class="ia">object,...</span>)</a></li>
+				<li><a href="#method-listeners"><span class="im">listeners</span>(<span class="ia">type</span>)</a></li>
+				<li><a href="#method-off"><span class="im">off</span>()</a></li>
+				<li><a href="#method-on"><span class="im">on</span>(<span class="ia">callback</span><span class="ia">errorCallback</span>)</a></li>
+				<li><a href="#method-once"><span class="im">once</span>(<span class="ia">type</span><span class="ia">listener</span>)</a></li>
+				<li><a href="#method-receive"><span class="im">receive</span>(<span class="ia">callback</span><span class="ia">errorCallback</span>)</a></li>
+				<li><a href="#method-removeAllListeners"><span class="im">removeAllListeners</span>(<span class="ia">type</span>)</a></li>
+				<li><a href="#method-removeListener"><span class="im">removeListener</span>(<span class="ia">type</span><span class="ia">listener</span>)</a></li>
+				<li><a href="#method-setMaxListeners"><span class="im">setMaxListeners</span>(<span class="ia">n</span>)</a></li>
+			</ul>
+		</li>
+
+
+		<li>
+			<strong>Attributes</strong>
+			<ul>
+				<li><a href="#attr-state"><span class="iattr">state</span></a></li>
+				<li><a href="#attr-type"><span class="iattr">type</span></a></li>
+			</ul>
+		</li>
+
+	</ul>
+</div>
+
+<!-- details -->
+
+    <div class="constructor yuidoc-class-constructor page-section">
+        <h2>Constructor</h2>
+        <div class="item-list">
+<div id="method-webduino.module.IRRecv" class="method item">
+	<div class="method-signature">
+	<span class="name"><code>webduino.module.IRRecv</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code>board</code>
+				</li>
+				<li class="arg">
+						<code>pin</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>
+				Defined in
+		<a href="../files/src_module_IRRecv.js.html#l31"><code>src&#x2F;module&#x2F;IRRecv.js:31</code></a>
+		</p>
+
+
+
+	</div>
+
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name">board</code>
+						<span class="type"><a href="../classes/webduino.Board.html" class="crosslink">webduino.Board</a></span>
+
+
+					<div class="param-description"><p>The board that the IRLed is attached to.</p>
+</div>
+
+				</li>
+				<li class="param">
+						<code class="param-name">pin</code>
+						<span class="type">Integer</span>
+
+
+					<div class="param-description"><p>The pin that the IRLed is connected to.</p>
+</div>
+
+				</li>
+			</ul>
+		</div>
+
+
+</div>
+        </div>
+    </div>
+
+    <div id="methods" class="page-section">
+        <h2 class="off-left">Methods</h2>
+        <div class="item-list">
+<div id="method-addListener" class="method item inherited">
+	<div class="method-signature">
+	<span class="name"><code>addListener</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code>type</code>
+				</li>
+				<li class="arg">
+						<code>listener</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>Inherited from
+				<a href="../classes/webduino.EventEmitter.html#method_addListener">webduino.EventEmitter</a>:
+		<a href="../files/src_core_EventEmitter.js.html#l117"><code>src&#x2F;core&#x2F;EventEmitter.js:117</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Add a listener for a certain type of event.</p>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name">type</code>
+						<span class="type">String</span>
+
+
+					<div class="param-description"><p>Event type.</p>
+</div>
+
+				</li>
+				<li class="param">
+						<code class="param-name">listener</code>
+						<span class="type">Function</span>
+
+
+					<div class="param-description"><p>Event listener.</p>
+</div>
+
+				</li>
+			</ul>
+		</div>
+
+
+</div>
+<div id="method-emit" class="method item inherited">
+	<div class="method-signature">
+	<span class="name"><code>emit</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code>type</code>
+				</li>
+				<li class="arg">
+						<code class="optional">object,...</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>Inherited from
+				<a href="../classes/webduino.EventEmitter.html#method_emit">webduino.EventEmitter</a>:
+		<a href="../files/src_core_EventEmitter.js.html#l58"><code>src&#x2F;core&#x2F;EventEmitter.js:58</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Emit an event of certain type.</p>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name">type</code>
+						<span class="type">String</span>
+
+
+					<div class="param-description"><p>Event type.</p>
+</div>
+
+				</li>
+				<li class="param">
+						<code class="param-name optional">[object,...]</code>
+						<span class="type">Object</span>
+						<span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+					<div class="param-description"><p>Event object(s).</p>
+</div>
+
+				</li>
+			</ul>
+		</div>
+
+
+</div>
+<div id="method-listeners" class="method item inherited">
+	<div class="method-signature">
+	<span class="name"><code>listeners</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code>type</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>Inherited from
+				<a href="../classes/webduino.EventEmitter.html#method_listeners">webduino.EventEmitter</a>:
+		<a href="../files/src_core_EventEmitter.js.html#l310"><code>src&#x2F;core&#x2F;EventEmitter.js:310</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Return the listener list bound to certain type of event.</p>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name">type</code>
+						<span class="type">String</span>
+
+
+					<div class="param-description"><p>Evnet type.</p>
+</div>
+
+				</li>
+			</ul>
+		</div>
+
+
+</div>
+<div id="method-off" class="method item">
+	<div class="method-signature">
+	<span class="name"><code>off</code></span>
+
+		<span class="paren">()</span>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>
+				Defined in
+		<a href="../files/src_module_IRRecv.js.html#l143"><code>src&#x2F;module&#x2F;IRRecv.js:143</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Stop detection.</p>
+</div>
+
+
+
+</div>
+<div id="method-on" class="method item deprecated">
+	<div class="method-signature">
+	<span class="name"><code>on</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code class="optional">callback</code>
+				</li>
+				<li class="arg">
+						<code class="optional">errorCallback</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+	</div>
+
+		<span class="flag deprecated" title="&#x60;on()&#x60; is deprecated, use &#x60;receive()&#x60; instead.">deprecated</span>
+
+
+
+
+
+	<div class="meta">
+			<p>Inherited from
+			<a href="../classes/webduino.EventEmitter.html#method_on">
+				webduino.EventEmitter
+			</a>
+			but overwritten in
+		<a href="../files/src_module_IRRecv.js.html#l105"><code>src&#x2F;module&#x2F;IRRecv.js:105</code></a>
+		</p>
+
+
+			<p>Deprecated: &#x60;on()&#x60; is deprecated, use &#x60;receive()&#x60; instead.</p>
+
+	</div>
+
+	<div class="description"><p>Start detection.</p>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name optional">[callback]</code>
+						<span class="type">Function</span>
+						<span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+					<div class="param-description"><p>Detection callback.</p>
+</div>
+
+				</li>
+				<li class="param">
+						<code class="param-name optional">[errorCallback]</code>
+						<span class="type">Function</span>
+						<span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+					<div class="param-description"><p>Error callback while Detection.</p>
+</div>
+
+				</li>
+			</ul>
+		</div>
+
+
+</div>
+<div id="method-once" class="method item inherited">
+	<div class="method-signature">
+	<span class="name"><code>once</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code>type</code>
+				</li>
+				<li class="arg">
+						<code>listener</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>Inherited from
+				<a href="../classes/webduino.EventEmitter.html#method_once">webduino.EventEmitter</a>:
+		<a href="../files/src_core_EventEmitter.js.html#l183"><code>src&#x2F;core&#x2F;EventEmitter.js:183</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Add a one-time listener for a certain type of event.</p>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name">type</code>
+						<span class="type">String</span>
+
+
+					<div class="param-description"><p>Event type.</p>
+</div>
+
+				</li>
+				<li class="param">
+						<code class="param-name">listener</code>
+						<span class="type">Function</span>
+
+
+					<div class="param-description"><p>Event listener.</p>
+</div>
+
+				</li>
+			</ul>
+		</div>
+
+
+</div>
+<div id="method-receive" class="method item">
+	<div class="method-signature">
+	<span class="name"><code>receive</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code class="optional">callback</code>
+				</li>
+				<li class="arg">
+						<code class="optional">errorCallback</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>
+				Defined in
+		<a href="../files/src_module_IRRecv.js.html#l97"><code>src&#x2F;module&#x2F;IRRecv.js:97</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Start detection.</p>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name optional">[callback]</code>
+						<span class="type">Function</span>
+						<span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+					<div class="param-description"><p>Detection callback.</p>
+</div>
+
+				</li>
+				<li class="param">
+						<code class="param-name optional">[errorCallback]</code>
+						<span class="type">Function</span>
+						<span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+					<div class="param-description"><p>Error callback while Detection.</p>
+</div>
+
+				</li>
+			</ul>
+		</div>
+
+
+</div>
+<div id="method-removeAllListeners" class="method item inherited">
+	<div class="method-signature">
+	<span class="name"><code>removeAllListeners</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code>type</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>Inherited from
+				<a href="../classes/webduino.EventEmitter.html#method_removeAllListeners">webduino.EventEmitter</a>:
+		<a href="../files/src_core_EventEmitter.js.html#l264"><code>src&#x2F;core&#x2F;EventEmitter.js:264</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Remove all listeners of certain type.</p>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name">type</code>
+						<span class="type">String</span>
+
+
+					<div class="param-description"><p>Event type.</p>
+</div>
+
+				</li>
+			</ul>
+		</div>
+
+
+</div>
+<div id="method-removeListener" class="method item inherited">
+	<div class="method-signature">
+	<span class="name"><code>removeListener</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code>type</code>
+				</li>
+				<li class="arg">
+						<code>listener</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>Inherited from
+				<a href="../classes/webduino.EventEmitter.html#method_removeListener">webduino.EventEmitter</a>:
+		<a href="../files/src_core_EventEmitter.js.html#l211"><code>src&#x2F;core&#x2F;EventEmitter.js:211</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Remove a listener for certain type of event.</p>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name">type</code>
+						<span class="type">String</span>
+
+
+					<div class="param-description"><p>Event type.</p>
+</div>
+
+				</li>
+				<li class="param">
+						<code class="param-name">listener</code>
+						<span class="type">Function</span>
+
+
+					<div class="param-description"><p>Event listener.</p>
+</div>
+
+				</li>
+			</ul>
+		</div>
+
+
+</div>
+<div id="method-setMaxListeners" class="method item inherited">
+	<div class="method-signature">
+	<span class="name"><code>setMaxListeners</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code>n</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>Inherited from
+				<a href="../classes/webduino.EventEmitter.html#method_setMaxListeners">webduino.EventEmitter</a>:
+		<a href="../files/src_core_EventEmitter.js.html#l45"><code>src&#x2F;core&#x2F;EventEmitter.js:45</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Set maximum number of listeners that is allow to bind on an emitter.</p>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name">n</code>
+						<span class="type">Number</span>
+
+
+					<div class="param-description"><p>Number of listeners.</p>
+</div>
+
+				</li>
+			</ul>
+		</div>
+
+
+</div>
+        </div>
+    </div>
+
+
+    <div id="attrs" class="page-section">
+        <h2 class="off-left">Attributes</h2>
+
+<div id="attr-state" class="attr item">
+    <a name="config_state"></a> 
+    <h3 class="name"><code>state</code></h3>
+    <span class="type">String <code>on</code> or <code>off</code></span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_module_IRRecv.js.html#l81"><code>src&#x2F;module&#x2F;IRRecv.js:81</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The state indicating whether the IRLed is receiving.</p>
+
+    </div>
+
+
+
+</div>
+<div id="attr-type" class="attr item inherited">
+    <a name="config_type"></a> 
+    <h3 class="name"><code>type</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+
+
+        <span class="flag readonly">readonly</span>
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/webduino.Module.html#attr_type">webduino.Module</a>:
+        <a href="../files/src_core_Module.js.html#l30"><code>src&#x2F;core&#x2F;Module.js:30</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Type of the module.</p>
+
+    </div>
+
+
+
+</div>
+    </div>
+
+    <div id="events" class="page-section">
+        <h2 class="off-left">Events</h2>
+
+        <div class="item-list">
+<div id="event_IRRecvEvent.MESSAGE" class="events item">
+    <h3 class="name"><code>IRRecvEvent.MESSAGE</code></h3>
+    <span class="type"></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_module_IRRecv.js.html#l16"><code>src&#x2F;module&#x2F;IRRecv.js:16</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Fires when receiving data.</p>
+
+    </div>
+
+
+
+</div>
+<div id="event_IRRecvEvent.MESSAGE_ERROR" class="events item">
+    <h3 class="name"><code>IRRecvEvent.MESSAGE_ERROR</code></h3>
+    <span class="type"></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_module_IRRecv.js.html#l23"><code>src&#x2F;module&#x2F;IRRecv.js:23</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Fires when error occured while receiving data.</p>
+
+    </div>
+
+
+
+</div>
+        </div>
+    </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

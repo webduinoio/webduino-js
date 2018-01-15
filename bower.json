@@ -9,9 +9,6 @@
   ],
   "license": "MIT",
   "main": "dist/webduino-all.min.js",
-  "ignore": [
-    "package.json"
-  ],
   "dependencies": {
     "chrome-api-proxy": "chrome-api-proxy#0.x",
     "paho": "webduinoio/org.eclipse.paho.mqtt.javascript#develop",

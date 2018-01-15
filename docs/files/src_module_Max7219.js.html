@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/module/Max7219.js - webduino-js</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            webduino-js
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.4.19</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/webduino.Board", "classes/webduino.EventEmitter", "classes/webduino.Module", "classes/webduino.module.ADXL345", "classes/webduino.module.Barcode", "classes/webduino.module.Button", "classes/webduino.module.Buzzer", "classes/webduino.module.Dht", "classes/webduino.module.HX711", "classes/webduino.module.IRLed", "classes/webduino.module.IRRecv", "classes/webduino.module.Led", "classes/webduino.module.Max7219", "classes/webduino.module.Photocell", "classes/webduino.module.RFID", "classes/webduino.module.RGBLed", "classes/webduino.module.Soil", "classes/webduino.module.Ultrasonic", "classes/webduino.Transport", "classes/webduino.transport.MqttTransport", "classes/webduino.transport.NodeMqttTransport"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/webduino.Board.html">webduino.Board</a></li>
+                <li><a href="../classes/webduino.EventEmitter.html">webduino.EventEmitter</a></li>
+                <li><a href="../classes/webduino.Module.html">webduino.Module</a></li>
+                <li><a href="../classes/webduino.module.ADXL345.html">webduino.module.ADXL345</a></li>
+                <li><a href="../classes/webduino.module.Barcode.html">webduino.module.Barcode</a></li>
+                <li><a href="../classes/webduino.module.Button.html">webduino.module.Button</a></li>
+                <li><a href="../classes/webduino.module.Buzzer.html">webduino.module.Buzzer</a></li>
+                <li><a href="../classes/webduino.module.Dht.html">webduino.module.Dht</a></li>
+                <li><a href="../classes/webduino.module.HX711.html">webduino.module.HX711</a></li>
+                <li><a href="../classes/webduino.module.IRLed.html">webduino.module.IRLed</a></li>
+                <li><a href="../classes/webduino.module.IRRecv.html">webduino.module.IRRecv</a></li>
+                <li><a href="../classes/webduino.module.Led.html">webduino.module.Led</a></li>
+                <li><a href="../classes/webduino.module.Max7219.html">webduino.module.Max7219</a></li>
+                <li><a href="../classes/webduino.module.Photocell.html">webduino.module.Photocell</a></li>
+                <li><a href="../classes/webduino.module.RFID.html">webduino.module.RFID</a></li>
+                <li><a href="../classes/webduino.module.RGBLed.html">webduino.module.RGBLed</a></li>
+                <li><a href="../classes/webduino.module.Soil.html">webduino.module.Soil</a></li>
+                <li><a href="../classes/webduino.module.Ultrasonic.html">webduino.module.Ultrasonic</a></li>
+                <li><a href="../classes/webduino.Transport.html">webduino.Transport</a></li>
+                <li><a href="../classes/webduino.transport.MqttTransport.html">webduino.transport.MqttTransport</a></li>
+                <li><a href="../classes/webduino.transport.NodeMqttTransport.html">webduino.transport.NodeMqttTransport</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<div class="page-header">
+    <h1>src/module/Max7219.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
++(function (factory) {
+  if (typeof exports === &#x27;undefined&#x27;) {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
+  &#x27;use strict&#x27;;
+
+  var Pin = scope.Pin,
+    Module = scope.Module,
+    BoardEvent = scope.BoardEvent,
+    proto;
+
+  /**
+   * The Max7219 Class.
+   *
+   * MAX7219 is compact, serial input/output
+   * common-cathode display drivers that interface
+   * microprocessors (µPs) to 7-segment numeric LED displays
+   * of up to 8 digits, bar-graph displays, or 64 individual LEDs.
+   * 
+   * @namespace webduino.module
+   * @class Max7219
+   * @constructor
+   * @param {webduino.Board} board The board that the Max7219 is attached to.
+   * @param {Integer} din Pin number of DIn (Data In).
+   * @param {Integer} cs Pin number of LOAD/CS.
+   * @param {Integer} clk Pin number of CLK.
+   * @extends webduino.Module
+   */
+  function Max7219(board, din, cs, clk) {
+    Module.call(this);
+    this._board = board;
+    this._din = din;
+    this._cs = cs;
+    this._clk = clk;
+    this._intensity = 0;
+    this._data = &#x27;ffffffffffffffff&#x27;;
+
+    this._board.on(BoardEvent.BEFOREDISCONNECT, this.animateStop.bind(this));
+    this._board.on(BoardEvent.ERROR, this.animateStop.bind(this));
+    this._board.send([0xf0, 4, 8, 0, din.number, cs.number, clk.number, 0xf7]);
+  }
+
+  Max7219.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: Max7219
+    },
+
+    /**
+     * The intensity indicating brightness of Max7219.
+     * 
+     * @attribute intensity
+     * @type {Integer} Value of brightness (0~15).
+     */
+    intensity: {
+      get: function () {
+        return this._intensity;
+      },
+      set: function (val) {
+        if (val &gt;= 0 &amp;&amp; val &lt;= 15) {
+          this._board.send([0xf0, 4, 8, 3, val, 0xf7]);
+          this._intensity = val;
+        }
+      }
+    }
+  });
+
+  /**
+   * Show pattern LED matrix.
+   *
+   * @method on
+   * @param {String} data Pattern to display.
+   * @example
+   *     matrix.on(&quot;0000000000000000&quot;);
+   */
+  proto.on = function (data) {
+    if (data) {
+      this._data = data;
+    } else {
+      data = this._data;
+    }
+
+    if (!data) {
+      return false;
+    }
+
+    var sendData = [0xf0, 4, 8, 1];
+    var i = 0;
+    var len = data.length;
+
+    for (; i &lt; len; i++) {
+      sendData.push(data.charCodeAt(i));
+    }
+
+    sendData.push(0xf7);
+    this._board.send(sendData);
+  };
+
+  /**
+   * Clear pattern on LED matrix.
+   *
+   * @method off
+   */
+  proto.off = function () {
+    this._board.send([0xf0, 4, 8, 2, 0xf7]);
+  };
+
+  /**
+   * Display animated pattern.
+   *
+   * @method animate
+   * @param {Array} data Array of patterns.
+   * @param {Integer} times Delay time (in microsecond) between patterns.
+   * @param {Integer} duration Duration of animation.
+   * @param {Function} callback Callback after animation.
+   * @example
+   *     var data = [&quot;080c0effff0e0c08&quot;, &quot;387cfefe82443800&quot;, &quot;40e0e0e07f030604&quot;];
+   *         matrix.on(&quot;0000000000000000&quot;);
+   *         matrix.animate(data, 100);
+   */
+  proto.animate = function (data, times, duration, callback) {
+    var p = 0;
+
+    if (typeof arguments[arguments.length - 1] === &#x27;function&#x27;) {
+      callback = arguments[arguments.length - 1];
+    } else {
+      callback = function () {};
+    }
+
+    var run = function () {
+      this.on(data[p++ % data.length]);
+      this._timer = setTimeout(run, times);
+    }.bind(this);
+
+    var stop = function () {
+      clearTimeout(this._timer);
+      callback();
+    }.bind(this);
+
+    if (times &amp;&amp; times &gt; 0) {
+      run();
+    }
+
+    if (duration &amp;&amp; duration &gt; 0) {
+      this._timerDuration = setTimeout(stop, duration);
+    }
+  };
+
+  /**
+   * Stop displaying animated pattern.
+   *
+   * @method animateStop
+   */
+  proto.animateStop = function () {
+    clearTimeout(this._timer);
+    clearTimeout(this._timerDuration);
+  };
+
+  scope.module.Max7219 = Max7219;
+}));
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

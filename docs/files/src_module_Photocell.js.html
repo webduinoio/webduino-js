@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/module/Photocell.js - webduino-js</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            webduino-js
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.4.19</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/webduino.Board", "classes/webduino.EventEmitter", "classes/webduino.Module", "classes/webduino.module.ADXL345", "classes/webduino.module.Barcode", "classes/webduino.module.Button", "classes/webduino.module.Buzzer", "classes/webduino.module.Dht", "classes/webduino.module.HX711", "classes/webduino.module.IRLed", "classes/webduino.module.IRRecv", "classes/webduino.module.Led", "classes/webduino.module.Max7219", "classes/webduino.module.Photocell", "classes/webduino.module.RFID", "classes/webduino.module.RGBLed", "classes/webduino.module.Soil", "classes/webduino.module.Ultrasonic", "classes/webduino.Transport", "classes/webduino.transport.MqttTransport", "classes/webduino.transport.NodeMqttTransport"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/webduino.Board.html">webduino.Board</a></li>
+                <li><a href="../classes/webduino.EventEmitter.html">webduino.EventEmitter</a></li>
+                <li><a href="../classes/webduino.Module.html">webduino.Module</a></li>
+                <li><a href="../classes/webduino.module.ADXL345.html">webduino.module.ADXL345</a></li>
+                <li><a href="../classes/webduino.module.Barcode.html">webduino.module.Barcode</a></li>
+                <li><a href="../classes/webduino.module.Button.html">webduino.module.Button</a></li>
+                <li><a href="../classes/webduino.module.Buzzer.html">webduino.module.Buzzer</a></li>
+                <li><a href="../classes/webduino.module.Dht.html">webduino.module.Dht</a></li>
+                <li><a href="../classes/webduino.module.HX711.html">webduino.module.HX711</a></li>
+                <li><a href="../classes/webduino.module.IRLed.html">webduino.module.IRLed</a></li>
+                <li><a href="../classes/webduino.module.IRRecv.html">webduino.module.IRRecv</a></li>
+                <li><a href="../classes/webduino.module.Led.html">webduino.module.Led</a></li>
+                <li><a href="../classes/webduino.module.Max7219.html">webduino.module.Max7219</a></li>
+                <li><a href="../classes/webduino.module.Photocell.html">webduino.module.Photocell</a></li>
+                <li><a href="../classes/webduino.module.RFID.html">webduino.module.RFID</a></li>
+                <li><a href="../classes/webduino.module.RGBLed.html">webduino.module.RGBLed</a></li>
+                <li><a href="../classes/webduino.module.Soil.html">webduino.module.Soil</a></li>
+                <li><a href="../classes/webduino.module.Ultrasonic.html">webduino.module.Ultrasonic</a></li>
+                <li><a href="../classes/webduino.Transport.html">webduino.Transport</a></li>
+                <li><a href="../classes/webduino.transport.MqttTransport.html">webduino.transport.MqttTransport</a></li>
+                <li><a href="../classes/webduino.transport.NodeMqttTransport.html">webduino.transport.NodeMqttTransport</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<div class="page-header">
+    <h1>src/module/Photocell.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
++(function (factory) {
+  if (typeof exports === &#x27;undefined&#x27;) {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
+  &#x27;use strict&#x27;;
+
+  var Module = scope.Module,
+    BoardEvent = scope.BoardEvent,
+    proto;
+
+  var PhotocellEvent = {
+
+    /**
+     * Fires when the value of brightness has changed.
+     * 
+     * @event PhotocellEvent.MESSAGE
+     */
+    MESSAGE: &#x27;message&#x27;
+  };
+
+  /**
+   * The Photocell class.
+   *
+   * Photocell is small, inexpensive, low-power sensor that allow you to detect light.
+   * 
+   * @namespace webduino.module
+   * @class Photocell
+   * @constructor
+   * @param {webduino.Board} board Board that the photocell is attached to.
+   * @param {Integer} analogPinNumber The pin that the photocell is connected to.
+   * @extends webduino.Module
+   */
+  function Photocell(board, analogPinNumber) {
+    Module.call(this);
+    this._board = board;
+    this._pinNumber = Number(analogPinNumber);
+    this._messageHandler = onMessage.bind(this);
+  }
+
+  function onMessage(event) {
+    var pin = event.pin;
+    if (this._pinNumber !== pin.analogNumber) {
+      return false;
+    }
+
+    this.emit(PhotocellEvent.MESSAGE, pin.value);
+  }
+
+  Photocell.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: Photocell
+    },
+
+    /**
+     * The state indicating whether the module is measuring.
+     * 
+     * @attribute state
+     * @type {String} &#x60;on&#x60; or &#x60;off&#x60;
+     */
+    state: {
+      get: function () {
+        return this._state;
+      },
+      set: function (val) {
+        this._state = val;
+      }
+    }
+  });
+
+  /**
+   * Start detection.
+   *
+   * @method measure
+   * @param {Function} [callback] Callback after starting detection.
+   */
+  
+  /**
+   * Start detection.
+   *
+   * @method on
+   * @param {Function} [callback] Callback after starting detection.
+   * @deprecated &#x60;on()&#x60; is deprecated, use &#x60;measure()&#x60; instead.
+   */
+  proto.measure = proto.on = function(callback) {
+    var _this = this;
+
+    this._board.enableAnalogPin(this._pinNumber);
+
+    if (typeof callback !== &#x27;function&#x27;) {
+      callback = function () {};
+    }
+
+    this._callback = function (val) {
+      callback(val);
+    };
+
+    this._state = &#x27;on&#x27;;
+    this._board.on(BoardEvent.ANALOG_DATA, this._messageHandler);
+    this.addListener(PhotocellEvent.MESSAGE, this._callback);
+  };
+
+  /**
+   * Stop detection.
+   *
+   * @method off
+   */
+  proto.off = function () {
+    this._state = &#x27;off&#x27;;
+    this._board.disableAnalogPin(this._pinNumber);
+    this._board.removeListener(BoardEvent.ANALOG_DATA, this._messageHandler);
+    this.removeListener(PhotocellEvent.MESSAGE, this._callback);
+    this._callback = null;
+  };
+
+  scope.module.Photocell = Photocell;
+}));
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

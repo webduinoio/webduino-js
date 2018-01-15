@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/module/RGBLed.js - webduino-js</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            webduino-js
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.4.19</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/webduino.Board", "classes/webduino.EventEmitter", "classes/webduino.Module", "classes/webduino.module.ADXL345", "classes/webduino.module.Barcode", "classes/webduino.module.Button", "classes/webduino.module.Buzzer", "classes/webduino.module.Dht", "classes/webduino.module.HX711", "classes/webduino.module.IRLed", "classes/webduino.module.IRRecv", "classes/webduino.module.Led", "classes/webduino.module.Max7219", "classes/webduino.module.Photocell", "classes/webduino.module.RFID", "classes/webduino.module.RGBLed", "classes/webduino.module.Soil", "classes/webduino.module.Ultrasonic", "classes/webduino.Transport", "classes/webduino.transport.MqttTransport", "classes/webduino.transport.NodeMqttTransport"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/webduino.Board.html">webduino.Board</a></li>
+                <li><a href="../classes/webduino.EventEmitter.html">webduino.EventEmitter</a></li>
+                <li><a href="../classes/webduino.Module.html">webduino.Module</a></li>
+                <li><a href="../classes/webduino.module.ADXL345.html">webduino.module.ADXL345</a></li>
+                <li><a href="../classes/webduino.module.Barcode.html">webduino.module.Barcode</a></li>
+                <li><a href="../classes/webduino.module.Button.html">webduino.module.Button</a></li>
+                <li><a href="../classes/webduino.module.Buzzer.html">webduino.module.Buzzer</a></li>
+                <li><a href="../classes/webduino.module.Dht.html">webduino.module.Dht</a></li>
+                <li><a href="../classes/webduino.module.HX711.html">webduino.module.HX711</a></li>
+                <li><a href="../classes/webduino.module.IRLed.html">webduino.module.IRLed</a></li>
+                <li><a href="../classes/webduino.module.IRRecv.html">webduino.module.IRRecv</a></li>
+                <li><a href="../classes/webduino.module.Led.html">webduino.module.Led</a></li>
+                <li><a href="../classes/webduino.module.Max7219.html">webduino.module.Max7219</a></li>
+                <li><a href="../classes/webduino.module.Photocell.html">webduino.module.Photocell</a></li>
+                <li><a href="../classes/webduino.module.RFID.html">webduino.module.RFID</a></li>
+                <li><a href="../classes/webduino.module.RGBLed.html">webduino.module.RGBLed</a></li>
+                <li><a href="../classes/webduino.module.Soil.html">webduino.module.Soil</a></li>
+                <li><a href="../classes/webduino.module.Ultrasonic.html">webduino.module.Ultrasonic</a></li>
+                <li><a href="../classes/webduino.Transport.html">webduino.Transport</a></li>
+                <li><a href="../classes/webduino.transport.MqttTransport.html">webduino.transport.MqttTransport</a></li>
+                <li><a href="../classes/webduino.transport.NodeMqttTransport.html">webduino.transport.NodeMqttTransport</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<div class="page-header">
+    <h1>src/module/RGBLed.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
++(function (factory) {
+  if (typeof exports === &#x27;undefined&#x27;) {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
+  &#x27;use strict&#x27;;
+
+  var Led = scope.module.Led,
+    Module = scope.Module,
+    proto;
+
+  /**
+   * The RGBLed Class.
+   *
+   * @namespace webduino.module
+   * @class RGBLed
+   * @constructor
+   * @param {webduino.Board} board The board the RGB LED is attached to.
+   * @param {webduino.Pin} redLedPin The pin the red LED is connected to.
+   * @param {webduino.Pin} greenLedPin The pin the green LED is connected to.
+   * @param {webduino.Pin} blueLedPin The pin the blue LED is connected to.
+   * @param {Number} [driveMode] Drive mode the RGB LED is operating at, either RGBLed.COMMON_ANODE or RGBLed.COMMON_CATHODE.
+   * @extends webduino.Module
+   */
+  function RGBLed(board, redLedPin, greenLedPin, blueLedPin, driveMode) {
+    Module.call(this);
+
+    if (driveMode === undefined) {
+      driveMode = RGBLed.COMMON_ANODE;
+    }
+
+    this._board = board;
+    this._redLed = new Led(board, redLedPin, driveMode);
+    this._greenLed = new Led(board, greenLedPin, driveMode);
+    this._blueLed = new Led(board, blueLedPin, driveMode);
+
+    this.setColor(0, 0, 0);
+  }
+
+  function hexToR(h) {
+    return parseInt(h.substring(0, 2), 16)
+  }
+
+  function hexToG(h) {
+    return parseInt(h.substring(2, 4), 16)
+  }
+
+  function hexToB(h) {
+    return parseInt(h.substring(4, 6), 16)
+  }
+
+  function cutHex(h) {
+    return (h.charAt(0) == &quot;#&quot;) ? h.substring(1, 7) : h
+  }
+
+  RGBLed.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: RGBLed
+    }
+  });
+
+  /**
+   * Light up and mix colors with the LEDs.
+   *
+   * @method setColor
+   * @param {Number} red The brightness of the red LED.
+   * @param {Number} green The brightness of the green LED.
+   * @param {Number} blue The brightness of the blue LED.
+   * @param {Function} [callback] Function to call when the color is set.
+   */
+  proto.setColor = function (red, green, blue, callback) {
+    if (typeof green === &#x27;undefined&#x27; || typeof green === &#x27;function&#x27;) {
+      var color = cutHex(red);
+      callback = green;
+      red = hexToR(color);
+      green = hexToG(color);
+      blue = hexToB(color);
+    }
+
+    red = red / 255;
+    green = green / 255;
+    blue = blue / 255;
+
+    this._redLed.intensity = red;
+    this._greenLed.intensity = green;
+    this._blueLed.intensity = blue;
+
+    if (typeof callback === &#x27;function&#x27;) {
+      var self = this,
+        redPin = this._redLed._pin,
+        greenPin = this._greenLed._pin,
+        bluePin = this._blueLed._pin;
+
+      this._board.queryPinState([redPin, greenPin, bluePin], function (pins) {
+        if (pins[0].state === redPin.value &amp;&amp;
+          pins[1].state === greenPin.value &amp;&amp;
+          pins[2].state === bluePin.value) {
+          callback.call(self);
+        }
+      });
+    }
+  };
+
+  /**
+   * Indicates the common anode drive mode.
+   *
+   * @property COMMON_ANODE
+   * @type {Number}
+   * @static
+   * @final
+   */
+  RGBLed.COMMON_ANODE = Led.SYNC_DRIVE;
+
+  /**
+   * Indicates the common cathode drive mode.
+   *
+   * @property COMMON_CATHODE
+   * @type {Number}
+   * @static
+   * @final
+   */
+  RGBLed.COMMON_CATHODE = Led.SOURCE_DRIVE;
+
+  scope.module.RGBLed = RGBLed;
+}));
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/module/Led.js - webduino-js</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            webduino-js
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.4.19</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/webduino.Board", "classes/webduino.EventEmitter", "classes/webduino.Module", "classes/webduino.module.ADXL345", "classes/webduino.module.Barcode", "classes/webduino.module.Button", "classes/webduino.module.Buzzer", "classes/webduino.module.Dht", "classes/webduino.module.HX711", "classes/webduino.module.IRLed", "classes/webduino.module.IRRecv", "classes/webduino.module.Led", "classes/webduino.module.Max7219", "classes/webduino.module.Photocell", "classes/webduino.module.RFID", "classes/webduino.module.RGBLed", "classes/webduino.module.Soil", "classes/webduino.module.Ultrasonic", "classes/webduino.Transport", "classes/webduino.transport.MqttTransport", "classes/webduino.transport.NodeMqttTransport"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/webduino.Board.html">webduino.Board</a></li>
+                <li><a href="../classes/webduino.EventEmitter.html">webduino.EventEmitter</a></li>
+                <li><a href="../classes/webduino.Module.html">webduino.Module</a></li>
+                <li><a href="../classes/webduino.module.ADXL345.html">webduino.module.ADXL345</a></li>
+                <li><a href="../classes/webduino.module.Barcode.html">webduino.module.Barcode</a></li>
+                <li><a href="../classes/webduino.module.Button.html">webduino.module.Button</a></li>
+                <li><a href="../classes/webduino.module.Buzzer.html">webduino.module.Buzzer</a></li>
+                <li><a href="../classes/webduino.module.Dht.html">webduino.module.Dht</a></li>
+                <li><a href="../classes/webduino.module.HX711.html">webduino.module.HX711</a></li>
+                <li><a href="../classes/webduino.module.IRLed.html">webduino.module.IRLed</a></li>
+                <li><a href="../classes/webduino.module.IRRecv.html">webduino.module.IRRecv</a></li>
+                <li><a href="../classes/webduino.module.Led.html">webduino.module.Led</a></li>
+                <li><a href="../classes/webduino.module.Max7219.html">webduino.module.Max7219</a></li>
+                <li><a href="../classes/webduino.module.Photocell.html">webduino.module.Photocell</a></li>
+                <li><a href="../classes/webduino.module.RFID.html">webduino.module.RFID</a></li>
+                <li><a href="../classes/webduino.module.RGBLed.html">webduino.module.RGBLed</a></li>
+                <li><a href="../classes/webduino.module.Soil.html">webduino.module.Soil</a></li>
+                <li><a href="../classes/webduino.module.Ultrasonic.html">webduino.module.Ultrasonic</a></li>
+                <li><a href="../classes/webduino.Transport.html">webduino.Transport</a></li>
+                <li><a href="../classes/webduino.transport.MqttTransport.html">webduino.transport.MqttTransport</a></li>
+                <li><a href="../classes/webduino.transport.NodeMqttTransport.html">webduino.transport.NodeMqttTransport</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<div class="page-header">
+    <h1>src/module/Led.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
++(function (factory) {
+  if (typeof exports === &#x27;undefined&#x27;) {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
+  &#x27;use strict&#x27;;
+
+  var Pin = scope.Pin,
+    Module = scope.Module,
+    BoardEvent = scope.BoardEvent,
+    proto;
+
+  /**
+   * The Led class.
+   *
+   * @namespace webduino.module
+   * @class Led
+   * @constructor
+   * @param {webduino.Board} board The board the LED is attached to.
+   * @param {webduino.Pin} pin The pin the LED is connected to.
+   * @param {Number} [driveMode] Drive mode the LED is operating at, either Led.SOURCE_DRIVE or Led.SYNC_DRIVE.
+   * @extends webduino.Module
+   */
+  function Led(board, pin, driveMode) {
+    Module.call(this);
+
+    this._board = board;
+    this._pin = pin;
+    this._driveMode = driveMode || Led.SOURCE_DRIVE;
+    this._supportsPWM = undefined;
+    this._blinkTimer = null;
+
+    this._board.on(BoardEvent.BEFOREDISCONNECT, this._clearBlinkTimer.bind(this));
+    this._board.on(BoardEvent.ERROR, this._clearBlinkTimer.bind(this));
+
+    if (this._driveMode === Led.SOURCE_DRIVE) {
+      this._onValue = 1;
+      this._offValue = 0;
+    } else if (this._driveMode === Led.SYNC_DRIVE) {
+      this._onValue = 0;
+      this._offValue = 1;
+    } else {
+      throw new Error(&#x27;driveMode should be Led.SOURCE_DRIVE or Led.SYNC_DRIVE&#x27;);
+    }
+
+    if (pin.capabilities[Pin.PWM]) {
+      board.setDigitalPinMode(pin.number, Pin.PWM);
+      this._supportsPWM = true;
+    } else {
+      board.setDigitalPinMode(pin.number, Pin.DOUT);
+      this._supportsPWM = false;
+    }
+  }
+
+  function checkPinState(self, pin, state, callback) {
+    self._board.queryPinState(pin, function (pin) {
+      if (pin.state === state) {
+        callback.call(self);
+      }
+    });
+  }
+
+  Led.prototype = proto = Object.create(Module.prototype, {
+
+    constructor: {
+      value: Led
+    },
+
+    /**
+     * Intensity of the LED.
+     *
+     * @attribute intensity
+     * @type {Number}
+     */
+    intensity: {
+      get: function () {
+        return this._pin.value;
+      },
+      set: function (val) {
+        if (!this._supportsPWM) {
+          if (val &lt; 0.5) {
+            val = 0;
+          } else {
+            val = 1;
+          }
+        }
+
+        if (this._driveMode === Led.SOURCE_DRIVE) {
+          this._pin.value = val;
+        } else if (this._driveMode === Led.SYNC_DRIVE) {
+          this._pin.value = 1 - val;
+        }
+      }
+    }
+
+  });
+
+  /**
+   * Light up the LED.
+   *
+   * @method on
+   * @param {Function} [callback] LED state changed callback.
+   */
+  proto.on = function (callback) {
+    this._clearBlinkTimer();
+    this._pin.value = this._onValue;
+    if (typeof callback === &#x27;function&#x27;) {
+      checkPinState(this, this._pin, this._pin.value, callback);
+    }
+  };
+
+  /**
+   * Dim the LED.
+   *
+   * @method off
+   * @param {Function} [callback] LED state changed callback.
+   */
+  proto.off = function (callback) {
+    this._clearBlinkTimer();
+    this._pin.value = this._offValue;
+    if (typeof callback === &#x27;function&#x27;) {
+      checkPinState(this, this._pin, this._pin.value, callback);
+    }
+  };
+
+  /**
+   * Toggle LED state between on/off.
+   *
+   * @method toggle
+   * @param {Function} [callback] State changed callback.
+   */
+  proto.toggle = function (callback) {
+    if (this._blinkTimer) {
+      this.off();
+    } else {
+      this._pin.value = 1 - this._pin.value;
+    }
+    if (typeof callback === &#x27;function&#x27;) {
+      checkPinState(this, this._pin, this._pin.value, callback);
+    }
+  };
+
+  /**
+   * Blink the LED.
+   *
+   * @method blink
+   * @param {Number} [interval=1000] Led blinking interval.
+   * @param {Function} [callback] Led state changed callback.
+   */
+  proto.blink = function (interval, callback) {
+    if (arguments.length === 1 &amp;&amp; typeof arguments[0] === &#x27;function&#x27;) {
+      callback = arguments[0];
+    }
+    interval = parseInt(interval);
+    interval = isNaN(interval) || interval &lt;= 0 ? 1000 : interval;
+
+    this._clearBlinkTimer();
+    this._blinkTimer = this._blink(interval, callback);
+  };
+
+  proto._blink = function (interval, callback) {
+    var self = this;
+    return setTimeout(function () {
+      self._pin.value = 1 - self._pin.value;
+      if (typeof callback === &#x27;function&#x27;) {
+        checkPinState(self, self._pin, self._pin.value, callback);
+      }
+      self._blinkTimer = self._blink(interval, callback);
+    }, interval);
+  };
+
+  proto._clearBlinkTimer = function () {
+    if (this._blinkTimer) {
+      clearTimeout(this._blinkTimer);
+      this._blinkTimer = null;
+    }
+  };
+
+  /**
+   * Indicates the source LED drive mode.
+   *
+   * @property SOURCE_DRIVE
+   * @type Number
+   * @static
+   * @final
+   */
+  Led.SOURCE_DRIVE = 0;
+
+  /**
+   * Indicates the synchronous LED drive mode.
+   *
+   * @property SYNC_DRIVE
+   * @type Number
+   * @static
+   * @final
+   */
+  Led.SYNC_DRIVE = 1;
+
+  scope.module.Led = Led;
+}));
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>
