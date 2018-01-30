@@ -55,4 +55,4 @@ Currently we have transports supporting USB serial port and Bluetooth (HC-06 tes
 * [Arduino Firmata Installation](http://www.instructables.com/id/Arduino-Installing-Standard-Firmata)
 
 ## License
-[MIT](LICENSE)
+This project is licensed under MIT license, see [LICENSE](LICENSE) for more information.
