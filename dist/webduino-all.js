@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.19'
+  version: '0.4.20'
 };
 
 if (typeof exports !== 'undefined') {
@@ -4220,7 +4220,7 @@ if (typeof exports !== 'undefined') {
 
     if (!this._isReady) {
       this._numDigitalPortReportRequests--;
-      if (0 === this._numDigitalPortReportRequests) {
+      if (0 >= this._numDigitalPortReportRequests) {
         this.startup();
       }
     }
@@ -5420,6 +5420,12 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   proto.close = function () {
     if (this._socketId) {
       bluetooth.close(this._socketId, this._disconnHandler);
+    }
+  };
+
+  proto.flush = function () {
+    if (this._buf && this._buf.length) {
+      this._sendOutHandler();
     }
   };
 

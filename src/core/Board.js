@@ -302,7 +302,7 @@
 
     if (!this._isReady) {
       this._numDigitalPortReportRequests--;
-      if (0 === this._numDigitalPortReportRequests) {
+      if (0 >= this._numDigitalPortReportRequests) {
         this.startup();
       }
     }

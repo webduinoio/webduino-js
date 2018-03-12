@@ -21,7 +21,7 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.4.19</b>
+                    API Docs for Version: <b>0.4.20</b>
                 </p>
             </li>
         </div>
@@ -400,7 +400,7 @@
 
     if (!this._isReady) {
       this._numDigitalPortReportRequests--;
-      if (0 === this._numDigitalPortReportRequests) {
+      if (0 &gt;= this._numDigitalPortReportRequests) {
         this.startup();
       }
     }
