@@ -15,14 +15,14 @@
 
     /**
      * Fires when the RFID entered.
-     * 
+     *
      * @event RFIDEvent.ENTER
      */
     ENTER: 'enter',
 
     /**
      * Fires when the RFID leaved.
-     * 
+     *
      * @event RFIDEvent.LEAVE
      */
     LEAVE: 'leave'
@@ -32,7 +32,7 @@
    * The RFID class.
    *
    * RFID reader is used to track nearby tags by wirelessly reading a tag's unique ID.
-   * 
+   *
    * @namespace webduino.module
    * @class RFID
    * @constructor
@@ -63,11 +63,11 @@
     }
 
     if (msg.length === 1) {
-      val = 0;
       _this._leaveHandlers.forEach(function (fn, idx, ary) {
         fn.call(_this, val);
       });
       _this.emit(RFIDEvent.LEAVE, val);
+      val = null;
     } else {
       val = String.fromCharCode.apply(null, msg);
       _this._enterHandlers.forEach(function (fn, idx, ary) {
@@ -84,7 +84,7 @@
 
     /**
      * The state indicating whether the module is reading.
-     * 
+     *
      * @attribute isReading
      * @type {Boolean} isReading
      * @readOnly
