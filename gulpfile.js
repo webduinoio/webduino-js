@@ -32,7 +32,8 @@ const base = [
   '../webduino-bluetooth-transport/src/BluetoothTransport.js'
 ];
 const boards = [
-  'src/board/Smart.js'
+  'src/board/Smart.js',
+  'src/board/Bit.js'
 ];
 const modules = [
   'src/module/DataTransfer.js',
