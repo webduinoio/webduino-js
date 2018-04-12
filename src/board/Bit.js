@@ -54,7 +54,7 @@
 
   proto.startup = function() {
     this._isReady = true;
-    this.getPin(35).setMode(2); //set analogNum 7 = pin35
+    this.getPin(34).setMode(2); //set analogNum 6 = pin34
     this.emit(webduino.BoardEvent.READY, this);
   };
 
