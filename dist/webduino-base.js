@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.20'
+  version: '0.4.22'
 };
 
 if (typeof exports !== 'undefined') {
@@ -4816,6 +4816,9 @@ if (typeof exports !== 'undefined') {
         device: options
       };
     }
+    if (options.area === 'china') {
+      options.server = WebArduino.SERVER_CHINA;      
+    }
     options = util.extend(getDefaultOptions(options), options);
     options.server = parseServer(options.server);
 
@@ -4892,6 +4895,7 @@ if (typeof exports !== 'undefined') {
   };
 
   WebArduino.DEFAULT_SERVER = 'wss://ws.webduino.io:443';
+  WebArduino.SERVER_CHINA = 'wss://ws.webduino.com.cn';
 
   function mockMessageEvent(board, message) {
     board._transport.emit(TransportEvent.MESSAGE, message);

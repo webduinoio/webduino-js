@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.20'
+  version: '0.4.22'
 };
 
 if (typeof exports !== 'undefined') {
@@ -4816,6 +4816,9 @@ if (typeof exports !== 'undefined') {
         device: options
       };
     }
+    if (options.area === 'china') {
+      options.server = WebArduino.SERVER_CHINA;      
+    }
     options = util.extend(getDefaultOptions(options), options);
     options.server = parseServer(options.server);
 
@@ -4892,6 +4895,7 @@ if (typeof exports !== 'undefined') {
   };
 
   WebArduino.DEFAULT_SERVER = 'wss://ws.webduino.io:443';
+  WebArduino.SERVER_CHINA = 'wss://ws.webduino.com.cn';
 
   function mockMessageEvent(board, message) {
     board._transport.emit(TransportEvent.MESSAGE, message);
@@ -5492,6 +5496,72 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.board.Smart = Smart;
 }));
 
++(function(factory) {
+  if (typeof exports === 'undefined') {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function(scope) {
+  'use strict';
+
+  var util = scope.util,
+    TransportEvent = scope.TransportEvent,
+    Board = scope.Board,
+    BoardEvent = scope.BoardEvent,
+    proto;
+
+  function Bit(options) {
+    if (typeof options === 'string') {
+      options = {
+        url: options
+      };
+    }
+    options = util.extend(getDefaultOptions(options), options);
+    options.server = parseServer(options.server);
+
+    Board.call(this, options);
+  }
+
+  function getDefaultOptions(opts) {
+    return {
+      transport: 'websocket',
+      server: Bit.DEFAULT_SERVER,
+      login: 'admin',
+      password: 'password',
+      autoReconnect: false,
+      multi: false
+    };
+  }
+
+  function parseServer(url) {
+    if (url.indexOf('://') === -1) {
+      url = (typeof location !== 'undefined' &&
+          location.protocol === 'https:' ? 'wss:' : 'ws:') +
+        '//' + url;
+    }
+    url = util.parseURL(url);
+    return url.protocol + '//' + url.host + '/';
+  }
+
+  Bit.prototype = proto = Object.create(Board.prototype, {
+    constructor: {
+      value: Bit
+    }
+  });
+
+  proto.startup = function() {
+    this._isReady = true;
+    this.getPin(34).setMode(2); //set analogNum 6 = pin34
+    this.emit(webduino.BoardEvent.READY, this);
+  };
+
+  Bit.DEFAULT_SERVER = 'wss://ws.webduino.io:443';
+
+
+  scope.board.Bit = Bit;
+
+}));
 +(function (factory) {
   if (typeof exports === 'undefined') {
     factory(webduino || {});
@@ -8952,14 +9022,14 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
     /**
      * Fires when the RFID entered.
-     * 
+     *
      * @event RFIDEvent.ENTER
      */
     ENTER: 'enter',
 
     /**
      * Fires when the RFID leaved.
-     * 
+     *
      * @event RFIDEvent.LEAVE
      */
     LEAVE: 'leave'
@@ -8969,7 +9039,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
    * The RFID class.
    *
    * RFID reader is used to track nearby tags by wirelessly reading a tag's unique ID.
-   * 
+   *
    * @namespace webduino.module
    * @class RFID
    * @constructor
@@ -9000,11 +9070,11 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
 
     if (msg.length === 1) {
-      val = 0;
       _this._leaveHandlers.forEach(function (fn, idx, ary) {
         fn.call(_this, val);
       });
       _this.emit(RFIDEvent.LEAVE, val);
+      val = null;
     } else {
       val = String.fromCharCode.apply(null, msg);
       _this._enterHandlers.forEach(function (fn, idx, ary) {
@@ -9021,7 +9091,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
     /**
      * The state indicating whether the module is reading.
-     * 
+     *
      * @attribute isReading
      * @type {Boolean} isReading
      * @readOnly

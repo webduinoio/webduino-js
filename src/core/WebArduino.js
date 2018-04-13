@@ -18,6 +18,9 @@
         device: options
       };
     }
+    if (options.area === 'china') {
+      options.server = WebArduino.SERVER_CHINA;      
+    }
     options = util.extend(getDefaultOptions(options), options);
     options.server = parseServer(options.server);
 
@@ -94,6 +97,7 @@
   };
 
   WebArduino.DEFAULT_SERVER = 'wss://ws.webduino.io:443';
+  WebArduino.SERVER_CHINA = 'wss://ws.webduino.com.cn';
 
   function mockMessageEvent(board, message) {
     board._transport.emit(TransportEvent.MESSAGE, message);
