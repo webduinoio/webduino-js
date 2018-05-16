@@ -30,7 +30,10 @@
     DISCONNECT: 'disconnect'
   };
 
-  // Message command bytes (128-255/0x80-0xFF)
+  /**
+   * Message command bytes (128-255/0x80-0xFF)
+   * https://github.com/firmata/protocol/blob/master/protocol.md
+   */
   var DIGITAL_MESSAGE = 0x90,
     ANALOG_MESSAGE = 0xE0,
     REPORT_ANALOG = 0xC0,
@@ -122,14 +125,19 @@
   }
 
   function onMessage(data) {
-    var len = data.length;
+    try {
+      var len = data.length;
 
-    if (len) {
-      for (var i = 0; i < len; i++) {
-        this.processInput(data[i]);
+      if (len) {
+        for (var i = 0; i < len; i++) {
+          this.processInput(data[i]);
+        }
+      } else {
+        this.processInput(data);
       }
-    } else {
-      this.processInput(data);
+    } catch (err) {
+      console.error(err);
+      throw err;
     }
   }
 
