@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.22'
+  version: '0.4.23'
 };
 
 if (typeof exports !== 'undefined') {
@@ -3948,7 +3948,10 @@ if (typeof exports !== 'undefined') {
     DISCONNECT: 'disconnect'
   };
 
-  // Message command bytes (128-255/0x80-0xFF)
+  /**
+   * Message command bytes (128-255/0x80-0xFF)
+   * https://github.com/firmata/protocol/blob/master/protocol.md
+   */
   var DIGITAL_MESSAGE = 0x90,
     ANALOG_MESSAGE = 0xE0,
     REPORT_ANALOG = 0xC0,
@@ -4040,14 +4043,19 @@ if (typeof exports !== 'undefined') {
   }
 
   function onMessage(data) {
-    var len = data.length;
+    try {
+      var len = data.length;
 
-    if (len) {
-      for (var i = 0; i < len; i++) {
-        this.processInput(data[i]);
+      if (len) {
+        for (var i = 0; i < len; i++) {
+          this.processInput(data[i]);
+        }
+      } else {
+        this.processInput(data);
       }
-    } else {
-      this.processInput(data);
+    } catch (err) {
+      console.error(err);
+      throw err;
     }
   }
 
@@ -5549,12 +5557,6 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       value: Bit
     }
   });
-
-  proto.startup = function() {
-    this._isReady = true;
-    this.getPin(34).setMode(2); //set analogNum 6 = pin34
-    this.emit(webduino.BoardEvent.READY, this);
-  };
 
   Bit.DEFAULT_SERVER = 'wss://ws.webduino.io:443';
 
