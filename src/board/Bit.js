@@ -52,12 +52,6 @@
     }
   });
 
-  proto.startup = function() {
-    this._isReady = true;
-    this.getPin(34).setMode(2); //set analogNum 6 = pin34
-    this.emit(webduino.BoardEvent.READY, this);
-  };
-
   Bit.DEFAULT_SERVER = 'wss://ws.webduino.io:443';
 
 
