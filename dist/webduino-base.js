@@ -2496,12 +2496,96 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.23'
+  version: '0.4.24'
 };
 
 if (typeof exports !== 'undefined') {
   module.exports = webduino;
 }
+
++(function (factory) {
+  if (typeof exports === 'undefined') {
+    factory(webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(function (scope) {
+  'use strict';
+
+  var DEBUG_STR = 'DEBUG_WEBDUINOJS';
+
+  function Logger(option) {
+    if (!option) {
+      option = '*';
+    }
+    if (typeof option === 'string') {
+      option = { key: option };
+    }
+    this._option = option;
+    this._key = option.key;
+    this._isShow = isShow.bind(this);
+    init.call(this);
+  }
+
+  function hasLocalStorage() {
+    try {
+      return !!localStorage;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function hasProcess() {
+    try {
+      return !!process;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function isShow() {
+    var reg = new RegExp();
+    var debugKeys = [];
+    var debugStr;
+
+    if (hasLocalStorage()) {
+      debugStr = localStorage.getItem(DEBUG_STR);
+    }
+
+    if (hasProcess()) {
+      debugStr = process.env[DEBUG_STR];
+    }
+
+    if (debugStr) {
+      debugKeys = debugStr.split(',').map(function (val) {
+        return val.trim();
+      });
+    }
+
+    if (debugKeys.indexOf('*') !== -1 || debugKeys.indexOf(this._key) !== -1) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function init() {
+    var self = this;
+    var methodNames = ['log', 'info', 'warn', 'error'];
+    var noop = function () { };
+    var isCopy = this._isShow();
+    
+    methodNames.forEach(function (name) {
+      if (isCopy) {
+        self[name] = Function.prototype.bind.call(console[name], console);
+      } else {
+        self[name] = noop;
+      }
+    });
+  }
+
+  scope.Logger = Logger;
+}));
 
 +(function (factory) {
   if (typeof exports === 'undefined') {
@@ -3930,6 +4014,7 @@ if (typeof exports !== 'undefined') {
   var EventEmitter = scope.EventEmitter,
     TransportEvent = scope.TransportEvent,
     Transport = scope.Transport,
+    Logger = scope.Logger,
     Pin = scope.Pin,
     util = scope.util,
     proto;
@@ -4012,6 +4097,7 @@ if (typeof exports !== 'undefined') {
     this._numDigitalPortReportRequests = 0;
     this._transport = null;
     this._pinStateEventCenter = new EventEmitter();
+    this._logger = new Logger('Board');
 
     this._initialVersionResultHandler = onInitialVersionResult.bind(this);
     this._openHandler = onOpen.bind(this);
@@ -4044,6 +4130,8 @@ if (typeof exports !== 'undefined') {
 
   function onMessage(data) {
     try {
+      this._logger.info('onMessage', data);
+
       var len = data.length;
 
       if (len) {
@@ -4060,6 +4148,7 @@ if (typeof exports !== 'undefined') {
   }
 
   function onError(error) {
+    this._logger.warn('onError', error);
     this._isReady = false;
     this.emit(BoardEvent.ERROR, error);
     setImmediate(this.disconnect.bind(this));
@@ -4096,10 +4185,6 @@ if (typeof exports !== 'undefined') {
       process.removeListener('SIGINT', self._cleanupHandler);
       process.removeListener('uncaughtException', self._cleanupHandler);
     }
-  }
-
-  function debug(msg) {
-    console && console.log(msg.stack || msg);
   }
 
   Board.prototype = proto = Object.create(EventEmitter.prototype, {
@@ -4181,6 +4266,7 @@ if (typeof exports !== 'undefined') {
 
     switch (command) {
     case DIGITAL_MESSAGE:
+      this._logger.info('processMultiByteCommand digital:', channel, commandData[1], commandData[2]);
       this.processDigitalMessage(channel, commandData[1], commandData[2]);
       break;
     case REPORT_VERSION:
@@ -4190,6 +4276,7 @@ if (typeof exports !== 'undefined') {
       });
       break;
     case ANALOG_MESSAGE:
+      this._logger.info('processMultiByteCommand analog:', channel, commandData[1], commandData[2]);
       this.processAnalogMessage(channel, commandData[1], commandData[2]);
       break;
     }
@@ -4751,11 +4838,11 @@ if (typeof exports !== 'undefined') {
       resolution;
 
     for (var i = 0; i < len; i++) {
-      debug('Pin ' + i + ':');
+      this._logger.info("reportCapabilities, Pin " + i);
       for (var mode in capabilities[i]) {
         if (capabilities[i].hasOwnProperty(mode)) {
           resolution = capabilities[i][mode];
-          debug('\t' + mode + ' (' + resolution + (resolution > 1 ? ' bits)' : ' bit)'));
+          this._logger.info("reportCapabilities", '\t' + mode + ' (' + resolution + (resolution > 1 ? ' bits)' : ' bit)'));
         }
       }
     }

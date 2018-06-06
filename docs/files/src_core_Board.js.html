@@ -110,6 +110,7 @@
   var EventEmitter = scope.EventEmitter,
     TransportEvent = scope.TransportEvent,
     Transport = scope.Transport,
+    Logger = scope.Logger,
     Pin = scope.Pin,
     util = scope.util,
     proto;
@@ -192,6 +193,7 @@
     this._numDigitalPortReportRequests = 0;
     this._transport = null;
     this._pinStateEventCenter = new EventEmitter();
+    this._logger = new Logger(&#x27;Board&#x27;);
 
     this._initialVersionResultHandler = onInitialVersionResult.bind(this);
     this._openHandler = onOpen.bind(this);
@@ -224,6 +226,8 @@
 
   function onMessage(data) {
     try {
+      this._logger.info(&#x27;onMessage&#x27;, data);
+
       var len = data.length;
 
       if (len) {
@@ -240,6 +244,7 @@
   }
 
   function onError(error) {
+    this._logger.warn(&#x27;onError&#x27;, error);
     this._isReady = false;
     this.emit(BoardEvent.ERROR, error);
     setImmediate(this.disconnect.bind(this));
@@ -276,10 +281,6 @@
       process.removeListener(&#x27;SIGINT&#x27;, self._cleanupHandler);
       process.removeListener(&#x27;uncaughtException&#x27;, self._cleanupHandler);
     }
-  }
-
-  function debug(msg) {
-    console &amp;&amp; console.log(msg.stack || msg);
   }
 
   Board.prototype = proto = Object.create(EventEmitter.prototype, {
@@ -361,6 +362,7 @@
 
     switch (command) {
     case DIGITAL_MESSAGE:
+      this._logger.info(&#x27;processMultiByteCommand digital:&#x27;, channel, commandData[1], commandData[2]);
       this.processDigitalMessage(channel, commandData[1], commandData[2]);
       break;
     case REPORT_VERSION:
@@ -370,6 +372,7 @@
       });
       break;
     case ANALOG_MESSAGE:
+      this._logger.info(&#x27;processMultiByteCommand analog:&#x27;, channel, commandData[1], commandData[2]);
       this.processAnalogMessage(channel, commandData[1], commandData[2]);
       break;
     }
@@ -931,11 +934,11 @@
       resolution;
 
     for (var i = 0; i &lt; len; i++) {
-      debug(&#x27;Pin &#x27; + i + &#x27;:&#x27;);
+      this._logger.info(&quot;reportCapabilities, Pin &quot; + i);
       for (var mode in capabilities[i]) {
         if (capabilities[i].hasOwnProperty(mode)) {
           resolution = capabilities[i][mode];
-          debug(&#x27;\t&#x27; + mode + &#x27; (&#x27; + resolution + (resolution &gt; 1 ? &#x27; bits)&#x27; : &#x27; bit)&#x27;));
+          this._logger.info(&quot;reportCapabilities&quot;, &#x27;\t&#x27; + mode + &#x27; (&#x27; + resolution + (resolution &gt; 1 ? &#x27; bits)&#x27; : &#x27; bit)&#x27;));
         }
       }
     }
