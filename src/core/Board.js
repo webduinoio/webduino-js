@@ -12,6 +12,7 @@
   var EventEmitter = scope.EventEmitter,
     TransportEvent = scope.TransportEvent,
     Transport = scope.Transport,
+    Logger = scope.Logger,
     Pin = scope.Pin,
     util = scope.util,
     proto;
@@ -94,6 +95,7 @@
     this._numDigitalPortReportRequests = 0;
     this._transport = null;
     this._pinStateEventCenter = new EventEmitter();
+    this._logger = new Logger('Board');
 
     this._initialVersionResultHandler = onInitialVersionResult.bind(this);
     this._openHandler = onOpen.bind(this);
@@ -126,6 +128,8 @@
 
   function onMessage(data) {
     try {
+      this._logger.info('onMessage', data);
+
       var len = data.length;
 
       if (len) {
@@ -142,6 +146,7 @@
   }
 
   function onError(error) {
+    this._logger.warn('onError', error);
     this._isReady = false;
     this.emit(BoardEvent.ERROR, error);
     setImmediate(this.disconnect.bind(this));
@@ -178,10 +183,6 @@
       process.removeListener('SIGINT', self._cleanupHandler);
       process.removeListener('uncaughtException', self._cleanupHandler);
     }
-  }
-
-  function debug(msg) {
-    console && console.log(msg.stack || msg);
   }
 
   Board.prototype = proto = Object.create(EventEmitter.prototype, {
@@ -263,6 +264,7 @@
 
     switch (command) {
     case DIGITAL_MESSAGE:
+      this._logger.info('processMultiByteCommand digital:', channel, commandData[1], commandData[2]);
       this.processDigitalMessage(channel, commandData[1], commandData[2]);
       break;
     case REPORT_VERSION:
@@ -272,6 +274,7 @@
       });
       break;
     case ANALOG_MESSAGE:
+      this._logger.info('processMultiByteCommand analog:', channel, commandData[1], commandData[2]);
       this.processAnalogMessage(channel, commandData[1], commandData[2]);
       break;
     }
@@ -833,11 +836,11 @@
       resolution;
 
     for (var i = 0; i < len; i++) {
-      debug('Pin ' + i + ':');
+      this._logger.info("reportCapabilities, Pin " + i);
       for (var mode in capabilities[i]) {
         if (capabilities[i].hasOwnProperty(mode)) {
           resolution = capabilities[i][mode];
-          debug('\t' + mode + ' (' + resolution + (resolution > 1 ? ' bits)' : ' bit)'));
+          this._logger.info("reportCapabilities", '\t' + mode + ' (' + resolution + (resolution > 1 ? ' bits)' : ' bit)'));
         }
       }
     }

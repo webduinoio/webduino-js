@@ -14,6 +14,7 @@ const base = [
   '../setimmediate/setImmediate.js',
   '../paho/src/mqttws31.js',
   'src/webduino.js',
+  'src/core/Logger.js',
   'src/core/EventEmitter.js',
   'src/core/util.js',
   'src/util/promisify.js',
