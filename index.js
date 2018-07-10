@@ -14,6 +14,7 @@ require('./src/core/WebArduino')(webduino);
 require('./src/core/Arduino')(webduino);
 
 require('./src/board/Smart')(webduino);
+require('./src/board/Bit')(webduino);
 
 require('./src/module/DataTransfer')(webduino);
 require('./src/module/IRRAW')(webduino);
