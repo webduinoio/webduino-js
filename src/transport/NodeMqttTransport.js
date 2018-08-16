@@ -76,20 +76,24 @@ function onConnect() {
 }
 
 function onMessage(topic, message, packet) {
-  var dest = topic,
-    oldStatus = this._status;
+  try {
+    var dest = topic,
+      oldStatus = this._status;
 
-  switch (dest.substr(dest.lastIndexOf('/') + 1)) {
+    switch (dest.substr(dest.lastIndexOf('/') + 1)) {
 
-  case 'STATUS':
-    this._status = message.toString();
-    detectStatusChange(this, this._status, oldStatus);
-    break;
+      case 'STATUS':
+        this._status = message.toString();
+        detectStatusChange(this, this._status, oldStatus);
+        break;
 
-  default:
-    (this._status === STATUS.OK) && this.emit(TransportEvent.MESSAGE, message);
-    break;
+      default:
+        (this._status === STATUS.OK) && this.emit(TransportEvent.MESSAGE, message);
+        break;
 
+    }
+  } catch (err) {
+    this.emit(TransportEvent.ERROR, err);
   }
 }
 
