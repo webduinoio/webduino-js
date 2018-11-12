@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.4.26'
+  version: '0.4.27'
 };
 
 if (typeof exports !== 'undefined') {
@@ -5591,13 +5591,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.board.Smart = Smart;
 }));
 
-+(function(factory) {
++(function (factory) {
   if (typeof exports === 'undefined') {
     factory(webduino || {});
   } else {
     module.exports = factory;
   }
-}(function(scope) {
+}(function (scope) {
   'use strict';
 
   var util = scope.util,
@@ -5646,6 +5646,17 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   });
 
   Bit.DEFAULT_SERVER = 'wss://ws.webduino.io:443';
+
+  proto.startup = function () {
+    this._isReady = true;
+    this.emit(BoardEvent.READY, this);
+    setTimeout(function() {
+      if (this._options.transport === 'serial') {
+        // wait for physical board ready to receive data from serialPort
+        this.send([0xf0, 0x0e, 0x0c, 0xf7]);
+      }  
+    }.bind(this), 500);
+  };
 
 
   scope.board.Bit = Bit;
