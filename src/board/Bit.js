@@ -1,10 +1,10 @@
-+(function(factory) {
++(function (factory) {
   if (typeof exports === 'undefined') {
     factory(webduino || {});
   } else {
     module.exports = factory;
   }
-}(function(scope) {
+}(function (scope) {
   'use strict';
 
   var util = scope.util,
@@ -53,6 +53,16 @@
   });
 
   Bit.DEFAULT_SERVER = 'wss://ws.webduino.io:443';
+
+  proto.startup = async function () {
+    this._isReady = true;
+    if (this._options.transport === 'serial') {
+      // wait for physical board ready to receive data from serialPort
+      await delay(0.5);
+      this.send([0xf0, 0x0e, 0x0c, 0xf7]);
+    }
+    this.emit(BoardEvent.READY, this);
+  };
 
 
   scope.board.Bit = Bit;
