@@ -122,6 +122,7 @@
     STRING_MESSAGE: &#x27;stringMessage&#x27;,
     SYSEX_MESSAGE: &#x27;sysexMessage&#x27;,
     PIN_STATE_RESPONSE: &#x27;pinStateResponse&#x27;,
+    BEFOREREADY: &#x27;beforeReady&#x27;,
     READY: &#x27;ready&#x27;,
     ERROR: &#x27;error&#x27;,
     BEFOREDISCONNECT: &#x27;beforeDisconnect&#x27;,
@@ -219,6 +220,7 @@
   }
 
   function onOpen() {
+    this._logger.info(&#x27;onOpen&#x27;, &#x27;Device online&#x27;);
     this.begin();
   }
 
@@ -453,6 +455,7 @@
       break;
     case ANALOG_MAPPING_RESPONSE:
       this.processAnalogMappingResponse(sysexData);
+      this.emit(BoardEvent.BEFOREREADY);
       break;
     default:
       this.emit(BoardEvent.SYSEX_MESSAGE, {
@@ -563,6 +566,7 @@
   };
 
   proto.startup = function () {
+    this._logger.info(&#x27;startup&#x27;, &#x27;Board Ready&#x27;);
     this._isReady = true;
     this.emit(BoardEvent.READY, this);
   };
@@ -675,10 +679,12 @@
   };
 
   proto.queryCapabilities = function () {
+    this._logger.info(&#x27;queryCapabilities&#x27;);
     this.send([START_SYSEX, CAPABILITY_QUERY, END_SYSEX]);
   };
 
   proto.queryAnalogMapping = function () {
+    this._logger.info(&#x27;queryAnalogMapping&#x27;);
     this.send([START_SYSEX, ANALOG_MAPPING_QUERY, END_SYSEX]);
   };
 
@@ -711,10 +717,12 @@
   };
 
   proto.reportFirmware = function () {
+    this._logger.info(&#x27;reportFirmware&#x27;);
     this.send([START_SYSEX, REPORT_FIRMWARE, END_SYSEX]);
   };
 
   proto.enableDigitalPins = function () {
+    this._logger.info(&#x27;enableDigitalPins&#x27;);
     for (var i = 0; i &lt; this._numPorts; i++) {
       this.sendDigitalPortReporting(i, Pin.ON);
     }

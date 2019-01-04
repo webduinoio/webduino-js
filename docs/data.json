@@ -250,7 +250,7 @@
             "extension_for": [],
             "namespace": "webduino",
             "file": "src/core/Board.js",
-            "line": 66,
+            "line": 67,
             "description": "An abstract development board.",
             "is_constructor": 1,
             "params": [
@@ -816,7 +816,7 @@
     "classitems": [
         {
             "file": "src/core/Board.js",
-            "line": 33,
+            "line": 34,
             "description": "Message command bytes (128-255/0x80-0xFF)\nhttps://github.com/firmata/protocol/blob/master/protocol.md",
             "class": "webduino.Board"
         },
@@ -2345,7 +2345,7 @@
     "warnings": [
         {
             "message": "Missing item type\nMessage command bytes (128-255/0x80-0xFF)\nhttps://github.com/firmata/protocol/blob/master/protocol.md",
-            "line": " src/core/Board.js:33"
+            "line": " src/core/Board.js:34"
         }
     ]
 }

@@ -2554,14 +2554,14 @@ if (typeof exports !== 'undefined') {
     if (hasProcess()) {
       debugStr = process.env[DEBUG_STR];
     }
-
+    
     if (debugStr) {
       debugKeys = debugStr.split(',').map(function (val) {
         return val.trim();
       });
     }
 
-    if (debugKeys.indexOf('*') !== -1 || debugKeys.indexOf(this._key) !== -1) {
+    if (debugStr && (debugKeys.indexOf('*') !== -1 || debugKeys.indexOf(this._key) !== -1)) {
       return true;
     }
 
@@ -4036,6 +4036,7 @@ if (typeof exports !== 'undefined') {
     STRING_MESSAGE: 'stringMessage',
     SYSEX_MESSAGE: 'sysexMessage',
     PIN_STATE_RESPONSE: 'pinStateResponse',
+    BEFOREREADY: 'beforeReady',
     READY: 'ready',
     ERROR: 'error',
     BEFOREDISCONNECT: 'beforeDisconnect',
@@ -4133,6 +4134,7 @@ if (typeof exports !== 'undefined') {
   }
 
   function onOpen() {
+    this._logger.info('onOpen', 'Device online');
     this.begin();
   }
 
@@ -4367,6 +4369,7 @@ if (typeof exports !== 'undefined') {
       break;
     case ANALOG_MAPPING_RESPONSE:
       this.processAnalogMappingResponse(sysexData);
+      this.emit(BoardEvent.BEFOREREADY);
       break;
     default:
       this.emit(BoardEvent.SYSEX_MESSAGE, {
@@ -4477,6 +4480,7 @@ if (typeof exports !== 'undefined') {
   };
 
   proto.startup = function () {
+    this._logger.info('startup', 'Board Ready');
     this._isReady = true;
     this.emit(BoardEvent.READY, this);
   };
@@ -4589,10 +4593,12 @@ if (typeof exports !== 'undefined') {
   };
 
   proto.queryCapabilities = function () {
+    this._logger.info('queryCapabilities');
     this.send([START_SYSEX, CAPABILITY_QUERY, END_SYSEX]);
   };
 
   proto.queryAnalogMapping = function () {
+    this._logger.info('queryAnalogMapping');
     this.send([START_SYSEX, ANALOG_MAPPING_QUERY, END_SYSEX]);
   };
 
@@ -4625,10 +4631,12 @@ if (typeof exports !== 'undefined') {
   };
 
   proto.reportFirmware = function () {
+    this._logger.info('reportFirmware');
     this.send([START_SYSEX, REPORT_FIRMWARE, END_SYSEX]);
   };
 
   proto.enableDigitalPins = function () {
+    this._logger.info('enableDigitalPins');
     for (var i = 0; i < this._numPorts; i++) {
       this.sendDigitalPortReporting(i, Pin.ON);
     }
