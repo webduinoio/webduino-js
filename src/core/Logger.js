@@ -49,14 +49,14 @@
     if (hasProcess()) {
       debugStr = process.env[DEBUG_STR];
     }
-
+    
     if (debugStr) {
       debugKeys = debugStr.split(',').map(function (val) {
         return val.trim();
       });
     }
 
-    if (debugKeys.indexOf('*') !== -1 || debugKeys.indexOf(this._key) !== -1) {
+    if (debugStr && (debugKeys.indexOf('*') !== -1 || debugKeys.indexOf(this._key) !== -1)) {
       return true;
     }
 
