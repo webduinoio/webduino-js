@@ -56,14 +56,13 @@
     var msg = event.message;
     var msgPort = [0x04, 0x0b, 0x04];
     var stus = true;
-    var alpha = 0.5;
     var x, y, z;
 
     if (msg.length !== 9) {
       return false;
     }
 
-    msgPort.forEach(function (val, idx, ary) {
+    msgPort.forEach(function (val, idx) {
       if (val !== msg[idx]) {
         stus = false;
       }
@@ -81,7 +80,7 @@
   }
 
   function calcFixed(base, data, fixedInfo) {
-    Object.getOwnPropertyNames(data).forEach(function (key, idx, ary) {
+    Object.getOwnPropertyNames(data).forEach(function (key) {
       fixedInfo[key] = data[key];
 
       if (key === base) {
@@ -176,7 +175,7 @@
       z -= info.z;
 
       rt = estimateRollandPitch(x, y, z, info.fXg, info.fYg, info.fZg);
-      ['fXg', 'fYg', 'fZg'].forEach(function (val, idx, ary) {
+      ['fXg', 'fYg', 'fZg'].forEach(function (val) {
         info[val] = rt[val];
       });
 

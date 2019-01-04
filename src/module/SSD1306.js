@@ -7,7 +7,6 @@
 }(this, function (scope) {
   'use strict';
 
-  var self;
   var proto;
   var _textSize = 2;
   var _cursorX = 0;
@@ -23,16 +22,13 @@
   function SSD1306(board) {
     Module.call(this);
     this._board = board;
-    self = this;
     board.send([0xF0, 0x04, 0x01, 0x0, 0xF7]);
     board.send([0xF0, 0x04, 0x01, 0x02, _cursorX, _cursorY, 0xF7]);
     board.send([0xF0, 0x04, 0x01, 0x03, _textSize, 0xF7]);
     board.send([0xF0, 0x04, 0x01, 0x01, 0xF7]);
-    board.on(BoardEvent.SYSEX_MESSAGE,
-      function (event) {
-        var m = event.message;
-        sending = false;
-      });
+    board.on(BoardEvent.SYSEX_MESSAGE, function () {
+      sending = false;
+    });
     startQueue(board);
   }
 
@@ -69,15 +65,15 @@
 
   proto.clear = function () {
     this._board.send([0xF0, 0x04, 0x01, 0x01, 0xF7]);
-  }
+  };
 
   proto.drawImage = function (num) {
     this._board.send([0xF0, 0x04, 0x01, 0x05, num, 0xF7]);
-  }
+  };
 
   proto.render = function () {
     this._board.send([0xF0, 0x04, 0x01, 0x06, 0xF7]);
-  }
+  };
 
   proto.save = function (data, callback) {
     sendCallback = callback;
@@ -86,7 +82,7 @@
       saveChunk(i / 2, chunk);
     }
     sendArray.push({ 'obj': {}, 'ack': 0 });
-  }
+  };
 
   function saveChunk(startPos, data) {
     var CMD = [0xf0, 0x04, 0x01, 0x0A];
@@ -142,6 +138,6 @@
     }
     strCMD.push(0xF7);
     this._board.send(strCMD);
-  }
+  };
   scope.module.SSD1306 = SSD1306;
 }));

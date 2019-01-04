@@ -21,13 +21,13 @@
     if (options.area === 'china') {
       options.server = WebArduino.SERVER_CHINA;      
     }
-    options = util.extend(getDefaultOptions(options), options);
+    options = util.extend(getDefaultOptions(), options);
     options.server = parseServer(options.server);
 
     Board.call(this, options);
   }
 
-  function getDefaultOptions(opts) {
+  function getDefaultOptions() {
     return {
       transport: 'mqtt',
       server: WebArduino.DEFAULT_SERVER,

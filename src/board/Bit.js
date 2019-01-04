@@ -8,7 +8,6 @@
   'use strict';
 
   var util = scope.util,
-    TransportEvent = scope.TransportEvent,
     Board = scope.Board,
     BoardEvent = scope.BoardEvent,
     proto;
@@ -19,13 +18,13 @@
         url: options
       };
     }
-    options = util.extend(getDefaultOptions(options), options);
+    options = util.extend(getDefaultOptions(), options);
     options.server = parseServer(options.server);
 
     Board.call(this, options);
   }
 
-  function getDefaultOptions(opts) {
+  function getDefaultOptions() {
     return {
       transport: 'websocket',
       server: Bit.DEFAULT_SERVER,

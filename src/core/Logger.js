@@ -39,7 +39,6 @@
   }
 
   function isShow() {
-    var reg = new RegExp();
     var debugKeys = [];
     var debugStr;
 

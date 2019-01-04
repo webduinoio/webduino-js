@@ -42,22 +42,22 @@
       var m = event.message;
       //send IR data to Board
       if (m[0] == 0x04 && m[1] == 0x09 && m[2] == 0x0B) {
-        log("send IR data to Board callback");
+        log('send IR data to Board callback');
         if (lastSendIR) {
           //store OK
           lastSendIR = false;
-          log("send pin:" + self.pinSendIR);
+          log('send pin:' + self.pinSendIR);
           self._board.send([0xf0, 0x04, 0x09, 0x0C, self.pinSendIR, 0xF7]);
         }
       }
       //trigger IR send
       else if (m[0] == 0x04 && m[1] == 0x09 && m[2] == 0x0C) {
-        log("trigger IR send callback...");
+        log('trigger IR send callback...');
         self.irSendCallback();
       }
       //record IR data
       else if (m[0] == 0x04 && m[1] == 0x09 && m[2] == 0x0D) {
-        log("record IR callback...");
+        log('record IR callback...');
         var strInfo = '';
         for (var i = 3; i < m.length; i++) {
           strInfo += String.fromCharCode(m[i]);
@@ -109,7 +109,7 @@
     self.irRecvCallback = callback;
     if (self.pinRecvIR > 0) {
       self._board.send([0xF0, 0x04, 0x09, 0x0D, self.pinRecvIR, 0xF7]);
-      log("wait recv...");
+      log('wait recv...');
     }
   };
 
@@ -118,20 +118,20 @@
       sendIRCmd(data, sendLen);
       self.irSendCallback = callback;
     }
-  }
+  };
 
   proto.debug = function (val) {
     if (typeof val == 'boolean') {
       self.isDebug = val;
     }
-  }
+  };
 
   proto.sendPin = function (pin) {
     this.pinSendIR = pin;
-  }
+  };
   proto.recvPin = function (pin) {
     this.pinRecvIR = pin;
-  }
+  };
 
   scope.module.IRRAW = IRRAW;
 }));

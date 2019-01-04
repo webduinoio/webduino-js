@@ -7,8 +7,7 @@
 }(this, function (scope) {
   'use strict';
 
-  var Pin = scope.Pin,
-    Module = scope.Module,
+  var Module = scope.Module,
     BoardEvent = scope.BoardEvent,
     proto;
 

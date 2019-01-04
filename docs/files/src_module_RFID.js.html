@@ -161,14 +161,14 @@
     }
 
     if (msg.length === 1) {
-      _this._leaveHandlers.forEach(function (fn, idx, ary) {
+      _this._leaveHandlers.forEach(function (fn) {
         fn.call(_this, val);
       });
       _this.emit(RFIDEvent.LEAVE, val);
       val = null;
     } else {
       val = String.fromCharCode.apply(null, msg);
-      _this._enterHandlers.forEach(function (fn, idx, ary) {
+      _this._enterHandlers.forEach(function (fn) {
         fn.call(_this, val);
       });
       _this.emit(RFIDEvent.ENTER, val);

@@ -46,8 +46,7 @@
   }
 
   function managePinListener(self) {
-    var type = self._type,
-      board = self._board;
+    var type = self._type;
 
     if (type === Pin.DOUT || type === Pin.AOUT || type === Pin.SERVO) {
       if (!EventEmitter.listenerCount(self, PinEvent.CHANGE)) {
@@ -59,7 +58,7 @@
           self.removeListener(PinEvent.CHANGE, self._sendOutHandler);
         } catch (e) {
           // Pin had reference to other handler, ignore
-          console.error("debug: caught self removeEventListener exception");
+          console.error('debug: caught self removeEventListener exception');
         }
       }
     }
@@ -333,29 +332,29 @@
       self = this;
 
     switch (type) {
-      case Pin.DOUT:
-      case Pin.AOUT:
-      case Pin.SERVO:
-        return board.queryPinState(self._number).then(function (pin) {
-          return pin.state;
-        });
+    case Pin.DOUT:
+    case Pin.AOUT:
+    case Pin.SERVO:
+      return board.queryPinState(self._number).then(function (pin) {
+        return pin.state;
+      });
 
-      case Pin.AIN:
-        if (!self._analogReporting) {
-          board.enableAnalogPin(self._analogNumber);
-        }
-        return new Promise(function (resolve) {
-          setImmediate(function () {
-            resolve(self.value);
-          });
+    case Pin.AIN:
+      if (!self._analogReporting) {
+        board.enableAnalogPin(self._analogNumber);
+      }
+      return new Promise(function (resolve) {
+        setImmediate(function () {
+          resolve(self.value);
         });
+      });
         
-      case Pin.DIN:
-        return new Promise(function (resolve) {
-          setImmediate(function () {
-            resolve(self.value);
-          });
+    case Pin.DIN:
+      return new Promise(function (resolve) {
+        setImmediate(function () {
+          resolve(self.value);
         });
+      });
     }
   };
 

@@ -103,23 +103,23 @@
     module.exports = factory;
   }
 }(this, function (scope) {
-    &#x27;use strict&#x27;;
+  &#x27;use strict&#x27;;
 
-    var Module = scope.Module,
-        BoardEvent = scope.BoardEvent,
-        proto;
+  var Module = scope.Module,
+    BoardEvent = scope.BoardEvent,
+    proto;
 
-    var HX711_MESSAGE = [0x04, 0x15];
+  var HX711_MESSAGE = [0x04, 0x15];
 
-    var HX711Event = {
+  var HX711Event = {
 
-        /**
-         * Fires when the value of weight has changed.
-         * 
-         * @event HX711.MESSAGE
-         */
-        MESSAGE: &#x27;message&#x27;
-    };
+    /**
+     * Fires when the value of weight has changed.
+     * 
+     * @event HX711.MESSAGE
+     */
+    MESSAGE: &#x27;message&#x27;
+  };
 
   /**
    * The HX711 Class.
@@ -134,50 +134,50 @@
    * @param {Integer} dtPin The pin that Data Output is attached to.
    * @extends webduino.Module
    */
-    function HX711(board, sckPin, dtPin) {
-        Module.call(this);
-        this._board = board;
-        this._dt = !isNaN(dtPin) ? board.getDigitalPin(dtPin) : dtPin;
-        this._sck = !isNaN(sckPin) ? board.getDigitalPin(sckPin) : sckPin;
+  function HX711(board, sckPin, dtPin) {
+    Module.call(this);
+    this._board = board;
+    this._dt = !isNaN(dtPin) ? board.getDigitalPin(dtPin) : dtPin;
+    this._sck = !isNaN(sckPin) ? board.getDigitalPin(sckPin) : sckPin;
 
-        this._init = false;
-        this._weight = 0;
-        this._callback = function() {};
-        this._messageHandler = onMessage.bind(this);
-        this._board.send([0xf0, 0x04, 0x15, 0x00,
-            this._sck._number, this._dt._number, 0xf7
-        ]);
+    this._init = false;
+    this._weight = 0;
+    this._callback = function() {};
+    this._messageHandler = onMessage.bind(this);
+    this._board.send([0xf0, 0x04, 0x15, 0x00,
+      this._sck._number, this._dt._number, 0xf7
+    ]);
+  }
+
+  function onMessage(event) {
+    var msg = event.message;
+    if (msg[0] == HX711_MESSAGE[0] &amp;&amp; msg[1] == HX711_MESSAGE[1]) {
+      this.emit(HX711Event.MESSAGE, msg.slice(2));
     }
+  }
 
-    function onMessage(event) {
-        var msg = event.message;
-        if (msg[0] == HX711_MESSAGE[0] &amp;&amp; msg[1] == HX711_MESSAGE[1]) {
-            this.emit(HX711Event.MESSAGE, msg.slice(2));
-        }
+  HX711.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: HX711
+    },
+
+    /**
+     * The state indicating whether the module is measuring.
+     * 
+     * @attribute state
+     * @type {String} &#x60;on&#x60; or &#x60;off&#x60;
+     */
+    state: {
+      get: function() {
+        return this._state;
+      },
+      set: function(val) {
+        this._state = val;
+      }
     }
+  });
 
-    HX711.prototype = proto = Object.create(Module.prototype, {
-        constructor: {
-            value: HX711
-        },
-
-        /**
-         * The state indicating whether the module is measuring.
-         * 
-         * @attribute state
-         * @type {String} &#x60;on&#x60; or &#x60;off&#x60;
-         */
-        state: {
-            get: function() {
-                return this._state;
-            },
-            set: function(val) {
-                this._state = val;
-            }
-        }
-    });
-
-   /**
+  /**
    * Start detection.
    *
    * @method measure
@@ -191,39 +191,39 @@
    * @param {Function} [callback] Callback after starting detection.
    * @deprecated &#x60;on()&#x60; is deprecated, use &#x60;measure()&#x60; instead.
    */
-    proto.measure = proto.on = function(callback) {
-        var _this = this;
-        this._board.send([0xf0, 0x04, 0x15, 0x01, 0xf7]);
-        if (typeof callback !== &#x27;function&#x27;) {
-            callback = function() {};
-        }
-        this._callback = function(rawData) {
-            var weight = &#x27;&#x27;;
-            for (var i = 0; i &lt; rawData.length; i++) {
-                weight += (rawData[i] - 0x30);
-            }
-            _this._weight = parseFloat(weight);
-            callback(_this._weight);
-        };
-        this._state = &#x27;on&#x27;;
-        this._board.on(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
-        this.addListener(HX711Event.MESSAGE, this._callback);
+  proto.measure = proto.on = function(callback) {
+    var _this = this;
+    this._board.send([0xf0, 0x04, 0x15, 0x01, 0xf7]);
+    if (typeof callback !== &#x27;function&#x27;) {
+      callback = function() {};
+    }
+    this._callback = function(rawData) {
+      var weight = &#x27;&#x27;;
+      for (var i = 0; i &lt; rawData.length; i++) {
+        weight += (rawData[i] - 0x30);
+      }
+      _this._weight = parseFloat(weight);
+      callback(_this._weight);
     };
+    this._state = &#x27;on&#x27;;
+    this._board.on(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
+    this.addListener(HX711Event.MESSAGE, this._callback);
+  };
 
-   /**
+  /**
    * Stop detection.
    *
    * @method off
    */
-    proto.off = function() {
-        this._state = &#x27;off&#x27;;
-        this._board.send([0xf0, 0x04, 0x15, 0x02, 0xf7]);
-        this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
-        this.removeListener(HX711Event.MESSAGE, this._callback);
-        this._callback = null;
-    };
+  proto.off = function() {
+    this._state = &#x27;off&#x27;;
+    this._board.send([0xf0, 0x04, 0x15, 0x02, 0xf7]);
+    this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
+    this.removeListener(HX711Event.MESSAGE, this._callback);
+    this._callback = null;
+  };
 
-    scope.module.HX711 = HX711;
+  scope.module.HX711 = HX711;
 }));
     </pre>
 </div>

@@ -153,7 +153,7 @@
     this.removeListener(IRRecvEvent.MESSAGE, this._recvCallback);
     this.removeListener(IRRecvEvent.MESSAGE_ERROR, this._recvErrorCallback);
     this._recvCallback = null;
-    this._recvErrorCallback = null
+    this._recvErrorCallback = null;
   };
 
   scope.module.IRRecv = IRRecv;

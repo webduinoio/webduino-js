@@ -250,7 +250,7 @@
             "extension_for": [],
             "namespace": "webduino",
             "file": "src/core/Board.js",
-            "line": 67,
+            "line": 66,
             "description": "An abstract development board.",
             "is_constructor": 1,
             "params": [
@@ -301,7 +301,7 @@
             "extension_for": [],
             "namespace": "webduino",
             "file": "src/core/Transport.js",
-            "line": 44,
+            "line": 46,
             "description": "A messaging mechanism to carry underlying firmata messages. This is an abstract class meant to be extended.",
             "is_constructor": 1,
             "params": [
@@ -589,7 +589,7 @@
             "extension_for": [],
             "namespace": "webduino.module",
             "file": "src/module/Max7219.js",
-            "line": 15,
+            "line": 14,
             "description": "The Max7219 Class.\n\nMAX7219 is compact, serial input/output\ncommon-cathode display drivers that interface\nmicroprocessors (µPs) to 7-segment numeric LED displays\nof up to 8 digits, bar-graph displays, or 64 individual LEDs.",
             "is_constructor": 1,
             "params": [
@@ -816,7 +816,7 @@
     "classitems": [
         {
             "file": "src/core/Board.js",
-            "line": 34,
+            "line": 33,
             "description": "Message command bytes (128-255/0x80-0xFF)\nhttps://github.com/firmata/protocol/blob/master/protocol.md",
             "class": "webduino.Board"
         },
@@ -1020,7 +1020,7 @@
         },
         {
             "file": "src/core/Transport.js",
-            "line": 15,
+            "line": 17,
             "description": "Fires when a transport is opened.",
             "itemtype": "event",
             "name": "TransportEvent.OPEN",
@@ -1029,7 +1029,7 @@
         },
         {
             "file": "src/core/Transport.js",
-            "line": 22,
+            "line": 24,
             "description": "Fires when a transport receives a message.",
             "itemtype": "event",
             "name": "TransportEvent.MESSAGE",
@@ -1038,7 +1038,7 @@
         },
         {
             "file": "src/core/Transport.js",
-            "line": 29,
+            "line": 31,
             "description": "Fires when a transport get an error.",
             "itemtype": "event",
             "name": "TransportEvent.ERROR",
@@ -1047,7 +1047,7 @@
         },
         {
             "file": "src/core/Transport.js",
-            "line": 36,
+            "line": 38,
             "description": "Fires when a transport is closed.",
             "itemtype": "event",
             "name": "TransportEvent.CLOSE",
@@ -1056,7 +1056,7 @@
         },
         {
             "file": "src/core/Transport.js",
-            "line": 63,
+            "line": 65,
             "description": "Indicates if the state of the transport is open.",
             "itemtype": "attribute",
             "name": "isOpen",
@@ -1067,7 +1067,7 @@
         },
         {
             "file": "src/core/Transport.js",
-            "line": 76,
+            "line": 78,
             "description": "Send payload through the transport.",
             "itemtype": "method",
             "name": "send",
@@ -1083,7 +1083,7 @@
         },
         {
             "file": "src/core/Transport.js",
-            "line": 86,
+            "line": 88,
             "description": "Close and terminate the transport.",
             "itemtype": "method",
             "name": "close",
@@ -1092,7 +1092,7 @@
         },
         {
             "file": "src/core/Transport.js",
-            "line": 95,
+            "line": 97,
             "description": "Flush any buffered data of the transport.",
             "itemtype": "method",
             "name": "flush",
@@ -1110,7 +1110,7 @@
         },
         {
             "file": "src/module/ADXL345.js",
-            "line": 126,
+            "line": 125,
             "description": "The state indicating whether the accelerometer is detecting.",
             "itemtype": "attribute",
             "name": "state",
@@ -1120,7 +1120,7 @@
         },
         {
             "file": "src/module/ADXL345.js",
-            "line": 142,
+            "line": 141,
             "description": "Start detection.",
             "itemtype": "method",
             "name": "detect",
@@ -1137,7 +1137,7 @@
         },
         {
             "file": "src/module/ADXL345.js",
-            "line": 149,
+            "line": 148,
             "description": "Start detection.",
             "itemtype": "method",
             "name": "on",
@@ -1156,7 +1156,7 @@
         },
         {
             "file": "src/module/ADXL345.js",
-            "line": 196,
+            "line": 195,
             "description": "Stop detection.",
             "itemtype": "method",
             "name": "off",
@@ -1165,7 +1165,7 @@
         },
         {
             "file": "src/module/ADXL345.js",
-            "line": 209,
+            "line": 208,
             "description": "Reset detection value.",
             "itemtype": "method",
             "name": "refresh",
@@ -1174,7 +1174,7 @@
         },
         {
             "file": "src/module/ADXL345.js",
-            "line": 228,
+            "line": 227,
             "description": "Set the base axis for calculation.",
             "itemtype": "method",
             "name": "setBaseAxis",
@@ -1190,7 +1190,7 @@
         },
         {
             "file": "src/module/ADXL345.js",
-            "line": 238,
+            "line": 237,
             "description": "Set detection sensitivity.",
             "itemtype": "method",
             "name": "setSensitivity",
@@ -1206,7 +1206,7 @@
         },
         {
             "file": "src/module/ADXL345.js",
-            "line": 251,
+            "line": 250,
             "description": "Set detecting time period.",
             "itemtype": "method",
             "name": "setDetectTime",
@@ -1834,7 +1834,7 @@
         },
         {
             "file": "src/module/Max7219.js",
-            "line": 51,
+            "line": 50,
             "description": "The intensity indicating brightness of Max7219.",
             "itemtype": "attribute",
             "name": "intensity",
@@ -1844,7 +1844,7 @@
         },
         {
             "file": "src/module/Max7219.js",
-            "line": 70,
+            "line": 69,
             "description": "Show pattern LED matrix.",
             "itemtype": "method",
             "name": "on",
@@ -1863,7 +1863,7 @@
         },
         {
             "file": "src/module/Max7219.js",
-            "line": 101,
+            "line": 100,
             "description": "Clear pattern on LED matrix.",
             "itemtype": "method",
             "name": "off",
@@ -1872,7 +1872,7 @@
         },
         {
             "file": "src/module/Max7219.js",
-            "line": 110,
+            "line": 109,
             "description": "Display animated pattern.",
             "itemtype": "method",
             "name": "animate",
@@ -1906,7 +1906,7 @@
         },
         {
             "file": "src/module/Max7219.js",
-            "line": 151,
+            "line": 150,
             "description": "Stop displaying animated pattern.",
             "itemtype": "method",
             "name": "animateStop",
@@ -1970,7 +1970,7 @@
         },
         {
             "file": "src/module/Photocell.js",
-            "line": 105,
+            "line": 103,
             "description": "Stop detection.",
             "itemtype": "method",
             "name": "off",
@@ -2181,7 +2181,7 @@
         },
         {
             "file": "src/module/Soil.js",
-            "line": 108,
+            "line": 106,
             "description": "Stop detection.",
             "itemtype": "method",
             "name": "off",
@@ -2345,7 +2345,7 @@
     "warnings": [
         {
             "message": "Missing item type\nMessage command bytes (128-255/0x80-0xFF)\nhttps://github.com/firmata/protocol/blob/master/protocol.md",
-            "line": " src/core/Board.js:34"
+            "line": " src/core/Board.js:33"
         }
     ]
 }

@@ -10,7 +10,6 @@
   var isBrowser = typeof exports === 'undefined';
 
   var objProto = Object.prototype,
-    owns = objProto.hasOwnProperty,
     toStr = objProto.toString;
 
   function isFn(value) {
@@ -53,7 +52,7 @@
 
     for (; i < length; i++) {
       // Only deal with non-null/undefined values
-      options = arguments[i]
+      options = arguments[i];
       if (options !== null) {
         if (typeof options === 'string') {
           options = options.split('');

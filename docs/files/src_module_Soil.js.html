@@ -186,8 +186,6 @@
    * @deprecated &#x60;on()&#x60; is deprecated, use &#x60;measure()&#x60; instead.
    */
   proto.measure = proto.on = function(callback) {
-    var _this = this;
-
     this._board.enableAnalogPin(this._pinNumber);
 
     if (typeof callback !== &#x27;function&#x27;) {

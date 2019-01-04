@@ -1,3 +1,5 @@
+/*eslint no-unused-vars: ["error", { "args": "none" }]*/
+
 +(function (global, factory) {
   if (typeof exports === 'undefined') {
     factory(global.webduino || {});

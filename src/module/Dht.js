@@ -183,7 +183,7 @@
 
       timer();
     } else {
-      return new Promise(function (resolve, reject) {
+      return new Promise(function (resolve) {
         self.read(function (data) {
           self._humidity = data.humidity;
           self._temperature = data.temperature;

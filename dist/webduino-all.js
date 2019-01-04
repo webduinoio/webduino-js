@@ -2544,7 +2544,6 @@ if (typeof exports !== 'undefined') {
   }
 
   function isShow() {
-    var reg = new RegExp();
     var debugKeys = [];
     var debugStr;
 
@@ -2652,7 +2651,7 @@ if (typeof exports !== 'undefined') {
    * @param {Object} [object,...] Event object(s).
    */
   proto.emit = function (type) {
-    var er, handler, len, args, i, listeners;
+    var handler, len, args, i, listeners;
 
     if (!this._events)
       this._events = {};
@@ -2677,7 +2676,7 @@ if (typeof exports !== 'undefined') {
 
     if (isFunction(handler)) {
       switch (arguments.length) {
-        // fast cases
+      // fast cases
       case 1:
         handler.call(this);
         break;
@@ -2724,7 +2723,7 @@ if (typeof exports !== 'undefined') {
     if (this._events.newListener)
       this.emit('newListener', type,
         isFunction(listener.listener) ?
-        listener.listener : listener);
+          listener.listener : listener);
 
     if (!this._events[type])
     // Optimize the case of one listener. Don't need the extra array object.
@@ -2749,7 +2748,7 @@ if (typeof exports !== 'undefined') {
         console.error('(node) warning: possible EventEmitter memory ' +
           'leak detected. %d listeners added. ' +
           'Use emitter.setMaxListeners() to increase limit.',
-          this._events[type].length);
+        this._events[type].length);
         if (typeof console.trace === 'function') {
           // not supported in IE 10
           console.trace();
@@ -2963,7 +2962,6 @@ if (typeof exports !== 'undefined') {
   var isBrowser = typeof exports === 'undefined';
 
   var objProto = Object.prototype,
-    owns = objProto.hasOwnProperty,
     toStr = objProto.toString;
 
   function isFn(value) {
@@ -3006,7 +3004,7 @@ if (typeof exports !== 'undefined') {
 
     for (; i < length; i++) {
       // Only deal with non-null/undefined values
-      options = arguments[i]
+      options = arguments[i];
       if (options !== null) {
         if (typeof options === 'string') {
           options = options.split('');
@@ -3140,6 +3138,8 @@ if (typeof exports !== 'undefined') {
 
   scope.util.promisify = promisify;
 }));
+
+/*eslint no-unused-vars: ["error", { "args": "none" }]*/
 
 +(function (global, factory) {
   if (typeof exports === 'undefined') {
@@ -3622,8 +3622,7 @@ if (typeof exports !== 'undefined') {
   }
 
   function managePinListener(self) {
-    var type = self._type,
-      board = self._board;
+    var type = self._type;
 
     if (type === Pin.DOUT || type === Pin.AOUT || type === Pin.SERVO) {
       if (!EventEmitter.listenerCount(self, PinEvent.CHANGE)) {
@@ -3635,7 +3634,7 @@ if (typeof exports !== 'undefined') {
           self.removeListener(PinEvent.CHANGE, self._sendOutHandler);
         } catch (e) {
           // Pin had reference to other handler, ignore
-          console.error("debug: caught self removeEventListener exception");
+          console.error('debug: caught self removeEventListener exception');
         }
       }
     }
@@ -3909,29 +3908,29 @@ if (typeof exports !== 'undefined') {
       self = this;
 
     switch (type) {
-      case Pin.DOUT:
-      case Pin.AOUT:
-      case Pin.SERVO:
-        return board.queryPinState(self._number).then(function (pin) {
-          return pin.state;
-        });
+    case Pin.DOUT:
+    case Pin.AOUT:
+    case Pin.SERVO:
+      return board.queryPinState(self._number).then(function (pin) {
+        return pin.state;
+      });
 
-      case Pin.AIN:
-        if (!self._analogReporting) {
-          board.enableAnalogPin(self._analogNumber);
-        }
-        return new Promise(function (resolve) {
-          setImmediate(function () {
-            resolve(self.value);
-          });
+    case Pin.AIN:
+      if (!self._analogReporting) {
+        board.enableAnalogPin(self._analogNumber);
+      }
+      return new Promise(function (resolve) {
+        setImmediate(function () {
+          resolve(self.value);
         });
+      });
         
-      case Pin.DIN:
-        return new Promise(function (resolve) {
-          setImmediate(function () {
-            resolve(self.value);
-          });
+    case Pin.DIN:
+      return new Promise(function (resolve) {
+        setImmediate(function () {
+          resolve(self.value);
         });
+      });
     }
   };
 
@@ -4024,7 +4023,6 @@ if (typeof exports !== 'undefined') {
 
   var EventEmitter = scope.EventEmitter,
     TransportEvent = scope.TransportEvent,
-    Transport = scope.Transport,
     Logger = scope.Logger,
     Pin = scope.Pin,
     util = scope.util,
@@ -4061,10 +4059,10 @@ if (typeof exports !== 'undefined') {
   // Extended command set using sysex (0-127/0x00-0x7F)
   var SERVO_CONFIG = 0x70,
     STRING_DATA = 0x71,
-    SHIFT_DATA = 0x75,
-    I2C_REQUEST = 0x76,
-    I2C_REPLY = 0x77,
-    I2C_CONFIG = 0x78,
+    // SHIFT_DATA = 0x75,
+    // I2C_REQUEST = 0x76,
+    // I2C_REPLY = 0x77,
+    // I2C_CONFIG = 0x78,
     EXTENDED_ANALOG = 0x6F,
     PIN_STATE_QUERY = 0x6D,
     PIN_STATE_RESPONSE = 0x6E,
@@ -4073,9 +4071,9 @@ if (typeof exports !== 'undefined') {
     ANALOG_MAPPING_QUERY = 0x69,
     ANALOG_MAPPING_RESPONSE = 0x6A,
     REPORT_FIRMWARE = 0x79,
-    SAMPLING_INTERVAL = 0x7A,
-    SYSEX_NON_REALTIME = 0x7E,
-    SYSEX_REALTIME = 0x7F;
+    SAMPLING_INTERVAL = 0x7A;
+    // SYSEX_NON_REALTIME = 0x7E,
+    // SYSEX_REALTIME = 0x7F;
 
   /**
    * An abstract development board.
@@ -4122,8 +4120,7 @@ if (typeof exports !== 'undefined') {
   }
 
   function onInitialVersionResult(event) {
-    var version = event.version * 10,
-      name = event.name;
+    var version = event.version * 10;
 
     if (version >= 23) {
       // TODO: do reset and handle response
@@ -4743,7 +4740,7 @@ if (typeof exports !== 'undefined') {
     done = self._pinStateEventCenter.once.bind(self._pinStateEventCenter);
     pins = util.isArray(pins) ? pins : [pins];
     pins = pins.map(function (pin) {
-      return pin instanceof Pin ? pin : self.getPin(pin)
+      return pin instanceof Pin ? pin : self.getPin(pin);
     });
 
     pins.forEach(function (pin) {
@@ -4849,11 +4846,11 @@ if (typeof exports !== 'undefined') {
       resolution;
 
     for (var i = 0; i < len; i++) {
-      this._logger.info("reportCapabilities, Pin " + i);
+      this._logger.info('reportCapabilities, Pin ' + i);
       for (var mode in capabilities[i]) {
         if (capabilities[i].hasOwnProperty(mode)) {
           resolution = capabilities[i][mode];
-          this._logger.info("reportCapabilities", '\t' + mode + ' (' + resolution + (resolution > 1 ? ' bits)' : ' bit)'));
+          this._logger.info('reportCapabilities', '\t' + mode + ' (' + resolution + (resolution > 1 ? ' bits)' : ' bit)'));
         }
       }
     }
@@ -4925,13 +4922,13 @@ if (typeof exports !== 'undefined') {
     if (options.area === 'china') {
       options.server = WebArduino.SERVER_CHINA;      
     }
-    options = util.extend(getDefaultOptions(options), options);
+    options = util.extend(getDefaultOptions(), options);
     options.server = parseServer(options.server);
 
     Board.call(this, options);
   }
 
-  function getDefaultOptions(opts) {
+  function getDefaultOptions() {
     return {
       transport: 'mqtt',
       server: WebArduino.DEFAULT_SERVER,
@@ -5554,9 +5551,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   'use strict';
 
   var util = scope.util,
-    TransportEvent = scope.TransportEvent,
-    Board = scope.Board,
-    proto;
+    Board = scope.Board;
 
   function Smart(options) {
     if (typeof options === 'string') {
@@ -5564,13 +5559,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
         url: options
       };
     }
-    options = util.extend(getDefaultOptions(options), options);
+    options = util.extend(getDefaultOptions(), options);
     options.server = parseServer(options.server);
 
     Board.call(this, options);
   }
 
-  function getDefaultOptions(opts) {
+  function getDefaultOptions() {
     return {
       transport: 'websocket',
       server: Smart.DEFAULT_SERVER,
@@ -5591,7 +5586,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     return url.protocol + '//' + url.host + '/';
   }
 
-  Smart.prototype = proto = Object.create(Board.prototype, {
+  Smart.prototype = Object.create(Board.prototype, {
     constructor: {
       value: Smart
     }
@@ -5612,7 +5607,6 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   'use strict';
 
   var util = scope.util,
-    TransportEvent = scope.TransportEvent,
     Board = scope.Board,
     BoardEvent = scope.BoardEvent,
     proto;
@@ -5623,13 +5617,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
         url: options
       };
     }
-    options = util.extend(getDefaultOptions(options), options);
+    options = util.extend(getDefaultOptions(), options);
     options.server = parseServer(options.server);
 
     Board.call(this, options);
   }
 
-  function getDefaultOptions(opts) {
+  function getDefaultOptions() {
     return {
       transport: 'websocket',
       server: Bit.DEFAULT_SERVER,
@@ -5682,9 +5676,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 }(this, function (scope) {
   'use strict';
 
-  var self;
   var proto;
-  var sendLength = 50;
   var sendArray = [];
   var sending = false;
   var sendAck = '';
@@ -5706,7 +5698,6 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   function DataTransfer(board) {
     Module.call(this);
     this._board = board;
-    self = this;
     //board.send([0xF0, 0x04, 0x20, dataType /*init*/ , 0xF7]);
     board.on(BoardEvent.SYSEX_MESSAGE,
       function (event) {
@@ -5714,14 +5705,14 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
         sending = false;
         if (data[0] == 0x20) {
           switch (data[1] /*dataType*/ ) {
-            case 0: //String
-              var str = "";
-              for (var i = 2; i < data.length; i++) {
-                str += String.fromCharCode(data[i]);
-              }
-              _dataString = str;
-              _callback(0, str);
-              break;
+          case 0: //String
+            var str = '';
+            for (var i = 2; i < data.length; i++) {
+              str += String.fromCharCode(data[i]);
+            }
+            _dataString = str;
+            _callback(0, str);
+            break;
           }
         }
       });
@@ -5742,17 +5733,17 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     if (callback !== undefined) {
       _callback = callback;
     }
-  }
+  };
 
   proto.onMessage = function (callback) {
     if (callback !== undefined) {
       _callback = callback;
     }
-  }
+  };
 
   proto.getDataString = function () {
     return _dataString;
-  }
+  };
 
   function startQueue(board) {
     setInterval(function () {
@@ -5817,22 +5808,22 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       var m = event.message;
       //send IR data to Board
       if (m[0] == 0x04 && m[1] == 0x09 && m[2] == 0x0B) {
-        log("send IR data to Board callback");
+        log('send IR data to Board callback');
         if (lastSendIR) {
           //store OK
           lastSendIR = false;
-          log("send pin:" + self.pinSendIR);
+          log('send pin:' + self.pinSendIR);
           self._board.send([0xf0, 0x04, 0x09, 0x0C, self.pinSendIR, 0xF7]);
         }
       }
       //trigger IR send
       else if (m[0] == 0x04 && m[1] == 0x09 && m[2] == 0x0C) {
-        log("trigger IR send callback...");
+        log('trigger IR send callback...');
         self.irSendCallback();
       }
       //record IR data
       else if (m[0] == 0x04 && m[1] == 0x09 && m[2] == 0x0D) {
-        log("record IR callback...");
+        log('record IR callback...');
         var strInfo = '';
         for (var i = 3; i < m.length; i++) {
           strInfo += String.fromCharCode(m[i]);
@@ -5884,7 +5875,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     self.irRecvCallback = callback;
     if (self.pinRecvIR > 0) {
       self._board.send([0xF0, 0x04, 0x09, 0x0D, self.pinRecvIR, 0xF7]);
-      log("wait recv...");
+      log('wait recv...');
     }
   };
 
@@ -5893,20 +5884,20 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       sendIRCmd(data, sendLen);
       self.irSendCallback = callback;
     }
-  }
+  };
 
   proto.debug = function (val) {
     if (typeof val == 'boolean') {
       self.isDebug = val;
     }
-  }
+  };
 
   proto.sendPin = function (pin) {
     this.pinSendIR = pin;
-  }
+  };
   proto.recvPin = function (pin) {
     this.pinRecvIR = pin;
-  }
+  };
 
   scope.module.IRRAW = IRRAW;
 }));
@@ -5921,7 +5912,6 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
   var self;
   var proto;
-  var sendLength = 50;
   var sendArray = [];
   var sending = false;
   var sendAck = '';
@@ -5938,17 +5928,14 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     this._rx = RX;
     this._tx = TX;
     self = this;
-    board.on(BoardEvent.SYSEX_MESSAGE,
-      function (event) {
-        sendAndAckCount--;
-        var m = event.message;
-        var resp = m[2];
-        sending = false;
-        if (waitAckAndSend.length > 0) {
-          var cmd = waitAckAndSend.shift();
-          self._board.send(cmd);
-        }
-      });
+    board.on(BoardEvent.SYSEX_MESSAGE, function () {
+      sendAndAckCount--;
+      sending = false;
+      if (waitAckAndSend.length > 0) {
+        var cmd = waitAckAndSend.shift();
+        self._board.send(cmd);
+      }
+    });
     startQueue(board);
   }
 
@@ -5970,48 +5957,48 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     var cmd = [0xF0, 0x04, 0x19, 0x0 /*init*/ , this._rx, this._tx, 0xF7];
     sendAndAckCount++;
     this._board.send(cmd);
-  }
+  };
 
   proto.play = function (num) {
     var cmd = [0xF0, 0x04, 0x19, 0x01, num, 0xF7];
     sendAndAckCount++;
     waitAckAndSend.push(cmd);
-  }
+  };
 
   proto.start = function () {
     sendAndAckCount++;
     waitAckAndSend.push([0xF0, 0x04, 0x19, 0x02 /*Start*/ , 0xF7]);
-  }
+  };
 
   proto.stop = function () {
     sendAndAckCount++;
     waitAckAndSend.push([0xF0, 0x04, 0x19, 0x03 /*Stop*/ , 0xF7]);
-  }
+  };
 
   proto.pause = function () {
     sendAndAckCount++;
     waitAckAndSend.push([0xF0, 0x04, 0x19, 0x04 /*Pause*/ , 0xF7]);
-  }
+  };
 
   proto.volume = function (volume) {
     sendAndAckCount++;
     waitAckAndSend.push([0xF0, 0x04, 0x19, 0x05, volume, 0xF7]);
-  }
+  };
 
   proto.previous = function () {
     sendAndAckCount++;
     waitAckAndSend.push([0xF0, 0x04, 0x19, 0x06 /*Previous*/ , 0xF7]);
-  }
+  };
 
   proto.next = function () {
     sendAndAckCount++;
     waitAckAndSend.push([0xF0, 0x04, 0x19, 0x07 /*Next*/ , 0xF7]);
-  }
+  };
 
   proto.loop = function (num) {
     sendAndAckCount++;
     waitAckAndSend.push([0xF0, 0x04, 0x19, 0x08, num, 0xF7]);
-  }
+  };
 
   function startQueue(board) {
     setInterval(function () {
@@ -6045,9 +6032,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 }(this, function (scope) {
   'use strict';
 
-  var self;
   var proto;
-  var sendLength = 50;
   var sendArray = [];
   var sending = false;
   var sendAck = '';
@@ -6059,13 +6044,10 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   function LCD1602(board) {
     Module.call(this);
     this._board = board;
-    self = this;
     board.send([0xF0, 0x04, 0x18, 0x0 /*init*/ , 0xF7]);
-    board.on(BoardEvent.SYSEX_MESSAGE,
-      function (event) {
-        var m = event.message;
-        sending = false;
-      });
+    board.on(BoardEvent.SYSEX_MESSAGE, function () {
+      sending = false;
+    });
     startQueue(board);
   }
 
@@ -6088,15 +6070,15 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     cmd = cmd.concat(toASCII(txt));
     cmd.push(0xF7);
     this._board.send(cmd);
-  }
+  };
 
   proto.cursor = function (col, row) {
     this._board.send([0xF0, 0x04, 0x18, 0x01, col, row, 0xF7]);
-  }
+  };
 
   proto.clear = function () {
     this._board.send([0xF0, 0x04, 0x18, 0x03, 0xF7]);
-  }
+  };
 
   function toASCII(str) {
     var data = [];
@@ -6377,19 +6359,19 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   }
 
   function hexToR(h) {
-    return parseInt(h.substring(0, 2), 16)
+    return parseInt(h.substring(0, 2), 16);
   }
 
   function hexToG(h) {
-    return parseInt(h.substring(2, 4), 16)
+    return parseInt(h.substring(2, 4), 16);
   }
 
   function hexToB(h) {
-    return parseInt(h.substring(4, 6), 16)
+    return parseInt(h.substring(4, 6), 16);
   }
 
   function cutHex(h) {
-    return (h.charAt(0) == "#") ? h.substring(1, 7) : h
+    return (h.charAt(0) == '#') ? h.substring(1, 7) : h;
   }
 
   RGBLed.prototype = proto = Object.create(Module.prototype, {
@@ -6483,28 +6465,28 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
      *
      * @event ButtonEvent.PRESS
      */
-    PRESS: "pressed",
+    PRESS: 'pressed',
 
     /**
      * Fires when a button is released.
      *
      * @event ButtonEvent.RELEASE
      */
-    RELEASE: "released",
+    RELEASE: 'released',
 
     /**
      * Fires when a button is long-pressed.
      *
      * @event ButtonEvent.LONG_PRESS
      */
-    LONG_PRESS: "longPress",
+    LONG_PRESS: 'longPress',
 
     /**
      * Fires when a button is sustained-pressed.
      *
      * @event ButtonEvent.SUSTAINED_PRESS
      */
-    SUSTAINED_PRESS: "sustainedPress"
+    SUSTAINED_PRESS: 'sustainedPress'
   };
 
   /**
@@ -6819,7 +6801,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
       timer();
     } else {
-      return new Promise(function (resolve, reject) {
+      return new Promise(function (resolve) {
         self.ping(function (cm) {
           setTimeout(function () {
             resolve(cm);
@@ -7348,7 +7330,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
       timer();
     } else {
-      return new Promise(function (resolve, reject) {
+      return new Promise(function (resolve) {
         self.read(function (data) {
           self._humidity = data.humidity;
           self._temperature = data.temperature;
@@ -7684,8 +7666,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 }(this, function (scope) {
   'use strict';
 
-  var Pin = scope.Pin,
-    Module = scope.Module,
+  var Module = scope.Module,
     BoardEvent = scope.BoardEvent,
     proto;
 
@@ -7896,14 +7877,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     var msg = event.message;
     var msgPort = [0x04, 0x0b, 0x04];
     var stus = true;
-    var alpha = 0.5;
     var x, y, z;
 
     if (msg.length !== 9) {
       return false;
     }
 
-    msgPort.forEach(function (val, idx, ary) {
+    msgPort.forEach(function (val, idx) {
       if (val !== msg[idx]) {
         stus = false;
       }
@@ -7921,7 +7901,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   }
 
   function calcFixed(base, data, fixedInfo) {
-    Object.getOwnPropertyNames(data).forEach(function (key, idx, ary) {
+    Object.getOwnPropertyNames(data).forEach(function (key) {
       fixedInfo[key] = data[key];
 
       if (key === base) {
@@ -8016,7 +7996,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       z -= info.z;
 
       rt = estimateRollandPitch(x, y, z, info.fXg, info.fYg, info.fZg);
-      ['fXg', 'fYg', 'fZg'].forEach(function (val, idx, ary) {
+      ['fXg', 'fYg', 'fZg'].forEach(function (val) {
         info[val] = rt[val];
       });
 
@@ -8111,23 +8091,23 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     module.exports = factory;
   }
 }(this, function (scope) {
-    'use strict';
+  'use strict';
 
-    var Module = scope.Module,
-        BoardEvent = scope.BoardEvent,
-        proto;
+  var Module = scope.Module,
+    BoardEvent = scope.BoardEvent,
+    proto;
 
-    var HX711_MESSAGE = [0x04, 0x15];
+  var HX711_MESSAGE = [0x04, 0x15];
 
-    var HX711Event = {
+  var HX711Event = {
 
-        /**
-         * Fires when the value of weight has changed.
-         * 
-         * @event HX711.MESSAGE
-         */
-        MESSAGE: 'message'
-    };
+    /**
+     * Fires when the value of weight has changed.
+     * 
+     * @event HX711.MESSAGE
+     */
+    MESSAGE: 'message'
+  };
 
   /**
    * The HX711 Class.
@@ -8142,50 +8122,50 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
    * @param {Integer} dtPin The pin that Data Output is attached to.
    * @extends webduino.Module
    */
-    function HX711(board, sckPin, dtPin) {
-        Module.call(this);
-        this._board = board;
-        this._dt = !isNaN(dtPin) ? board.getDigitalPin(dtPin) : dtPin;
-        this._sck = !isNaN(sckPin) ? board.getDigitalPin(sckPin) : sckPin;
+  function HX711(board, sckPin, dtPin) {
+    Module.call(this);
+    this._board = board;
+    this._dt = !isNaN(dtPin) ? board.getDigitalPin(dtPin) : dtPin;
+    this._sck = !isNaN(sckPin) ? board.getDigitalPin(sckPin) : sckPin;
 
-        this._init = false;
-        this._weight = 0;
-        this._callback = function() {};
-        this._messageHandler = onMessage.bind(this);
-        this._board.send([0xf0, 0x04, 0x15, 0x00,
-            this._sck._number, this._dt._number, 0xf7
-        ]);
+    this._init = false;
+    this._weight = 0;
+    this._callback = function() {};
+    this._messageHandler = onMessage.bind(this);
+    this._board.send([0xf0, 0x04, 0x15, 0x00,
+      this._sck._number, this._dt._number, 0xf7
+    ]);
+  }
+
+  function onMessage(event) {
+    var msg = event.message;
+    if (msg[0] == HX711_MESSAGE[0] && msg[1] == HX711_MESSAGE[1]) {
+      this.emit(HX711Event.MESSAGE, msg.slice(2));
     }
+  }
 
-    function onMessage(event) {
-        var msg = event.message;
-        if (msg[0] == HX711_MESSAGE[0] && msg[1] == HX711_MESSAGE[1]) {
-            this.emit(HX711Event.MESSAGE, msg.slice(2));
-        }
+  HX711.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: HX711
+    },
+
+    /**
+     * The state indicating whether the module is measuring.
+     * 
+     * @attribute state
+     * @type {String} `on` or `off`
+     */
+    state: {
+      get: function() {
+        return this._state;
+      },
+      set: function(val) {
+        this._state = val;
+      }
     }
+  });
 
-    HX711.prototype = proto = Object.create(Module.prototype, {
-        constructor: {
-            value: HX711
-        },
-
-        /**
-         * The state indicating whether the module is measuring.
-         * 
-         * @attribute state
-         * @type {String} `on` or `off`
-         */
-        state: {
-            get: function() {
-                return this._state;
-            },
-            set: function(val) {
-                this._state = val;
-            }
-        }
-    });
-
-   /**
+  /**
    * Start detection.
    *
    * @method measure
@@ -8199,39 +8179,39 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
    * @param {Function} [callback] Callback after starting detection.
    * @deprecated `on()` is deprecated, use `measure()` instead.
    */
-    proto.measure = proto.on = function(callback) {
-        var _this = this;
-        this._board.send([0xf0, 0x04, 0x15, 0x01, 0xf7]);
-        if (typeof callback !== 'function') {
-            callback = function() {};
-        }
-        this._callback = function(rawData) {
-            var weight = '';
-            for (var i = 0; i < rawData.length; i++) {
-                weight += (rawData[i] - 0x30);
-            }
-            _this._weight = parseFloat(weight);
-            callback(_this._weight);
-        };
-        this._state = 'on';
-        this._board.on(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
-        this.addListener(HX711Event.MESSAGE, this._callback);
+  proto.measure = proto.on = function(callback) {
+    var _this = this;
+    this._board.send([0xf0, 0x04, 0x15, 0x01, 0xf7]);
+    if (typeof callback !== 'function') {
+      callback = function() {};
+    }
+    this._callback = function(rawData) {
+      var weight = '';
+      for (var i = 0; i < rawData.length; i++) {
+        weight += (rawData[i] - 0x30);
+      }
+      _this._weight = parseFloat(weight);
+      callback(_this._weight);
     };
+    this._state = 'on';
+    this._board.on(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
+    this.addListener(HX711Event.MESSAGE, this._callback);
+  };
 
-   /**
+  /**
    * Stop detection.
    *
    * @method off
    */
-    proto.off = function() {
-        this._state = 'off';
-        this._board.send([0xf0, 0x04, 0x15, 0x02, 0xf7]);
-        this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
-        this.removeListener(HX711Event.MESSAGE, this._callback);
-        this._callback = null;
-    };
+  proto.off = function() {
+    this._state = 'off';
+    this._board.send([0xf0, 0x04, 0x15, 0x02, 0xf7]);
+    this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
+    this.removeListener(HX711Event.MESSAGE, this._callback);
+    this._callback = null;
+  };
 
-    scope.module.HX711 = HX711;
+  scope.module.HX711 = HX711;
 }));
 +(function (global, factory) {
   if (typeof exports === 'undefined') {
@@ -8242,7 +8222,6 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 }(this, function (scope) {
   'use strict';
 
-  var self;
   var proto;
   var _textSize = 2;
   var _cursorX = 0;
@@ -8258,16 +8237,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   function SSD1306(board) {
     Module.call(this);
     this._board = board;
-    self = this;
     board.send([0xF0, 0x04, 0x01, 0x0, 0xF7]);
     board.send([0xF0, 0x04, 0x01, 0x02, _cursorX, _cursorY, 0xF7]);
     board.send([0xF0, 0x04, 0x01, 0x03, _textSize, 0xF7]);
     board.send([0xF0, 0x04, 0x01, 0x01, 0xF7]);
-    board.on(BoardEvent.SYSEX_MESSAGE,
-      function (event) {
-        var m = event.message;
-        sending = false;
-      });
+    board.on(BoardEvent.SYSEX_MESSAGE, function () {
+      sending = false;
+    });
     startQueue(board);
   }
 
@@ -8304,15 +8280,15 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
   proto.clear = function () {
     this._board.send([0xF0, 0x04, 0x01, 0x01, 0xF7]);
-  }
+  };
 
   proto.drawImage = function (num) {
     this._board.send([0xF0, 0x04, 0x01, 0x05, num, 0xF7]);
-  }
+  };
 
   proto.render = function () {
     this._board.send([0xF0, 0x04, 0x01, 0x06, 0xF7]);
-  }
+  };
 
   proto.save = function (data, callback) {
     sendCallback = callback;
@@ -8321,7 +8297,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       saveChunk(i / 2, chunk);
     }
     sendArray.push({ 'obj': {}, 'ack': 0 });
-  }
+  };
 
   function saveChunk(startPos, data) {
     var CMD = [0xf0, 0x04, 0x01, 0x0A];
@@ -8377,7 +8353,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
     strCMD.push(0xF7);
     this._board.send(strCMD);
-  }
+  };
   scope.module.SSD1306 = SSD1306;
 }));
 +(function (global, factory) {
@@ -8740,7 +8716,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     this.removeListener(IRRecvEvent.MESSAGE, this._recvCallback);
     this.removeListener(IRRecvEvent.MESSAGE_ERROR, this._recvErrorCallback);
     this._recvCallback = null;
-    this._recvErrorCallback = null
+    this._recvErrorCallback = null;
   };
 
   scope.module.IRRecv = IRRecv;
@@ -8757,11 +8733,8 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
   var Module = scope.Module;
   var BoardEvent = scope.BoardEvent;
-  var PinEvent = scope.PinEvent;
-  var Pin = scope.Pin;
   var Button = scope.module.Button;
   var ButtonEvent = scope.module.ButtonEvent;
-  var proto;
 
   var JoystickEvent = {
     MESSAGE: 'message'
@@ -8806,11 +8779,11 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     this.emit(JoystickEvent.MESSAGE, this._data.x, this._data.y, this._data.z);
   }
 
-  function onPinChange(pin) {
+  function onPinChange() {
     this._data.z = this._button._pin.value;
   }
 
-  Joystick.prototype = proto = Object.create(Module.prototype, {
+  Joystick.prototype = Object.create(Module.prototype, {
     constructor: {
       value: Joystick
     }
@@ -9011,8 +8984,6 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
    * @deprecated `on()` is deprecated, use `measure()` instead.
    */
   proto.measure = proto.on = function(callback) {
-    var _this = this;
-
     this._board.enableAnalogPin(this._pinNumber);
 
     if (typeof callback !== 'function') {
@@ -9092,8 +9063,6 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   });
 
   proto.on = function(callback) {
-    var _this = this;
-
     this._board.enableAnalogPin(this._pinNumber);
 
     if (typeof callback !== 'function') {
@@ -9185,14 +9154,14 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
 
     if (msg.length === 1) {
-      _this._leaveHandlers.forEach(function (fn, idx, ary) {
+      _this._leaveHandlers.forEach(function (fn) {
         fn.call(_this, val);
       });
       _this.emit(RFIDEvent.LEAVE, val);
       val = null;
     } else {
       val = String.fromCharCode.apply(null, msg);
-      _this._enterHandlers.forEach(function (fn, idx, ary) {
+      _this._enterHandlers.forEach(function (fn) {
         fn.call(_this, val);
       });
       _this.emit(RFIDEvent.ENTER, val);
@@ -9372,8 +9341,6 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
    * @deprecated `on()` is deprecated, use `measure()` instead.
    */
   proto.measure = proto.on = function(callback) {
-    var _this = this;
-
     this._board.enableAnalogPin(this._pinNumber);
 
     if (typeof callback !== 'function') {
@@ -9412,138 +9379,138 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     module.exports = factory;
   }
 }(this, function (scope) {
-    'use strict';
+  'use strict';
 
-    var Module = scope.Module,
-        BoardEvent = scope.BoardEvent,
-        proto;
+  var Module = scope.Module,
+    BoardEvent = scope.BoardEvent,
+    proto;
 
-    var G3_MESSAGE = [0x04, 0x10],
-        MIN_READ_INTERVAL = 1000,
-        MIN_RESPONSE_TIME = 30,
-        RETRY_INTERVAL = 6000;
+  var G3_MESSAGE = [0x04, 0x10],
+    MIN_READ_INTERVAL = 1000,
+    MIN_RESPONSE_TIME = 30,
+    RETRY_INTERVAL = 6000;
 
-    var G3Event = {
-        READ: 'read',
-        READ_ERROR: 'readError'
-    };
+  var G3Event = {
+    READ: 'read',
+    READ_ERROR: 'readError'
+  };
 
-    function G3(board, rx, tx) {
-        Module.call(this);
+  function G3(board, rx, tx) {
+    Module.call(this);
 
-        this._type = 'G3';
-        this._board = board;
-        this._rx = rx;
-        this._tx = tx;
-        this._pm25 = null;
-        this._pm10 = null;
-        this._readTimer = null;
-        this._readCallback = function() {};
+    this._type = 'G3';
+    this._board = board;
+    this._rx = rx;
+    this._tx = tx;
+    this._pm25 = null;
+    this._pm10 = null;
+    this._readTimer = null;
+    this._readCallback = function() {};
 
-        this._board.on(BoardEvent.BEFOREDISCONNECT, this.stopRead.bind(this));
-        this._messageHandler = onMessage.bind(this);
-        this._board.on(BoardEvent.ERROR, this.stopRead.bind(this));
-        this._board.sendSysex(G3_MESSAGE[0], [G3_MESSAGE[1], 0, rx.number, tx.number]);
+    this._board.on(BoardEvent.BEFOREDISCONNECT, this.stopRead.bind(this));
+    this._messageHandler = onMessage.bind(this);
+    this._board.on(BoardEvent.ERROR, this.stopRead.bind(this));
+    this._board.sendSysex(G3_MESSAGE[0], [G3_MESSAGE[1], 0, rx.number, tx.number]);
+  }
+
+  function onMessage(event) {
+    var message = event.message;
+
+    if (message[0] !== G3_MESSAGE[0] || message[1] !== G3_MESSAGE[1]) {
+      return;
+    } else {
+      processG3Data(this, message);
     }
+  }
 
-    function onMessage(event) {
-        var message = event.message;
-
-        if (message[0] !== G3_MESSAGE[0] || message[1] !== G3_MESSAGE[1]) {
-            return;
-        } else {
-            processG3Data(this, message);
-        }
+  function processG3Data(self, data) {
+    var str = '', i;
+    for(i = 2; i < data.length; i++){
+      str += String.fromCharCode(data[i]);
     }
+    str = str.split(',');
+    self._lastRecv = Date.now();
+    self.emit(G3Event.READ, str[0], str[1]);
+  }
 
-    function processG3Data(self, data) {
-        var str = '', i;
-        for(i = 2; i < data.length; i++){
-            str += String.fromCharCode(data[i]);
-        }
-        str = str.split(',');
-        self._lastRecv = Date.now();
-        self.emit(G3Event.READ, str[0], str[1]);
+  G3.prototype = proto = Object.create(Module.prototype, {
+    constructor: {
+      value: G3
+    },
+
+    pm25: {
+      get: function() {
+        return this._pm25;
+      }
+    },
+
+    pm10: {
+      get: function() {
+        return this._pm10;
+      }
     }
+  });
 
-    G3.prototype = proto = Object.create(Module.prototype, {
-        constructor: {
-            value: G3
-        },
+  proto.read = function(callback, interval) {
+    var self = this,
+      timer;
 
-        pm25: {
-            get: function() {
-                return this._pm25;
-            }
-        },
+    self.stopRead();
 
-        pm10: {
-            get: function() {
-                return this._pm10;
-            }
+    if (typeof callback === 'function') {
+      self._readCallback = function(pm25, pm10) {
+        self._pm25 = pm25;
+        self._pm10 = pm10;
+        callback({
+          pm25: pm25,
+          pm10: pm10
+        });
+      };
+      self._board.on(BoardEvent.SYSEX_MESSAGE, self._messageHandler);
+      self.on(G3Event.READ, self._readCallback);
+
+      timer = function() {
+        self._board.sendSysex(G3_MESSAGE[0], [G3_MESSAGE[1], 3]);
+        if (interval) {
+          interval = Math.max(interval, MIN_READ_INTERVAL);
+          if (self._lastRecv === null || Date.now() - self._lastRecv < 5 * interval) {
+            self._readTimer = setTimeout(timer, interval);
+          } else {
+            self.stopRead();
+            setTimeout(function() {
+              self.read(callback, interval);
+            }, RETRY_INTERVAL);
+          }
         }
-    });
+      };
 
-    proto.read = function(callback, interval) {
-        var self = this,
-            timer;
+      timer();
+    } else {
+      return new Promise(function(resolve) {
+        self.read(function(data) {
+          self._pm25 = data.pm25;
+          self._pm10 = data.pm10;
+          setTimeout(function() {
+            resolve(data);
+          }, MIN_RESPONSE_TIME);
+        });
+      });
+    }
+  };
 
-        self.stopRead();
+  proto.stopRead = function() {
+    this.removeListener(G3Event.READ, this._readCallback);
+    this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
+    this._lastRecv = null;
 
-        if (typeof callback === 'function') {
-            self._readCallback = function(pm25, pm10) {
-                self._pm25 = pm25;
-                self._pm10 = pm10;
-                callback({
-                    pm25: pm25,
-                    pm10: pm10
-                });
-            };
-            self._board.on(BoardEvent.SYSEX_MESSAGE, self._messageHandler);
-            self.on(G3Event.READ, self._readCallback);
+    if (this._readTimer) {
+      clearTimeout(this._readTimer);
+      delete this._readTimer;
+    }
+  };
 
-            timer = function() {
-                self._board.sendSysex(G3_MESSAGE[0], [G3_MESSAGE[1], 3]);
-                if (interval) {
-                    interval = Math.max(interval, MIN_READ_INTERVAL);
-                    if (self._lastRecv === null || Date.now() - self._lastRecv < 5 * interval) {
-                        self._readTimer = setTimeout(timer, interval);
-                    } else {
-                        self.stopRead();
-                        setTimeout(function() {
-                            self.read(callback, interval);
-                        }, RETRY_INTERVAL);
-                    }
-                }
-            };
-
-            timer();
-        } else {
-            return new Promise(function(resolve, reject) {
-                self.read(function(data) {
-                    self._pm25 = data.pm25;
-                    self._pm10 = data.pm10;
-                    setTimeout(function() {
-                        resolve(data);
-                    }, MIN_RESPONSE_TIME);
-                });
-            });
-        }
-    };
-
-    proto.stopRead = function() {
-        this.removeListener(G3Event.READ, this._readCallback);
-        this._board.removeListener(BoardEvent.SYSEX_MESSAGE, this._messageHandler);
-        this._lastRecv = null;
-
-        if (this._readTimer) {
-            clearTimeout(this._readTimer);
-            delete this._readTimer;
-        }
-    };
-
-    scope.module.G3Event = G3Event;
-    scope.module.G3 = G3;
+  scope.module.G3Event = G3Event;
+  scope.module.G3 = G3;
 }));
 +(function (global, factory) {
   if (typeof exports === 'undefined') {
@@ -9583,7 +9550,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     var msg = event.message;
 
     if (msg[0] !== Number(0x72)) {
-      return false
+      return false;
     }
 
     this.emit(StepperEvent.MESSAGE, { status: true, stepperNumber: msg[1] });

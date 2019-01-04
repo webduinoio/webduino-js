@@ -63,7 +63,7 @@
    * @param {Object} [object,...] Event object(s).
    */
   proto.emit = function (type) {
-    var er, handler, len, args, i, listeners;
+    var handler, len, args, i, listeners;
 
     if (!this._events)
       this._events = {};
@@ -88,7 +88,7 @@
 
     if (isFunction(handler)) {
       switch (arguments.length) {
-        // fast cases
+      // fast cases
       case 1:
         handler.call(this);
         break;
@@ -135,7 +135,7 @@
     if (this._events.newListener)
       this.emit('newListener', type,
         isFunction(listener.listener) ?
-        listener.listener : listener);
+          listener.listener : listener);
 
     if (!this._events[type])
     // Optimize the case of one listener. Don't need the extra array object.
@@ -160,7 +160,7 @@
         console.error('(node) warning: possible EventEmitter memory ' +
           'leak detected. %d listeners added. ' +
           'Use emitter.setMaxListeners() to increase limit.',
-          this._events[type].length);
+        this._events[type].length);
         if (typeof console.trace === 'function') {
           // not supported in IE 10
           console.trace();

@@ -8,9 +8,7 @@
   'use strict';
 
   var util = scope.util,
-    TransportEvent = scope.TransportEvent,
-    Board = scope.Board,
-    proto;
+    Board = scope.Board;
 
   function Smart(options) {
     if (typeof options === 'string') {
@@ -18,13 +16,13 @@
         url: options
       };
     }
-    options = util.extend(getDefaultOptions(options), options);
+    options = util.extend(getDefaultOptions(), options);
     options.server = parseServer(options.server);
 
     Board.call(this, options);
   }
 
-  function getDefaultOptions(opts) {
+  function getDefaultOptions() {
     return {
       transport: 'websocket',
       server: Smart.DEFAULT_SERVER,
@@ -45,7 +43,7 @@
     return url.protocol + '//' + url.host + '/';
   }
 
-  Smart.prototype = proto = Object.create(Board.prototype, {
+  Smart.prototype = Object.create(Board.prototype, {
     constructor: {
       value: Smart
     }

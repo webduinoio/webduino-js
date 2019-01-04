@@ -7,9 +7,7 @@
 }(this, function (scope) {
   'use strict';
 
-  var self;
   var proto;
-  var sendLength = 50;
   var sendArray = [];
   var sending = false;
   var sendAck = '';
@@ -31,7 +29,6 @@
   function DataTransfer(board) {
     Module.call(this);
     this._board = board;
-    self = this;
     //board.send([0xF0, 0x04, 0x20, dataType /*init*/ , 0xF7]);
     board.on(BoardEvent.SYSEX_MESSAGE,
       function (event) {
@@ -39,14 +36,14 @@
         sending = false;
         if (data[0] == 0x20) {
           switch (data[1] /*dataType*/ ) {
-            case 0: //String
-              var str = "";
-              for (var i = 2; i < data.length; i++) {
-                str += String.fromCharCode(data[i]);
-              }
-              _dataString = str;
-              _callback(0, str);
-              break;
+          case 0: //String
+            var str = '';
+            for (var i = 2; i < data.length; i++) {
+              str += String.fromCharCode(data[i]);
+            }
+            _dataString = str;
+            _callback(0, str);
+            break;
           }
         }
       });
@@ -67,17 +64,17 @@
     if (callback !== undefined) {
       _callback = callback;
     }
-  }
+  };
 
   proto.onMessage = function (callback) {
     if (callback !== undefined) {
       _callback = callback;
     }
-  }
+  };
 
   proto.getDataString = function () {
     return _dataString;
-  }
+  };
 
   function startQueue(board) {
     setInterval(function () {

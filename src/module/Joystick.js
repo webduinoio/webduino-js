@@ -9,11 +9,8 @@
 
   var Module = scope.Module;
   var BoardEvent = scope.BoardEvent;
-  var PinEvent = scope.PinEvent;
-  var Pin = scope.Pin;
   var Button = scope.module.Button;
   var ButtonEvent = scope.module.ButtonEvent;
-  var proto;
 
   var JoystickEvent = {
     MESSAGE: 'message'
@@ -58,11 +55,11 @@
     this.emit(JoystickEvent.MESSAGE, this._data.x, this._data.y, this._data.z);
   }
 
-  function onPinChange(pin) {
+  function onPinChange() {
     this._data.z = this._button._pin.value;
   }
 
-  Joystick.prototype = proto = Object.create(Module.prototype, {
+  Joystick.prototype = Object.create(Module.prototype, {
     constructor: {
       value: Joystick
     }

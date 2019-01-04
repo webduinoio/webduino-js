@@ -36,7 +36,7 @@
     var msg = event.message;
 
     if (msg[0] !== Number(0x72)) {
-      return false
+      return false;
     }
 
     this.emit(StepperEvent.MESSAGE, { status: true, stepperNumber: msg[1] });

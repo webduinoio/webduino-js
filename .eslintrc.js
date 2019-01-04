@@ -19,7 +19,8 @@ module.exports = {
         ],
         "quotes": [
             "warn",
-            "single"
+            "single",
+            { "allowTemplateLiterals": true }
         ],
         "semi": [
             "warn",

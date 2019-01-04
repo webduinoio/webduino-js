@@ -18,28 +18,28 @@
      *
      * @event ButtonEvent.PRESS
      */
-    PRESS: "pressed",
+    PRESS: 'pressed',
 
     /**
      * Fires when a button is released.
      *
      * @event ButtonEvent.RELEASE
      */
-    RELEASE: "released",
+    RELEASE: 'released',
 
     /**
      * Fires when a button is long-pressed.
      *
      * @event ButtonEvent.LONG_PRESS
      */
-    LONG_PRESS: "longPress",
+    LONG_PRESS: 'longPress',
 
     /**
      * Fires when a button is sustained-pressed.
      *
      * @event ButtonEvent.SUSTAINED_PRESS
      */
-    SUSTAINED_PRESS: "sustainedPress"
+    SUSTAINED_PRESS: 'sustainedPress'
   };
 
   /**

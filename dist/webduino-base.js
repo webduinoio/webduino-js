@@ -2544,7 +2544,6 @@ if (typeof exports !== 'undefined') {
   }
 
   function isShow() {
-    var reg = new RegExp();
     var debugKeys = [];
     var debugStr;
 
@@ -2652,7 +2651,7 @@ if (typeof exports !== 'undefined') {
    * @param {Object} [object,...] Event object(s).
    */
   proto.emit = function (type) {
-    var er, handler, len, args, i, listeners;
+    var handler, len, args, i, listeners;
 
     if (!this._events)
       this._events = {};
@@ -2677,7 +2676,7 @@ if (typeof exports !== 'undefined') {
 
     if (isFunction(handler)) {
       switch (arguments.length) {
-        // fast cases
+      // fast cases
       case 1:
         handler.call(this);
         break;
@@ -2724,7 +2723,7 @@ if (typeof exports !== 'undefined') {
     if (this._events.newListener)
       this.emit('newListener', type,
         isFunction(listener.listener) ?
-        listener.listener : listener);
+          listener.listener : listener);
 
     if (!this._events[type])
     // Optimize the case of one listener. Don't need the extra array object.
@@ -2749,7 +2748,7 @@ if (typeof exports !== 'undefined') {
         console.error('(node) warning: possible EventEmitter memory ' +
           'leak detected. %d listeners added. ' +
           'Use emitter.setMaxListeners() to increase limit.',
-          this._events[type].length);
+        this._events[type].length);
         if (typeof console.trace === 'function') {
           // not supported in IE 10
           console.trace();
@@ -2963,7 +2962,6 @@ if (typeof exports !== 'undefined') {
   var isBrowser = typeof exports === 'undefined';
 
   var objProto = Object.prototype,
-    owns = objProto.hasOwnProperty,
     toStr = objProto.toString;
 
   function isFn(value) {
@@ -3006,7 +3004,7 @@ if (typeof exports !== 'undefined') {
 
     for (; i < length; i++) {
       // Only deal with non-null/undefined values
-      options = arguments[i]
+      options = arguments[i];
       if (options !== null) {
         if (typeof options === 'string') {
           options = options.split('');
@@ -3140,6 +3138,8 @@ if (typeof exports !== 'undefined') {
 
   scope.util.promisify = promisify;
 }));
+
+/*eslint no-unused-vars: ["error", { "args": "none" }]*/
 
 +(function (global, factory) {
   if (typeof exports === 'undefined') {
@@ -3622,8 +3622,7 @@ if (typeof exports !== 'undefined') {
   }
 
   function managePinListener(self) {
-    var type = self._type,
-      board = self._board;
+    var type = self._type;
 
     if (type === Pin.DOUT || type === Pin.AOUT || type === Pin.SERVO) {
       if (!EventEmitter.listenerCount(self, PinEvent.CHANGE)) {
@@ -3635,7 +3634,7 @@ if (typeof exports !== 'undefined') {
           self.removeListener(PinEvent.CHANGE, self._sendOutHandler);
         } catch (e) {
           // Pin had reference to other handler, ignore
-          console.error("debug: caught self removeEventListener exception");
+          console.error('debug: caught self removeEventListener exception');
         }
       }
     }
@@ -3909,29 +3908,29 @@ if (typeof exports !== 'undefined') {
       self = this;
 
     switch (type) {
-      case Pin.DOUT:
-      case Pin.AOUT:
-      case Pin.SERVO:
-        return board.queryPinState(self._number).then(function (pin) {
-          return pin.state;
-        });
+    case Pin.DOUT:
+    case Pin.AOUT:
+    case Pin.SERVO:
+      return board.queryPinState(self._number).then(function (pin) {
+        return pin.state;
+      });
 
-      case Pin.AIN:
-        if (!self._analogReporting) {
-          board.enableAnalogPin(self._analogNumber);
-        }
-        return new Promise(function (resolve) {
-          setImmediate(function () {
-            resolve(self.value);
-          });
+    case Pin.AIN:
+      if (!self._analogReporting) {
+        board.enableAnalogPin(self._analogNumber);
+      }
+      return new Promise(function (resolve) {
+        setImmediate(function () {
+          resolve(self.value);
         });
+      });
         
-      case Pin.DIN:
-        return new Promise(function (resolve) {
-          setImmediate(function () {
-            resolve(self.value);
-          });
+    case Pin.DIN:
+      return new Promise(function (resolve) {
+        setImmediate(function () {
+          resolve(self.value);
         });
+      });
     }
   };
 
@@ -4024,7 +4023,6 @@ if (typeof exports !== 'undefined') {
 
   var EventEmitter = scope.EventEmitter,
     TransportEvent = scope.TransportEvent,
-    Transport = scope.Transport,
     Logger = scope.Logger,
     Pin = scope.Pin,
     util = scope.util,
@@ -4061,10 +4059,10 @@ if (typeof exports !== 'undefined') {
   // Extended command set using sysex (0-127/0x00-0x7F)
   var SERVO_CONFIG = 0x70,
     STRING_DATA = 0x71,
-    SHIFT_DATA = 0x75,
-    I2C_REQUEST = 0x76,
-    I2C_REPLY = 0x77,
-    I2C_CONFIG = 0x78,
+    // SHIFT_DATA = 0x75,
+    // I2C_REQUEST = 0x76,
+    // I2C_REPLY = 0x77,
+    // I2C_CONFIG = 0x78,
     EXTENDED_ANALOG = 0x6F,
     PIN_STATE_QUERY = 0x6D,
     PIN_STATE_RESPONSE = 0x6E,
@@ -4073,9 +4071,9 @@ if (typeof exports !== 'undefined') {
     ANALOG_MAPPING_QUERY = 0x69,
     ANALOG_MAPPING_RESPONSE = 0x6A,
     REPORT_FIRMWARE = 0x79,
-    SAMPLING_INTERVAL = 0x7A,
-    SYSEX_NON_REALTIME = 0x7E,
-    SYSEX_REALTIME = 0x7F;
+    SAMPLING_INTERVAL = 0x7A;
+    // SYSEX_NON_REALTIME = 0x7E,
+    // SYSEX_REALTIME = 0x7F;
 
   /**
    * An abstract development board.
@@ -4122,8 +4120,7 @@ if (typeof exports !== 'undefined') {
   }
 
   function onInitialVersionResult(event) {
-    var version = event.version * 10,
-      name = event.name;
+    var version = event.version * 10;
 
     if (version >= 23) {
       // TODO: do reset and handle response
@@ -4743,7 +4740,7 @@ if (typeof exports !== 'undefined') {
     done = self._pinStateEventCenter.once.bind(self._pinStateEventCenter);
     pins = util.isArray(pins) ? pins : [pins];
     pins = pins.map(function (pin) {
-      return pin instanceof Pin ? pin : self.getPin(pin)
+      return pin instanceof Pin ? pin : self.getPin(pin);
     });
 
     pins.forEach(function (pin) {
@@ -4849,11 +4846,11 @@ if (typeof exports !== 'undefined') {
       resolution;
 
     for (var i = 0; i < len; i++) {
-      this._logger.info("reportCapabilities, Pin " + i);
+      this._logger.info('reportCapabilities, Pin ' + i);
       for (var mode in capabilities[i]) {
         if (capabilities[i].hasOwnProperty(mode)) {
           resolution = capabilities[i][mode];
-          this._logger.info("reportCapabilities", '\t' + mode + ' (' + resolution + (resolution > 1 ? ' bits)' : ' bit)'));
+          this._logger.info('reportCapabilities', '\t' + mode + ' (' + resolution + (resolution > 1 ? ' bits)' : ' bit)'));
         }
       }
     }
@@ -4925,13 +4922,13 @@ if (typeof exports !== 'undefined') {
     if (options.area === 'china') {
       options.server = WebArduino.SERVER_CHINA;      
     }
-    options = util.extend(getDefaultOptions(options), options);
+    options = util.extend(getDefaultOptions(), options);
     options.server = parseServer(options.server);
 
     Board.call(this, options);
   }
 
-  function getDefaultOptions(opts) {
+  function getDefaultOptions() {
     return {
       transport: 'mqtt',
       server: WebArduino.DEFAULT_SERVER,

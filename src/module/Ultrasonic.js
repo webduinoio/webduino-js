@@ -149,7 +149,7 @@
 
       timer();
     } else {
-      return new Promise(function (resolve, reject) {
+      return new Promise(function (resolve) {
         self.ping(function (cm) {
           setTimeout(function () {
             resolve(cm);

@@ -75,21 +75,21 @@ function onConnect() {
   this._client.subscribe(this._options.device + TOPIC.STATUS);
 }
 
-function onMessage(topic, message, packet) {
+function onMessage(topic, message) {
   try {
     var dest = topic,
       oldStatus = this._status;
 
     switch (dest.substr(dest.lastIndexOf('/') + 1)) {
 
-      case 'STATUS':
-        this._status = message.toString();
-        detectStatusChange(this, this._status, oldStatus);
-        break;
+    case 'STATUS':
+      this._status = message.toString();
+      detectStatusChange(this, this._status, oldStatus);
+      break;
 
-      default:
-        (this._status === STATUS.OK) && this.emit(TransportEvent.MESSAGE, message);
-        break;
+    default:
+      (this._status === STATUS.OK) && this.emit(TransportEvent.MESSAGE, message);
+      break;
 
     }
   } catch (err) {

@@ -7,9 +7,7 @@
 }(this, function (scope) {
   'use strict';
 
-  var self;
   var proto;
-  var sendLength = 50;
   var sendArray = [];
   var sending = false;
   var sendAck = '';
@@ -21,13 +19,10 @@
   function LCD1602(board) {
     Module.call(this);
     this._board = board;
-    self = this;
     board.send([0xF0, 0x04, 0x18, 0x0 /*init*/ , 0xF7]);
-    board.on(BoardEvent.SYSEX_MESSAGE,
-      function (event) {
-        var m = event.message;
-        sending = false;
-      });
+    board.on(BoardEvent.SYSEX_MESSAGE, function () {
+      sending = false;
+    });
     startQueue(board);
   }
 
@@ -50,15 +45,15 @@
     cmd = cmd.concat(toASCII(txt));
     cmd.push(0xF7);
     this._board.send(cmd);
-  }
+  };
 
   proto.cursor = function (col, row) {
     this._board.send([0xF0, 0x04, 0x18, 0x01, col, row, 0xF7]);
-  }
+  };
 
   proto.clear = function () {
     this._board.send([0xF0, 0x04, 0x18, 0x03, 0xF7]);
-  }
+  };
 
   function toASCII(str) {
     var data = [];

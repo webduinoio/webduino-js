@@ -11,7 +11,6 @@
 
   var EventEmitter = scope.EventEmitter,
     TransportEvent = scope.TransportEvent,
-    Transport = scope.Transport,
     Logger = scope.Logger,
     Pin = scope.Pin,
     util = scope.util,
@@ -48,10 +47,10 @@
   // Extended command set using sysex (0-127/0x00-0x7F)
   var SERVO_CONFIG = 0x70,
     STRING_DATA = 0x71,
-    SHIFT_DATA = 0x75,
-    I2C_REQUEST = 0x76,
-    I2C_REPLY = 0x77,
-    I2C_CONFIG = 0x78,
+    // SHIFT_DATA = 0x75,
+    // I2C_REQUEST = 0x76,
+    // I2C_REPLY = 0x77,
+    // I2C_CONFIG = 0x78,
     EXTENDED_ANALOG = 0x6F,
     PIN_STATE_QUERY = 0x6D,
     PIN_STATE_RESPONSE = 0x6E,
@@ -60,9 +59,9 @@
     ANALOG_MAPPING_QUERY = 0x69,
     ANALOG_MAPPING_RESPONSE = 0x6A,
     REPORT_FIRMWARE = 0x79,
-    SAMPLING_INTERVAL = 0x7A,
-    SYSEX_NON_REALTIME = 0x7E,
-    SYSEX_REALTIME = 0x7F;
+    SAMPLING_INTERVAL = 0x7A;
+    // SYSEX_NON_REALTIME = 0x7E,
+    // SYSEX_REALTIME = 0x7F;
 
   /**
    * An abstract development board.
@@ -109,8 +108,7 @@
   }
 
   function onInitialVersionResult(event) {
-    var version = event.version * 10,
-      name = event.name;
+    var version = event.version * 10;
 
     if (version >= 23) {
       // TODO: do reset and handle response
@@ -730,7 +728,7 @@
     done = self._pinStateEventCenter.once.bind(self._pinStateEventCenter);
     pins = util.isArray(pins) ? pins : [pins];
     pins = pins.map(function (pin) {
-      return pin instanceof Pin ? pin : self.getPin(pin)
+      return pin instanceof Pin ? pin : self.getPin(pin);
     });
 
     pins.forEach(function (pin) {
@@ -836,11 +834,11 @@
       resolution;
 
     for (var i = 0; i < len; i++) {
-      this._logger.info("reportCapabilities, Pin " + i);
+      this._logger.info('reportCapabilities, Pin ' + i);
       for (var mode in capabilities[i]) {
         if (capabilities[i].hasOwnProperty(mode)) {
           resolution = capabilities[i][mode];
-          this._logger.info("reportCapabilities", '\t' + mode + ' (' + resolution + (resolution > 1 ? ' bits)' : ' bit)'));
+          this._logger.info('reportCapabilities', '\t' + mode + ' (' + resolution + (resolution > 1 ? ' bits)' : ' bit)'));
         }
       }
     }
