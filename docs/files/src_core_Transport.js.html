@@ -96,13 +96,13 @@
 
 <div class="file">
     <pre class="prettyprint linenums">
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === &#x27;undefined&#x27;) {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   &#x27;use strict&#x27;;
 
   var EventEmitter = scope.EventEmitter,

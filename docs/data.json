@@ -777,7 +777,7 @@
             "extension_for": [],
             "namespace": "webduino.transport",
             "file": "src/transport/MqttTransport.js",
-            "line": 21,
+            "line": 23,
             "description": "Conveying messages over MQTT protocol.",
             "is_constructor": 1,
             "params": [
@@ -2255,7 +2255,7 @@
         },
         {
             "file": "src/transport/MqttTransport.js",
-            "line": 171,
+            "line": 173,
             "description": "Reconnect period when MQTT connection goes down. Measured in seconds.",
             "itemtype": "property",
             "name": "RECONNECT_PERIOD",
@@ -2266,7 +2266,7 @@
         },
         {
             "file": "src/transport/MqttTransport.js",
-            "line": 180,
+            "line": 182,
             "description": "MQTT keepalive interval. Measured in seconds.",
             "itemtype": "property",
             "name": "KEEPALIVE_INTERVAL",
@@ -2277,7 +2277,7 @@
         },
         {
             "file": "src/transport/MqttTransport.js",
-            "line": 189,
+            "line": 191,
             "description": "Time to wait before throwing connection timeout exception. Measured in seconds.",
             "itemtype": "property",
             "name": "CONNECT_TIMEOUT",
@@ -2288,7 +2288,7 @@
         },
         {
             "file": "src/transport/MqttTransport.js",
-            "line": 198,
+            "line": 200,
             "description": "Maximum packet size in KB.",
             "itemtype": "property",
             "name": "MAX_PACKET_SIZE",

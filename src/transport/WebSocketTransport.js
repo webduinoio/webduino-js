@@ -1,3 +1,5 @@
+/* global webduino */
+
 +(function (scope) {
   'use strict';
 

@@ -2503,13 +2503,13 @@ if (typeof exports !== 'undefined') {
   module.exports = webduino;
 }
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var DEBUG_STR = 'DEBUG_WEBDUINOJS';
@@ -2587,13 +2587,13 @@ if (typeof exports !== 'undefined') {
   scope.Logger = Logger;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   // source:
@@ -2951,13 +2951,13 @@ if (typeof exports !== 'undefined') {
   scope.EventEmitter = EventEmitter;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var isBrowser = typeof exports === 'undefined';
@@ -3071,13 +3071,15 @@ if (typeof exports !== 'undefined') {
   };
 }));
 
-+(function (factory) {
+/* global Promise:true */
+
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   if (typeof exports !== 'undefined' && typeof Promise === 'undefined') {
@@ -3139,13 +3141,13 @@ if (typeof exports !== 'undefined') {
   scope.util.promisify = promisify;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var EventEmitter = scope.EventEmitter,
@@ -3246,6 +3248,8 @@ if (typeof exports !== 'undefined') {
   scope.Transport = Transport;
   scope.transport = scope.transport || {};
 }));
+
+/* global webduino */
 
 +(function (scope) {
   'use strict';
@@ -3456,6 +3460,8 @@ if (typeof exports !== 'undefined') {
   scope.transport.mqtt = MqttTransport;
 }(webduino));
 
+/* global webduino */
+
 +(function (scope) {
   'use strict';
 
@@ -3568,13 +3574,13 @@ if (typeof exports !== 'undefined') {
   scope.transport.websocket = WebSocketTransport;
 }(webduino));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var EventEmitter = scope.EventEmitter,
@@ -3629,7 +3635,7 @@ if (typeof exports !== 'undefined') {
           self.removeListener(PinEvent.CHANGE, self._sendOutHandler);
         } catch (e) {
           // Pin had reference to other handler, ignore
-          debug("debug: caught self removeEventListener exception");
+          console.error("debug: caught self removeEventListener exception");
         }
       }
     }
@@ -3903,24 +3909,29 @@ if (typeof exports !== 'undefined') {
       self = this;
 
     switch (type) {
-    case Pin.DOUT:
-    case Pin.AOUT:
-    case Pin.SERVO:
-      return board.queryPinState(self._number).then(function (pin) {
-        return pin.state;
-      });
-
-    case Pin.AIN:
-      if (!self._analogReporting) {
-        board.enableAnalogPin(self._analogNumber);
-      }
-
-    case Pin.DIN:
-      return new Promise(function (resolve) {
-        setImmediate(function () {
-          resolve(self.value);
+      case Pin.DOUT:
+      case Pin.AOUT:
+      case Pin.SERVO:
+        return board.queryPinState(self._number).then(function (pin) {
+          return pin.state;
         });
-      });
+
+      case Pin.AIN:
+        if (!self._analogReporting) {
+          board.enableAnalogPin(self._analogNumber);
+        }
+        return new Promise(function (resolve) {
+          setImmediate(function () {
+            resolve(self.value);
+          });
+        });
+        
+      case Pin.DIN:
+        return new Promise(function (resolve) {
+          setImmediate(function () {
+            resolve(self.value);
+          });
+        });
     }
   };
 
@@ -3952,13 +3963,13 @@ if (typeof exports !== 'undefined') {
   scope.Pin = Pin;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var EventEmitter = scope.EventEmitter;
@@ -4000,13 +4011,13 @@ if (typeof exports !== 'undefined') {
   scope.module = scope.module || {};
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var push = Array.prototype.push;
@@ -4891,13 +4902,13 @@ if (typeof exports !== 'undefined') {
   scope.board = scope.board || {};
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var util = scope.util,
@@ -4999,13 +5010,13 @@ if (typeof exports !== 'undefined') {
   scope.WebArduino = WebArduino;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var util = scope.util,
@@ -5533,13 +5544,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.transport.bluetooth = BluetoothTransport;
 }(webduino));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var util = scope.util,
@@ -5591,13 +5602,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.board.Smart = Smart;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var util = scope.util,
@@ -5662,13 +5673,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.board.Bit = Bit;
 
 }));
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var self;
@@ -5679,6 +5690,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   var sendAck = '';
   var sendCallback;
   var Module = scope.Module;
+  var BoardEvent = scope.BoardEvent;
   var _callback;
   var _dataString;
 
@@ -5696,7 +5708,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     this._board = board;
     self = this;
     //board.send([0xF0, 0x04, 0x20, dataType /*init*/ , 0xF7]);
-    board.on(webduino.BoardEvent.SYSEX_MESSAGE,
+    board.on(BoardEvent.SYSEX_MESSAGE,
       function (event) {
         var data = event.message;
         sending = false;
@@ -5761,13 +5773,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
   scope.module.DataTransfer = DataTransfer;
 }));
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -5801,7 +5813,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   }
 
   function onMessage() {
-    self._board.on(webduino.BoardEvent.SYSEX_MESSAGE, function (event) {
+    self._board.on(BoardEvent.SYSEX_MESSAGE, function (event) {
       var m = event.message;
       //send IR data to Board
       if (m[0] == 0x04 && m[1] == 0x09 && m[2] == 0x0B) {
@@ -5898,13 +5910,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
   scope.module.IRRAW = IRRAW;
 }));
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var self;
@@ -5915,6 +5927,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   var sendAck = '';
   var sendCallback;
   var Module = scope.Module;
+  var BoardEvent = scope.BoardEvent;
   var sendAndAckCount = 0;
   var waitAckAndSend = [];
   var _play;
@@ -5925,7 +5938,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     this._rx = RX;
     this._tx = TX;
     self = this;
-    board.on(webduino.BoardEvent.SYSEX_MESSAGE,
+    board.on(BoardEvent.SYSEX_MESSAGE,
       function (event) {
         sendAndAckCount--;
         var m = event.message;
@@ -6023,13 +6036,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
   scope.module.DFPlayer = DFPlayer;
 }));
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var self;
@@ -6040,6 +6053,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   var sendAck = '';
   var sendCallback;
   var Module = scope.Module;
+  var BoardEvent = scope.BoardEvent;
   var _backlight;
 
   function LCD1602(board) {
@@ -6047,7 +6061,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     this._board = board;
     self = this;
     board.send([0xF0, 0x04, 0x18, 0x0 /*init*/ , 0xF7]);
-    board.on(webduino.BoardEvent.SYSEX_MESSAGE,
+    board.on(BoardEvent.SYSEX_MESSAGE,
       function (event) {
         var m = event.message;
         sending = false;
@@ -6118,13 +6132,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
   scope.module.LCD1602 = LCD1602;
 }));
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Pin = scope.Pin,
@@ -6321,13 +6335,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Led = Led;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Led = scope.module.Led,
@@ -6449,13 +6463,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.RGBLed = RGBLed;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var PinEvent = scope.PinEvent,
@@ -6654,13 +6668,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Button = Button;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -6835,13 +6849,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Ultrasonic = Ultrasonic;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Pin = scope.Pin,
@@ -6890,13 +6904,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Servo = Servo;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var PinEvent = scope.PinEvent,
@@ -6938,13 +6952,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Tilt = Tilt;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var PinEvent = scope.PinEvent,
@@ -6986,13 +7000,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Pir = Pir;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var PinEvent = scope.PinEvent,
@@ -7034,13 +7048,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Shock = Shock;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var PinEvent = scope.PinEvent,
@@ -7083,13 +7097,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Sound = Sound;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Pin = scope.Pin,
@@ -7149,13 +7163,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Relay = Relay;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -7366,13 +7380,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Dht = Dht;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var push = Array.prototype.push;
@@ -7661,13 +7675,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Buzzer = Buzzer;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Pin = scope.Pin,
@@ -7824,13 +7838,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Max7219 = Max7219;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -8090,13 +8104,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.ADXL345 = ADXL345;
 }));
 
-+(function(factory) {
-    if (typeof exports === 'undefined') {
-        factory(webduino || {});
-    } else {
-        module.exports = factory;
-    }
-}(function(scope) {
++(function (global, factory) {
+  if (typeof exports === 'undefined') {
+    factory(global.webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(this, function (scope) {
     'use strict';
 
     var Module = scope.Module,
@@ -8219,13 +8233,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
 
     scope.module.HX711 = HX711;
 }));
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var self;
@@ -8239,6 +8253,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   var sendAck = '';
   var sendCallback;
   var Module = scope.Module;
+  var BoardEvent = scope.BoardEvent;
 
   function SSD1306(board) {
     Module.call(this);
@@ -8248,7 +8263,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     board.send([0xF0, 0x04, 0x01, 0x02, _cursorX, _cursorY, 0xF7]);
     board.send([0xF0, 0x04, 0x01, 0x03, _textSize, 0xF7]);
     board.send([0xF0, 0x04, 0x01, 0x01, 0xF7]);
-    board.on(webduino.BoardEvent.SYSEX_MESSAGE,
+    board.on(BoardEvent.SYSEX_MESSAGE,
       function (event) {
         var m = event.message;
         sending = false;
@@ -8365,13 +8380,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   }
   scope.module.SSD1306 = SSD1306;
 }));
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -8493,13 +8508,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Barcode = Barcode;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -8570,13 +8585,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.IRLed = IRLed;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -8731,13 +8746,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.IRRecv = IRRecv;
 }));
 
-+(function(factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function(scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module;
@@ -8805,13 +8820,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Joystick = Joystick;
 }));
 
-+(function(factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function(scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -8909,13 +8924,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.MQ2 = MQ2;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -9029,13 +9044,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Photocell = Photocell;
 }));
 
-+(function(factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function(scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -9105,13 +9120,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Pot = Pot;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -9267,13 +9282,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.RFID = RFID;
 }));
 
-+(function(factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function(scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -9390,13 +9405,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
   scope.module.Soil = Soil;
 }));
 
-+(function(factory) {
-    if (typeof exports === 'undefined') {
-        factory(webduino || {});
-    } else {
-        module.exports = factory;
-    }
-}(function(scope) {
++(function (global, factory) {
+  if (typeof exports === 'undefined') {
+    factory(global.webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(this, function (scope) {
     'use strict';
 
     var Module = scope.Module,
@@ -9442,8 +9457,8 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     }
 
     function processG3Data(self, data) {
-        var str = '',i = 1;
-        for(var i=2;i<data.length;i++){
+        var str = '', i;
+        for(i = 2; i < data.length; i++){
             str += String.fromCharCode(data[i]);
         }
         str = str.split(',');
@@ -9530,13 +9545,13 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
     scope.module.G3Event = G3Event;
     scope.module.G3 = G3;
 }));
-+(function(factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function(scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,

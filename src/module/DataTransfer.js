@@ -1,10 +1,10 @@
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var self;
@@ -15,6 +15,7 @@
   var sendAck = '';
   var sendCallback;
   var Module = scope.Module;
+  var BoardEvent = scope.BoardEvent;
   var _callback;
   var _dataString;
 
@@ -32,7 +33,7 @@
     this._board = board;
     self = this;
     //board.send([0xF0, 0x04, 0x20, dataType /*init*/ , 0xF7]);
-    board.on(webduino.BoardEvent.SYSEX_MESSAGE,
+    board.on(BoardEvent.SYSEX_MESSAGE,
       function (event) {
         var data = event.message;
         sending = false;

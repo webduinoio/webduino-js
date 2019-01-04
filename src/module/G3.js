@@ -1,10 +1,10 @@
-+(function(factory) {
-    if (typeof exports === 'undefined') {
-        factory(webduino || {});
-    } else {
-        module.exports = factory;
-    }
-}(function(scope) {
++(function (global, factory) {
+  if (typeof exports === 'undefined') {
+    factory(global.webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(this, function (scope) {
     'use strict';
 
     var Module = scope.Module,
@@ -50,8 +50,8 @@
     }
 
     function processG3Data(self, data) {
-        var str = '',i = 1;
-        for(var i=2;i<data.length;i++){
+        var str = '', i;
+        for(i = 2; i < data.length; i++){
             str += String.fromCharCode(data[i]);
         }
         str = str.split(',');

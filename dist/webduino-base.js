@@ -2503,13 +2503,13 @@ if (typeof exports !== 'undefined') {
   module.exports = webduino;
 }
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var DEBUG_STR = 'DEBUG_WEBDUINOJS';
@@ -2587,13 +2587,13 @@ if (typeof exports !== 'undefined') {
   scope.Logger = Logger;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   // source:
@@ -2951,13 +2951,13 @@ if (typeof exports !== 'undefined') {
   scope.EventEmitter = EventEmitter;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var isBrowser = typeof exports === 'undefined';
@@ -3071,13 +3071,15 @@ if (typeof exports !== 'undefined') {
   };
 }));
 
-+(function (factory) {
+/* global Promise:true */
+
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   if (typeof exports !== 'undefined' && typeof Promise === 'undefined') {
@@ -3139,13 +3141,13 @@ if (typeof exports !== 'undefined') {
   scope.util.promisify = promisify;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var EventEmitter = scope.EventEmitter,
@@ -3246,6 +3248,8 @@ if (typeof exports !== 'undefined') {
   scope.Transport = Transport;
   scope.transport = scope.transport || {};
 }));
+
+/* global webduino */
 
 +(function (scope) {
   'use strict';
@@ -3456,6 +3460,8 @@ if (typeof exports !== 'undefined') {
   scope.transport.mqtt = MqttTransport;
 }(webduino));
 
+/* global webduino */
+
 +(function (scope) {
   'use strict';
 
@@ -3568,13 +3574,13 @@ if (typeof exports !== 'undefined') {
   scope.transport.websocket = WebSocketTransport;
 }(webduino));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var EventEmitter = scope.EventEmitter,
@@ -3629,7 +3635,7 @@ if (typeof exports !== 'undefined') {
           self.removeListener(PinEvent.CHANGE, self._sendOutHandler);
         } catch (e) {
           // Pin had reference to other handler, ignore
-          debug("debug: caught self removeEventListener exception");
+          console.error("debug: caught self removeEventListener exception");
         }
       }
     }
@@ -3903,24 +3909,29 @@ if (typeof exports !== 'undefined') {
       self = this;
 
     switch (type) {
-    case Pin.DOUT:
-    case Pin.AOUT:
-    case Pin.SERVO:
-      return board.queryPinState(self._number).then(function (pin) {
-        return pin.state;
-      });
-
-    case Pin.AIN:
-      if (!self._analogReporting) {
-        board.enableAnalogPin(self._analogNumber);
-      }
-
-    case Pin.DIN:
-      return new Promise(function (resolve) {
-        setImmediate(function () {
-          resolve(self.value);
+      case Pin.DOUT:
+      case Pin.AOUT:
+      case Pin.SERVO:
+        return board.queryPinState(self._number).then(function (pin) {
+          return pin.state;
         });
-      });
+
+      case Pin.AIN:
+        if (!self._analogReporting) {
+          board.enableAnalogPin(self._analogNumber);
+        }
+        return new Promise(function (resolve) {
+          setImmediate(function () {
+            resolve(self.value);
+          });
+        });
+        
+      case Pin.DIN:
+        return new Promise(function (resolve) {
+          setImmediate(function () {
+            resolve(self.value);
+          });
+        });
     }
   };
 
@@ -3952,13 +3963,13 @@ if (typeof exports !== 'undefined') {
   scope.Pin = Pin;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var EventEmitter = scope.EventEmitter;
@@ -4000,13 +4011,13 @@ if (typeof exports !== 'undefined') {
   scope.module = scope.module || {};
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var push = Array.prototype.push;
@@ -4891,13 +4902,13 @@ if (typeof exports !== 'undefined') {
   scope.board = scope.board || {};
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var util = scope.util,
@@ -4999,13 +5010,13 @@ if (typeof exports !== 'undefined') {
   scope.WebArduino = WebArduino;
 }));
 
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var util = scope.util,

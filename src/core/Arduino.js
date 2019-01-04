@@ -1,10 +1,10 @@
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var util = scope.util,

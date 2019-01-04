@@ -1,10 +1,10 @@
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var self;
@@ -15,6 +15,7 @@
   var sendAck = '';
   var sendCallback;
   var Module = scope.Module;
+  var BoardEvent = scope.BoardEvent;
   var sendAndAckCount = 0;
   var waitAckAndSend = [];
   var _play;
@@ -25,7 +26,7 @@
     this._rx = RX;
     this._tx = TX;
     self = this;
-    board.on(webduino.BoardEvent.SYSEX_MESSAGE,
+    board.on(BoardEvent.SYSEX_MESSAGE,
       function (event) {
         sendAndAckCount--;
         var m = event.message;

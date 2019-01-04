@@ -1,10 +1,10 @@
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var Module = scope.Module,
@@ -38,7 +38,7 @@
   }
 
   function onMessage() {
-    self._board.on(webduino.BoardEvent.SYSEX_MESSAGE, function (event) {
+    self._board.on(BoardEvent.SYSEX_MESSAGE, function (event) {
       var m = event.message;
       //send IR data to Board
       if (m[0] == 0x04 && m[1] == 0x09 && m[2] == 0x0B) {

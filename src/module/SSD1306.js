@@ -1,10 +1,10 @@
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var self;
@@ -18,6 +18,7 @@
   var sendAck = '';
   var sendCallback;
   var Module = scope.Module;
+  var BoardEvent = scope.BoardEvent;
 
   function SSD1306(board) {
     Module.call(this);
@@ -27,7 +28,7 @@
     board.send([0xF0, 0x04, 0x01, 0x02, _cursorX, _cursorY, 0xF7]);
     board.send([0xF0, 0x04, 0x01, 0x03, _textSize, 0xF7]);
     board.send([0xF0, 0x04, 0x01, 0x01, 0xF7]);
-    board.on(webduino.BoardEvent.SYSEX_MESSAGE,
+    board.on(BoardEvent.SYSEX_MESSAGE,
       function (event) {
         var m = event.message;
         sending = false;

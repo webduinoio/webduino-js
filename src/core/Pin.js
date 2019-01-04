@@ -1,10 +1,10 @@
-+(function (factory) {
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   var EventEmitter = scope.EventEmitter,
@@ -59,7 +59,7 @@
           self.removeListener(PinEvent.CHANGE, self._sendOutHandler);
         } catch (e) {
           // Pin had reference to other handler, ignore
-          debug("debug: caught self removeEventListener exception");
+          console.error("debug: caught self removeEventListener exception");
         }
       }
     }
@@ -333,24 +333,29 @@
       self = this;
 
     switch (type) {
-    case Pin.DOUT:
-    case Pin.AOUT:
-    case Pin.SERVO:
-      return board.queryPinState(self._number).then(function (pin) {
-        return pin.state;
-      });
-
-    case Pin.AIN:
-      if (!self._analogReporting) {
-        board.enableAnalogPin(self._analogNumber);
-      }
-
-    case Pin.DIN:
-      return new Promise(function (resolve) {
-        setImmediate(function () {
-          resolve(self.value);
+      case Pin.DOUT:
+      case Pin.AOUT:
+      case Pin.SERVO:
+        return board.queryPinState(self._number).then(function (pin) {
+          return pin.state;
         });
-      });
+
+      case Pin.AIN:
+        if (!self._analogReporting) {
+          board.enableAnalogPin(self._analogNumber);
+        }
+        return new Promise(function (resolve) {
+          setImmediate(function () {
+            resolve(self.value);
+          });
+        });
+        
+      case Pin.DIN:
+        return new Promise(function (resolve) {
+          setImmediate(function () {
+            resolve(self.value);
+          });
+        });
     }
   };
 

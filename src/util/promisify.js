@@ -1,10 +1,12 @@
-+(function (factory) {
+/* global Promise:true */
+
++(function (global, factory) {
   if (typeof exports === 'undefined') {
-    factory(webduino || {});
+    factory(global.webduino || {});
   } else {
     module.exports = factory;
   }
-}(function (scope) {
+}(this, function (scope) {
   'use strict';
 
   if (typeof exports !== 'undefined' && typeof Promise === 'undefined') {

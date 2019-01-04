@@ -1,10 +1,10 @@
-+(function(factory) {
-    if (typeof exports === 'undefined') {
-        factory(webduino || {});
-    } else {
-        module.exports = factory;
-    }
-}(function(scope) {
++(function (global, factory) {
+  if (typeof exports === 'undefined') {
+    factory(global.webduino || {});
+  } else {
+    module.exports = factory;
+  }
+}(this, function (scope) {
     'use strict';
 
     var Module = scope.Module,

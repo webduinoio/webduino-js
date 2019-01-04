@@ -11,16 +11,19 @@
   ],
   "license": "MIT",
   "scripts": {
+    "lint": "eslint src/**/*.js",
     "build": "./node_modules/.bin/gulp"
   },
   "devDependencies": {
+    "eslint": "^5.11.1",
+    "eslint-plugin-promise": "^4.0.1",
     "gulp": "3.x",
     "gulp-concat": "2.x",
     "gulp-expect-file": "0.x",
     "gulp-shell": "0.5.2",
     "gulp-uglify": "2.x",
-    "yuidocjs": "0.x",
-    "yuidoc-lucid-theme": "0.x"
+    "yuidoc-lucid-theme": "0.x",
+    "yuidocjs": "0.x"
   },
   "dependencies": {
     "es6-promise": "4.x",
