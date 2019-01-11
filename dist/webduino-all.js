@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.5.0'
+  version: '0.5.1'
 };
 
 if (typeof exports !== 'undefined') {
@@ -4172,18 +4172,13 @@ if (typeof exports !== 'undefined') {
   }
 
   function cleanup() {
-    this.disconnect(function () {
-      if (typeof exports !== 'undefined') {
-        process.exit();
-      }
-    });
+    this.disconnect();
   }
 
   function attachCleanup(self) {
     if (typeof exports === 'undefined') {
       window.addEventListener('beforeunload', self._cleanupHandler);
     } else {
-      process.addListener('SIGINT', self._cleanupHandler);
       process.addListener('uncaughtException', self._cleanupHandler);
     }
   }
@@ -4192,7 +4187,6 @@ if (typeof exports !== 'undefined') {
     if (typeof exports === 'undefined') {
       window.removeEventListener('beforeunload', self._cleanupHandler);
     } else {
-      process.removeListener('SIGINT', self._cleanupHandler);
       process.removeListener('uncaughtException', self._cleanupHandler);
     }
   }
@@ -4474,7 +4468,6 @@ if (typeof exports !== 'undefined') {
     }
 
     if (!this._isReady) {
-      this.systemReset();
       this.enableDigitalPins();
     }
   };
@@ -4568,20 +4561,26 @@ if (typeof exports !== 'undefined') {
   };
 
   proto.sendDigitalData = function (pin, value) {
-    var portNum = Math.floor(pin / 8);
+    try {
+      var portNum = Math.floor(pin / 8);
+      
+      if (value === Pin.HIGH) {
+        // Set the bit
+        this._digitalPort[portNum] |= (value << (pin % 8));
+      } else if (value === Pin.LOW) {
+        // Clear the bit
+        this._digitalPort[portNum] &= ~(1 << (pin % 8));
+      } else {
+        // Should not happen...
+        throw new Error('Invalid value passed to sendDigital, value must be 0 or 1.');
+      }
 
-    if (value === Pin.HIGH) {
-      // Set the bit
-      this._digitalPort[portNum] |= (value << (pin % 8));
-    } else if (value === Pin.LOW) {
-      // Clear the bit
-      this._digitalPort[portNum] &= ~(1 << (pin % 8));
-    } else {
-      // Should not happen...
-      throw new Error('Invalid value passed to sendDigital, value must be 0 or 1.');
+      this.sendDigitalPort(portNum, this._digitalPort[portNum]);
+    } catch (err) {
+      console.error('Board -> sendDigitalData, msg:', err.message, 'value:', value);
+      this.emit(BoardEvent.ERROR, err);
+      setImmediate(this.disconnect.bind(this));
     }
-
-    this.sendDigitalPort(portNum, this._digitalPort[portNum]);
   };
 
   proto.sendServoData = function (pin, value) {

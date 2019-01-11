@@ -258,18 +258,13 @@
   }
 
   function cleanup() {
-    this.disconnect(function () {
-      if (typeof exports !== &#x27;undefined&#x27;) {
-        process.exit();
-      }
-    });
+    this.disconnect();
   }
 
   function attachCleanup(self) {
     if (typeof exports === &#x27;undefined&#x27;) {
       window.addEventListener(&#x27;beforeunload&#x27;, self._cleanupHandler);
     } else {
-      process.addListener(&#x27;SIGINT&#x27;, self._cleanupHandler);
       process.addListener(&#x27;uncaughtException&#x27;, self._cleanupHandler);
     }
   }
@@ -278,7 +273,6 @@
     if (typeof exports === &#x27;undefined&#x27;) {
       window.removeEventListener(&#x27;beforeunload&#x27;, self._cleanupHandler);
     } else {
-      process.removeListener(&#x27;SIGINT&#x27;, self._cleanupHandler);
       process.removeListener(&#x27;uncaughtException&#x27;, self._cleanupHandler);
     }
   }
@@ -560,7 +554,6 @@
     }
 
     if (!this._isReady) {
-      this.systemReset();
       this.enableDigitalPins();
     }
   };
@@ -654,20 +647,26 @@
   };
 
   proto.sendDigitalData = function (pin, value) {
-    var portNum = Math.floor(pin / 8);
+    try {
+      var portNum = Math.floor(pin / 8);
+      
+      if (value === Pin.HIGH) {
+        // Set the bit
+        this._digitalPort[portNum] |= (value &lt;&lt; (pin % 8));
+      } else if (value === Pin.LOW) {
+        // Clear the bit
+        this._digitalPort[portNum] &amp;= ~(1 &lt;&lt; (pin % 8));
+      } else {
+        // Should not happen...
+        throw new Error(&#x27;Invalid value passed to sendDigital, value must be 0 or 1.&#x27;);
+      }
 
-    if (value === Pin.HIGH) {
-      // Set the bit
-      this._digitalPort[portNum] |= (value &lt;&lt; (pin % 8));
-    } else if (value === Pin.LOW) {
-      // Clear the bit
-      this._digitalPort[portNum] &amp;= ~(1 &lt;&lt; (pin % 8));
-    } else {
-      // Should not happen...
-      throw new Error(&#x27;Invalid value passed to sendDigital, value must be 0 or 1.&#x27;);
+      this.sendDigitalPort(portNum, this._digitalPort[portNum]);
+    } catch (err) {
+      console.error(&#x27;Board -&gt; sendDigitalData, msg:&#x27;, err.message, &#x27;value:&#x27;, value);
+      this.emit(BoardEvent.ERROR, err);
+      setImmediate(this.disconnect.bind(this));
     }
-
-    this.sendDigitalPort(portNum, this._digitalPort[portNum]);
   };
 
   proto.sendServoData = function (pin, value) {
