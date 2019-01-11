@@ -160,18 +160,13 @@
   }
 
   function cleanup() {
-    this.disconnect(function () {
-      if (typeof exports !== 'undefined') {
-        process.exit();
-      }
-    });
+    this.disconnect();
   }
 
   function attachCleanup(self) {
     if (typeof exports === 'undefined') {
       window.addEventListener('beforeunload', self._cleanupHandler);
     } else {
-      process.addListener('SIGINT', self._cleanupHandler);
       process.addListener('uncaughtException', self._cleanupHandler);
     }
   }
@@ -180,7 +175,6 @@
     if (typeof exports === 'undefined') {
       window.removeEventListener('beforeunload', self._cleanupHandler);
     } else {
-      process.removeListener('SIGINT', self._cleanupHandler);
       process.removeListener('uncaughtException', self._cleanupHandler);
     }
   }
