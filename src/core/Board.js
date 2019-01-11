@@ -549,20 +549,26 @@
   };
 
   proto.sendDigitalData = function (pin, value) {
-    var portNum = Math.floor(pin / 8);
+    try {
+      var portNum = Math.floor(pin / 8);
+      
+      if (value === Pin.HIGH) {
+        // Set the bit
+        this._digitalPort[portNum] |= (value << (pin % 8));
+      } else if (value === Pin.LOW) {
+        // Clear the bit
+        this._digitalPort[portNum] &= ~(1 << (pin % 8));
+      } else {
+        // Should not happen...
+        throw new Error('Invalid value passed to sendDigital, value must be 0 or 1.');
+      }
 
-    if (value === Pin.HIGH) {
-      // Set the bit
-      this._digitalPort[portNum] |= (value << (pin % 8));
-    } else if (value === Pin.LOW) {
-      // Clear the bit
-      this._digitalPort[portNum] &= ~(1 << (pin % 8));
-    } else {
-      // Should not happen...
-      throw new Error('Invalid value passed to sendDigital, value must be 0 or 1.');
+      this.sendDigitalPort(portNum, this._digitalPort[portNum]);
+    } catch (err) {
+      console.error('Board -> sendDigitalData, msg:', err.message, 'value:', value);
+      this.emit(BoardEvent.ERROR, err);
+      setImmediate(this.disconnect.bind(this));
     }
-
-    this.sendDigitalPort(portNum, this._digitalPort[portNum]);
   };
 
   proto.sendServoData = function (pin, value) {
