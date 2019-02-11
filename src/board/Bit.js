@@ -31,7 +31,9 @@
       login: 'admin',
       password: 'password',
       autoReconnect: false,
-      multi: false
+      multi: false,
+      initialReset: false,
+      handleDigitalPins: true
     };
   }
 
@@ -52,6 +54,7 @@
   });
 
   Bit.DEFAULT_SERVER = 'wss://ws.webduino.io:443';
+  Bit.SERVER_CHINA = 'wss://ws.webduino.com.cn';
 
   proto.startup = function () {
     this._isReady = true;

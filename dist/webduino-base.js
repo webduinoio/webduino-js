@@ -4036,7 +4036,6 @@ if (typeof exports !== 'undefined') {
     STRING_MESSAGE: 'stringMessage',
     SYSEX_MESSAGE: 'sysexMessage',
     PIN_STATE_RESPONSE: 'pinStateResponse',
-    BEFOREREADY: 'beforeReady',
     READY: 'ready',
     ERROR: 'error',
     BEFOREDISCONNECT: 'beforeDisconnect',
@@ -4271,7 +4270,7 @@ if (typeof exports !== 'undefined') {
     switch (command) {
     case DIGITAL_MESSAGE:
       this._logger.info('processMultiByteCommand digital:', channel, commandData[1], commandData[2]);
-      this.processDigitalMessage(channel, commandData[1], commandData[2]);
+      this._options.handleDigitalPins && this.processDigitalMessage(channel, commandData[1], commandData[2]);
       break;
     case REPORT_VERSION:
       this._firmwareVersion = commandData[1] + commandData[2] / 10;
@@ -4363,7 +4362,6 @@ if (typeof exports !== 'undefined') {
       break;
     case ANALOG_MAPPING_RESPONSE:
       this.processAnalogMappingResponse(sysexData);
-      this.emit(BoardEvent.BEFOREREADY);
       break;
     default:
       this.emit(BoardEvent.SYSEX_MESSAGE, {
@@ -4468,7 +4466,14 @@ if (typeof exports !== 'undefined') {
     }
 
     if (!this._isReady) {
-      this.enableDigitalPins();
+      if (this._options.initialReset) {
+        this.systemReset();
+      }
+      if (this._options.handleDigitalPins) {
+        this.enableDigitalPins();
+      } else {
+        this.startup();
+      }
     }
   };
 
@@ -4942,7 +4947,9 @@ if (typeof exports !== 'undefined') {
       login: 'admin',
       password: 'password',
       autoReconnect: false,
-      multi: false
+      multi: false,
+      initialReset: false,
+      handleDigitalPins: true
     };
   }
 

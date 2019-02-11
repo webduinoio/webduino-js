@@ -29,7 +29,9 @@
       login: 'admin',
       password: 'password',
       autoReconnect: false,
-      multi: false
+      multi: false,
+      initialReset: false,
+      handleDigitalPins: true
     };
   }
 
@@ -50,6 +52,7 @@
   });
 
   Smart.DEFAULT_SERVER = 'wss://ws.webduino.io:443';
+  Smart.SERVER_CHINA = 'wss://ws.webduino.com.cn';
 
   scope.board.Smart = Smart;
 }));
