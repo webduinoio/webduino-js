@@ -29,7 +29,9 @@
       login: 'admin',
       password: 'password',
       autoReconnect: false,
-      multi: false
+      multi: false,
+      initialReset: false,
+      handleDigitalPins: true
     };
   }
 

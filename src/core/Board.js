@@ -259,7 +259,7 @@
     switch (command) {
     case DIGITAL_MESSAGE:
       this._logger.info('processMultiByteCommand digital:', channel, commandData[1], commandData[2]);
-      this.processDigitalMessage(channel, commandData[1], commandData[2]);
+      this._options.handleDigitalPins && this.processDigitalMessage(channel, commandData[1], commandData[2]);
       break;
     case REPORT_VERSION:
       this._firmwareVersion = commandData[1] + commandData[2] / 10;
@@ -456,7 +456,14 @@
     }
 
     if (!this._isReady) {
-      this.enableDigitalPins();
+      if (this._options.initialReset) {
+        this.systemReset();
+      }
+      if (this._options.handleDigitalPins) {
+        this.enableDigitalPins();
+      } else {
+        this.startup();
+      }
     }
   };
 
