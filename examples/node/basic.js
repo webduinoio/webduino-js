@@ -35,10 +35,6 @@ board = new webduino.WebArduino('device_id');
 //   'url': 'wa1501.local'
 // });
 
-board.on(webduino.BoardEvent.BEFOREREADY, function () {
-  console.log('board beforeReady');
-});
-
 board.on(webduino.BoardEvent.READY, function () {
   console.log('board ready');
   led = new webduino.module.Led(board, board.getDigitalPin(13));

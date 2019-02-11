@@ -24,7 +24,6 @@
     STRING_MESSAGE: 'stringMessage',
     SYSEX_MESSAGE: 'sysexMessage',
     PIN_STATE_RESPONSE: 'pinStateResponse',
-    BEFOREREADY: 'beforeReady',
     READY: 'ready',
     ERROR: 'error',
     BEFOREDISCONNECT: 'beforeDisconnect',
@@ -351,7 +350,6 @@
       break;
     case ANALOG_MAPPING_RESPONSE:
       this.processAnalogMappingResponse(sysexData);
-      this.emit(BoardEvent.BEFOREREADY);
       break;
     default:
       this.emit(BoardEvent.SYSEX_MESSAGE, {
