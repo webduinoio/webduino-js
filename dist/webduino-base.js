@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.5.1'
+  version: '0.5.2'
 };
 
 if (typeof exports !== 'undefined') {
