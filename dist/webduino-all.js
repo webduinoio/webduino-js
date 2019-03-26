@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.5.2'
+  version: '0.5.3'
 };
 
 if (typeof exports !== 'undefined') {
@@ -3154,34 +3154,40 @@ if (typeof exports !== 'undefined') {
     proto;
 
   var TransportEvent = {
-
     /**
      * Fires when a transport is opened.
-     * 
+     *
      * @event TransportEvent.OPEN
      */
-    OPEN: 'open',
+    OPEN: "open",
 
     /**
      * Fires when a transport receives a message.
-     * 
+     *
      * @event TransportEvent.MESSAGE
      */
-    MESSAGE: 'message',
+    MESSAGE: "message",
 
     /**
      * Fires when a transport get an error.
-     * 
+     *
      * @event TransportEvent.ERROR
      */
-    ERROR: 'error',
+    ERROR: "error",
 
     /**
      * Fires when a transport is closed.
-     * 
+     *
      * @event TransportEvent.CLOSE
      */
-    CLOSE: 'close'
+    CLOSE: "close",
+
+    /**
+     * Fires when a transport is re-opened.
+     *
+     * @event TransportEvent.REOPEN
+     */
+    REOPEN: "reopen"
   };
 
   /**
@@ -3348,6 +3354,10 @@ if (typeof exports !== 'undefined') {
 
   function detectStatusChange(self, newStatus, oldStatus) {
     if (newStatus === oldStatus) {
+      if (newStatus === STATUS.OK) {
+        // Device reconnected
+        self.emit(TransportEvent.REOPEN);
+      }
       return;
     }
 
@@ -4039,7 +4049,8 @@ if (typeof exports !== 'undefined') {
     READY: 'ready',
     ERROR: 'error',
     BEFOREDISCONNECT: 'beforeDisconnect',
-    DISCONNECT: 'disconnect'
+    DISCONNECT: 'disconnect',
+    RECONNECT: 'reconnect'
   };
 
   /**
@@ -4110,6 +4121,7 @@ if (typeof exports !== 'undefined') {
 
     this._initialVersionResultHandler = onInitialVersionResult.bind(this);
     this._openHandler = onOpen.bind(this);
+    this._reOpenHandler = onReOpen.bind(this);
     this._messageHandler = onMessage.bind(this);
     this._errorHandler = onError.bind(this);
     this._closeHandler = onClose.bind(this);
@@ -4135,6 +4147,11 @@ if (typeof exports !== 'undefined') {
   function onOpen() {
     this._logger.info('onOpen', 'Device online');
     this.begin();
+  }
+
+  function onReOpen() {
+    this._logger.info("onReOpen", "Device re-online");
+    this.emit(BoardEvent.RECONNECT);
   }
 
   function onMessage(data) {
@@ -4568,7 +4585,7 @@ if (typeof exports !== 'undefined') {
   proto.sendDigitalData = function (pin, value) {
     try {
       var portNum = Math.floor(pin / 8);
-      
+
       if (value === Pin.HIGH) {
         // Set the bit
         this._digitalPort[portNum] |= (value << (pin % 8));
@@ -4626,6 +4643,7 @@ if (typeof exports !== 'undefined') {
       trsp.on(TransportEvent.MESSAGE, this._messageHandler);
       trsp.on(TransportEvent.ERROR, this._errorHandler);
       trsp.on(TransportEvent.CLOSE, this._closeHandler);
+      trsp.on(TransportEvent.REOPEN, this._reOpenHandler);
       this._transport = trsp;
     }
   };
