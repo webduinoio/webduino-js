@@ -99,6 +99,10 @@ function onMessage(topic, message) {
 
 function detectStatusChange(self, newStatus, oldStatus) {
   if (newStatus === oldStatus) {
+    if (newStatus === STATUS.OK) {
+      // Device reconnected
+      self.emit(TransportEvent.REOPEN);
+    }
     return;
   }
 
@@ -109,10 +113,7 @@ function detectStatusChange(self, newStatus, oldStatus) {
   }
 }
 
-function onDisconnect(err) {
-  if (err && !this._options.autoReconnect) {
-    this.emit(TransportEvent.ERROR, err);
-  }
+function onDisconnect() {
   if (this._client.disconnecting || !this._options.autoReconnect) {
     this._client.removeAllListeners();
     delete this._client;

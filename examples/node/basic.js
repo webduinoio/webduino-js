@@ -58,3 +58,7 @@ board.on(webduino.BoardEvent.DISCONNECT, function () {
   // test: should not emit 'disconnect' again
   board.disconnect();
 });
+
+board.on(webduino.BoardEvent.RECONNECT, function() {
+  console.log("board reconnect");
+});

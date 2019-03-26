@@ -27,7 +27,8 @@
     READY: 'ready',
     ERROR: 'error',
     BEFOREDISCONNECT: 'beforeDisconnect',
-    DISCONNECT: 'disconnect'
+    DISCONNECT: 'disconnect',
+    RECONNECT: 'reconnect'
   };
 
   /**
@@ -98,6 +99,7 @@
 
     this._initialVersionResultHandler = onInitialVersionResult.bind(this);
     this._openHandler = onOpen.bind(this);
+    this._reOpenHandler = onReOpen.bind(this);
     this._messageHandler = onMessage.bind(this);
     this._errorHandler = onError.bind(this);
     this._closeHandler = onClose.bind(this);
@@ -123,6 +125,11 @@
   function onOpen() {
     this._logger.info('onOpen', 'Device online');
     this.begin();
+  }
+
+  function onReOpen() {
+    this._logger.info("onReOpen", "Device re-online");
+    this.emit(BoardEvent.RECONNECT);
   }
 
   function onMessage(data) {
@@ -556,7 +563,7 @@
   proto.sendDigitalData = function (pin, value) {
     try {
       var portNum = Math.floor(pin / 8);
-      
+
       if (value === Pin.HIGH) {
         // Set the bit
         this._digitalPort[portNum] |= (value << (pin % 8));
@@ -614,6 +621,7 @@
       trsp.on(TransportEvent.MESSAGE, this._messageHandler);
       trsp.on(TransportEvent.ERROR, this._errorHandler);
       trsp.on(TransportEvent.CLOSE, this._closeHandler);
+      trsp.on(TransportEvent.REOPEN, this._reOpenHandler);
       this._transport = trsp;
     }
   };

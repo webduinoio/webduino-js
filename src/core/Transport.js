@@ -13,34 +13,40 @@
     proto;
 
   var TransportEvent = {
-
     /**
      * Fires when a transport is opened.
-     * 
+     *
      * @event TransportEvent.OPEN
      */
-    OPEN: 'open',
+    OPEN: "open",
 
     /**
      * Fires when a transport receives a message.
-     * 
+     *
      * @event TransportEvent.MESSAGE
      */
-    MESSAGE: 'message',
+    MESSAGE: "message",
 
     /**
      * Fires when a transport get an error.
-     * 
+     *
      * @event TransportEvent.ERROR
      */
-    ERROR: 'error',
+    ERROR: "error",
 
     /**
      * Fires when a transport is closed.
-     * 
+     *
      * @event TransportEvent.CLOSE
      */
-    CLOSE: 'close'
+    CLOSE: "close",
+
+    /**
+     * Fires when a transport is re-opened.
+     *
+     * @event TransportEvent.REOPEN
+     */
+    REOPEN: "reopen"
   };
 
   /**

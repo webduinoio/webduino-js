@@ -97,6 +97,10 @@
 
   function detectStatusChange(self, newStatus, oldStatus) {
     if (newStatus === oldStatus) {
+      if (newStatus === STATUS.OK) {
+        // Device reconnected
+        self.emit(TransportEvent.REOPEN);
+      }
       return;
     }
 
