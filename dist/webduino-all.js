@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.5.3'
+  version: '0.5.4'
 };
 
 if (typeof exports !== 'undefined') {
@@ -4950,7 +4950,7 @@ if (typeof exports !== 'undefined') {
       };
     }
     if (options.area === 'china') {
-      options.server = WebArduino.SERVER_CHINA;      
+      options.server = WebArduino.SERVER_CHINA;
     }
     options = util.extend(getDefaultOptions(), options);
     options.server = parseServer(options.server);
@@ -4966,7 +4966,7 @@ if (typeof exports !== 'undefined') {
       password: 'password',
       autoReconnect: false,
       multi: false,
-      initialReset: false,
+      initialReset: true,
       handleDigitalPins: true
     };
   }
@@ -5605,7 +5605,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       password: 'password',
       autoReconnect: false,
       multi: false,
-      initialReset: false,
+      initialReset: true,
       handleDigitalPins: true
     };
   }
@@ -5666,7 +5666,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       password: 'password',
       autoReconnect: false,
       multi: false,
-      initialReset: false,
+      initialReset: true,
       handleDigitalPins: true
     };
   }
@@ -5697,7 +5697,7 @@ chrome.bluetoothSocket = chrome.bluetoothSocket || (function (_api) {
       if (this._options.transport === 'serial') {
         // wait for physical board ready to receive data from serialPort
         this.send([0xf0, 0x0e, 0x0c, 0xf7]);
-      }  
+      }
     }.bind(this), 500);
   };
 
