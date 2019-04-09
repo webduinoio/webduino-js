@@ -32,7 +32,7 @@
       password: 'password',
       autoReconnect: false,
       multi: false,
-      initialReset: false,
+      initialReset: true,
       handleDigitalPins: true
     };
   }
@@ -63,7 +63,7 @@
       if (this._options.transport === 'serial') {
         // wait for physical board ready to receive data from serialPort
         this.send([0xf0, 0x0e, 0x0c, 0xf7]);
-      }  
+      }
     }.bind(this), 500);
   };
 

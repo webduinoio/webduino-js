@@ -19,7 +19,7 @@
       };
     }
     if (options.area === 'china') {
-      options.server = WebArduino.SERVER_CHINA;      
+      options.server = WebArduino.SERVER_CHINA;
     }
     options = util.extend(getDefaultOptions(), options);
     options.server = parseServer(options.server);
@@ -35,7 +35,7 @@
       password: 'password',
       autoReconnect: false,
       multi: false,
-      initialReset: false,
+      initialReset: true,
       handleDigitalPins: true
     };
   }

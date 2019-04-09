@@ -30,7 +30,7 @@
       password: 'password',
       autoReconnect: false,
       multi: false,
-      initialReset: false,
+      initialReset: true,
       handleDigitalPins: true
     };
   }
