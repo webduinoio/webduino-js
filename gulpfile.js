@@ -74,7 +74,13 @@ gulp.task('clean', shell.task([
   `rm -rf ${DIST_DIR} docs`
 ]));
 
+/**
+ * NPM alert potential security vulnerabilities.
+ * yuidocjs seems to be no longer maintained.
+ * If need the document, run the gulp task.
+ */
 gulp.task('docs', ['clean'], shell.task([
+  'npm install --no-save yuidocjs yuidoc-lucid-theme',
   './node_modules/.bin/yuidoc -c yuidoc.json ./src'
 ]));
 
