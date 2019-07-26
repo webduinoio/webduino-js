@@ -12,6 +12,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint src/**/*.js",
+    "dev": "gulp watch",
     "build": "./node_modules/.bin/gulp"
   },
   "devDependencies": {

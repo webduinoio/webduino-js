@@ -1,0 +1,57 @@
+<html>
+
+<head>
+  <script src="../dist/webduino-all.js"></script>
+  <script>
+
+  (async function () {
+    var board, led, vv;
+    var tt = 0;
+
+    window.sboard = board = new webduino.WebArduino('O9Qq');
+
+    board.on('ready', async () => {
+      board.systemReset();
+      board.samplingInterval = 250;
+      board.sendingInterval = 50;
+      led = new webduino.module.Led(board, board.getDigitalPin(13));
+      vv = 0;
+
+      for (var count = 0; count < 100; count++) {
+        if (vv == 0) {
+          vv = 1;
+          led.on(() => msg(`${tt++}_light`));
+        } else {
+          vv = 0;
+          led.off(() => msg(`${tt++}_dark`));
+        }
+        await delay(0.02);
+      }
+      await delay(0.5);
+      msg(`end, ${tt}`);
+      console.log('end');
+    });
+
+    function delay(t) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          resolve();
+        }, 1000 * t);
+      });
+    }
+
+    function msg(val) {
+      console.log('TCL: msg -> val', val);
+      document.getElementById("demo-area-01-show").innerHTML = val;
+    }
+
+  })();
+  </script>
+</head>
+
+<body>
+  <div>start</div>
+  <div id='demo-area-01-show'></div>
+</body>
+
+</html>
