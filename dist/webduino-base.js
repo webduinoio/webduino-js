@@ -2496,7 +2496,7 @@ Paho.MQTT = (function (global) {
 })(window);
 
 var webduino = webduino || {
-  version: '0.5.4'
+  version: '0.6.0'
 };
 
 if (typeof exports !== 'undefined') {
@@ -4118,6 +4118,8 @@ if (typeof exports !== 'undefined') {
     this._transport = null;
     this._pinStateEventCenter = new EventEmitter();
     this._logger = new Logger('Board');
+    this._sendingInterval = 0;
+    this._sendingRec = [];
 
     this._initialVersionResultHandler = onInitialVersionResult.bind(this);
     this._openHandler = onOpen.bind(this);
@@ -4230,6 +4232,16 @@ if (typeof exports !== 'undefined') {
           throw new Error('warning: Sampling interval must be between ' + Board.MIN_SAMPLING_INTERVAL +
             ' and ' + Board.MAX_SAMPLING_INTERVAL);
         }
+      }
+    },
+
+    sendingInterval: {
+      get: function () {
+        return this._sendingInterval;
+      },
+      set: function (interval) {
+        if (typeof interval !== 'number') return;
+        this._sendingInterval = interval < 0 ? 0: interval;
       }
     },
 
@@ -4887,7 +4899,24 @@ if (typeof exports !== 'undefined') {
   };
 
   proto.send = function (data) {
-    this.isConnected && this._transport.send(data);
+    if (!this.isConnected) return;
+    if (this.sendingInterval === 0) {
+      this._transport.send(data);
+      return;
+    }
+
+    var idx = this._sendingRec.findIndex(function (val) {
+      return val.value.toString() === data.toString();
+    });
+    if (idx !== -1) {
+      if (Date.now() - this._sendingRec[idx].timestamp < this.sendingInterval) return;
+      this._sendingRec.splice(idx, 1);
+    }
+    this._sendingRec.push({
+      value: data.slice(),
+      timestamp: Date.now()
+    });
+    this._transport.send(data);
   };
 
   proto.close = function (callback) {
