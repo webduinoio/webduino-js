@@ -4912,6 +4912,7 @@ if (typeof exports !== 'undefined') {
       if (Date.now() - this._sendingRec[idx].timestamp < this.sendingInterval) return;
       this._sendingRec.splice(idx, 1);
     }
+    this._sendingRec.splice(0);
     this._sendingRec.push({
       value: data.slice(),
       timestamp: Date.now()
