@@ -3069,8 +3069,6 @@ if (typeof exports !== 'undefined') {
   };
 }));
 
-/* global Promise:true */
-
 +(function (global, factory) {
   if (typeof exports === 'undefined') {
     factory(global.webduino || {});
@@ -3079,13 +3077,6 @@ if (typeof exports !== 'undefined') {
   }
 }(this, function (scope) {
   'use strict';
-
-  if (typeof exports !== 'undefined' && typeof Promise === 'undefined') {
-    Promise = require('es6-promise').Promise;
-  }
-
-  // source: 
-  // https://raw.githubusercontent.com/twistdigital/es6-promisify/release/2.0.0/lib/promisify.js
 
   // Promise Context object constructor.
   function Context(resolve, reject, custom) {

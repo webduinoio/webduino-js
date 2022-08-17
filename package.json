@@ -16,19 +16,20 @@
     "build": "./node_modules/.bin/gulp"
   },
   "devDependencies": {
-    "eslint": "^5.11.1",
-    "eslint-plugin-promise": "^4.0.1",
-    "gulp": "3.x",
+    "eslint": "^7.32.0",
+    "gulp": "3.9.1",
     "gulp-concat": "2.x",
-    "gulp-expect-file": "0.x",
-    "gulp-shell": "0.5.2",
+    "gulp-expect-file": "^2.0.0",
+    "gulp-shell": "^0.8.0",
     "gulp-uglify": "2.x"
   },
   "dependencies": {
-    "es6-promise": "4.x",
     "minimatch": "3.x",
-    "mqtt": "2.x",
+    "mqtt": "^4.3.7",
     "setimmediate": "1.x",
     "ws": "1.x"
+  },
+  "engines": {
+    "node": "^11.15.0"
   }
 }
