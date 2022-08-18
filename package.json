@@ -16,12 +16,12 @@
     "build": "./node_modules/.bin/gulp"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "gulp": "3.9.1",
-    "gulp-concat": "2.x",
+    "eslint": "8.22.0",
+    "gulp": "4.0.2",
+    "gulp-concat": "2.6.1",
     "gulp-expect-file": "^2.0.0",
-    "gulp-shell": "^0.8.0",
-    "gulp-uglify": "2.x"
+    "gulp-shell": "0.8.0",
+    "gulp-uglify": "3.0.2"
   },
   "dependencies": {
     "minimatch": "3.x",
@@ -30,6 +30,6 @@
     "ws": "1.x"
   },
   "engines": {
-    "node": "^11.15.0"
+    "node": "^12.22.12"
   }
 }

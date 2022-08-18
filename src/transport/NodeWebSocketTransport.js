@@ -55,7 +55,7 @@ function onError(error) {
 }
 
 function sendOut() {
-  var payload = new Buffer(this._buf);
+  var payload = Buffer.from(this._buf);
   this.isOpen && this._client.send(payload);
   clearBuf(this);
 }

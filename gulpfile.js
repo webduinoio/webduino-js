@@ -1,12 +1,8 @@
-const gulp = require('gulp');
+const { src, dest, watch, series, parallel } = require('gulp');
 const expect = require('gulp-expect-file');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const shell = require('gulp-shell');
-
-const expectFiles = (ary) => {
-  return gulp.src(ary).pipe(expect(ary));
-}
 
 const SOURCE_DIR = 'src';
 const DIST_DIR = 'dist';
@@ -70,42 +66,56 @@ const modules = [
   'src/module/Stepper.js'
 ];
 
-gulp.task('clean', shell.task([
-  `rm -rf ${DIST_DIR} docs`
-]));
+function expectFiles(ary) {
+  return src(ary).pipe(expect(ary));
+}
 
-/**
- * NPM alert potential security vulnerabilities.
- * yuidocjs seems to be no longer maintained.
- * If need the document, run the gulp task.
- */
-gulp.task('docs', ['clean'], shell.task([
-  'npm install --no-save yuidocjs yuidoc-lucid-theme',
-  './node_modules/.bin/yuidoc -c yuidoc.json ./src'
-]));
+function clean() {
+  return shell.task([
+    `rm -rf ${DIST_DIR} docs`
+  ])();
+}
 
-gulp.task('dev', ['clean'], () => {
-  expectFiles(base)
+function docs() {
+  return shell.task([
+    'npm install --no-save yuidocjs yuidoc-lucid-theme',
+    './node_modules/.bin/yuidoc -c yuidoc.json ./src'
+  ])();
+}
+
+function webduinoBaseJS() {
+  return expectFiles(base)
     .pipe(concat('webduino-base.js'))
-    .pipe(gulp.dest(DIST_DIR));
-  expectFiles(base.concat(boards).concat(modules))
-    .pipe(concat('webduino-all.js'))
-    .pipe(gulp.dest(DIST_DIR));
-});
+    .pipe(dest(DIST_DIR));
+}
 
-gulp.task('prod', ['clean'], () => {
-  expectFiles(base)
+function webduinoBaseMinJS() {
+  return expectFiles(base)
     .pipe(concat('webduino-base.min.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(DIST_DIR));
-  expectFiles(base.concat(boards).concat(modules))
+    .pipe(dest(DIST_DIR));
+}
+
+function webduinoAllJS() {
+  return expectFiles(base.concat(boards).concat(modules))
+    .pipe(concat('webduino-all.js'))
+    .pipe(dest(DIST_DIR));
+}
+
+function webduinoAllMinJS() {
+  return expectFiles(base.concat(boards).concat(modules))
     .pipe(concat('webduino-all.min.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(DIST_DIR));
-});
+    .pipe(dest(DIST_DIR));
+}
 
-gulp.task('watch', () => {
-  gulp.watch(SOURCE_DIR + '/**/*.js', ['dev']);
-});
+function watchFiles() {
+  watch(SOURCE_DIR + '/**/*.js', series(clean, dev));
+}
 
-gulp.task('default', ['docs', 'dev', 'prod']);
+const dev = series(webduinoBaseJS, webduinoAllJS);
+
+const prod = series(webduinoBaseMinJS, webduinoAllMinJS);
+
+exports.watch = watchFiles;
+exports.default = series(clean, parallel(docs, dev, prod));
