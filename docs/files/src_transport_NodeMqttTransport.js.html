@@ -157,7 +157,7 @@ function init(self) {
   self._client = mqtt.connect(self._options.server, {
     clientId: &#x27;_&#x27; + self._options.device + (self._options.multi ? &#x27;.&#x27; + util.randomId() : &#x27;&#x27;),
     username: self._options.login || &#x27;&#x27;,
-    password: new Buffer(self._options.password || &#x27;&#x27;),
+    password: Buffer.from(self._options.password || &#x27;&#x27;),
     keepalive: NodeMqttTransport.KEEPALIVE_INTERVAL,
     reconnectPeriod: self._options.autoReconnect ? NodeMqttTransport.RECONNECT_PERIOD * 1000 : 0,
     connectTimeout: NodeMqttTransport.CONNECT_TIMEOUT * 1000
@@ -224,7 +224,7 @@ function onError(error) {
 }
 
 function sendOut() {
-  var payload = new Buffer(this._buf);
+  var payload = Buffer.from(this._buf);
   this.isOpen &amp;&amp; this._client.publish(this._options.device + TOPIC.PING, payload, {
     qos: 0
   });

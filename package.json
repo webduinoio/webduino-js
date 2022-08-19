@@ -13,22 +13,31 @@
   "scripts": {
     "lint": "eslint src/**/*.js",
     "dev": "gulp watch",
-    "build": "./node_modules/.bin/gulp"
+    "build": "gulp"
   },
   "devDependencies": {
-    "eslint": "^5.11.1",
-    "eslint-plugin-promise": "^4.0.1",
-    "gulp": "3.x",
-    "gulp-concat": "2.x",
-    "gulp-expect-file": "0.x",
-    "gulp-shell": "0.5.2",
-    "gulp-uglify": "2.x"
+    "eslint": "8.22.0",
+    "gulp": "4.0.2",
+    "gulp-concat": "2.6.1",
+    "gulp-expect-file": "^2.0.0",
+    "gulp-shell": "0.8.0",
+    "gulp-uglify": "3.0.2"
   },
   "dependencies": {
-    "es6-promise": "4.x",
     "minimatch": "3.x",
-    "mqtt": "2.x",
+    "mqtt": "^4.3.7",
     "setimmediate": "1.x",
     "ws": "1.x"
+  },
+  "engines": {
+    "node": "^16.17.0"
+  },
+  "overrides": {
+    "chokidar": {
+      "glob-parent": "5.1.2"
+    },
+    "vinyl-fs": {
+      "glob-stream": "7.0.0"
+    }
   }
 }
