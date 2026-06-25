@@ -27,7 +27,7 @@
     "minimatch": "3.x",
     "mqtt": "^4.3.7",
     "setimmediate": "1.x",
-    "ws": "1.x"
+    "ws": "^5.2.5"
   },
   "engines": {
     "node": "^16.17.0"
